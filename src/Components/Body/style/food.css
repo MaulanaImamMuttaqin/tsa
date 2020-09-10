@@ -1,0 +1,54 @@
+.food,.food-toko{
+    height:350px;
+    width:20%;
+    float:left;
+    margin-bottom:30px;
+    padding: 5px;
+    transition: all 0.2s;
+    /* border: 1px solid; */
+  }
+  
+  .food-content{
+    width:100%;
+    height:100%;
+    border-radius: 10px;
+    box-shadow: 5px 4px 21px -10px rgba(0,0,0,0.75);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .food:hover,.food-toko:hover{
+    padding:4px;
+  }
+  .food:active,.food-toko:active{
+    padding:9px;
+  }
+  .food-content:hover{
+    box-shadow: 5px 4px 21px -2px rgba(0,0,0,0.75);
+  }
+  .food-content:active{
+    box-shadow: 5px 4px 21px -2px rgba(12, 85, 196,0.9);
+  }
+  .food-tittle{
+    font-weight: bold;
+    color:#40619c;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .text-contents{
+    padding: 10px;
+  }
+  .food-picture img{
+    width:100%;
+    height: 210px;
+    margin-bottom: 7px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
+  }
+  .food p,.food-toko p{
+    margin:0;
+  }
+  .a{
+    color:white
+  }
