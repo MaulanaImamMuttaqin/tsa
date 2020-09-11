@@ -16,6 +16,7 @@ const product_state = {
     error:'',
     data: {}
 }
+const product_id = 0
 const search_state = ''
 const button_click_search_state = ''
 
@@ -47,6 +48,8 @@ const reducer = (state, action) => {
             
         case 'CHANGE_COMPONENT':
             return action.value
+        case 'UPDATE_PRODUCT_ID':
+            return action.value
         default:
             break;
     }
@@ -57,6 +60,8 @@ function ParentComponent() {
     const [search, dispatchSearch] = useReducer(reducer, search_state)
     const [CompState, dispatchCompState] = useReducer(reducer, component)
     const [buttSearch, dispatchButtSearch] = useReducer(reducer, button_click_search_state)
+    const [proId, dispatchProId] = useReducer(reducer, product_id)
+    const [detailProState, dispatchDetailProState] = useReducer(reducer, product_state)
     return (
         <ProductContext.Provider
             value={
@@ -80,6 +85,14 @@ function ParentComponent() {
                     Component:{
                         ComponentState : CompState,
                         DispatchComponentState : dispatchCompState
+                    },
+                    proId: {
+                        ProId: proId,
+                        DispatchProId : dispatchProId
+                    },
+                    DetailProduct: {
+                        DetailProState: detailProState,
+                        DispatchDetailProState : dispatchDetailProState
                     }
                 }
             }

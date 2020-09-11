@@ -1,5 +1,5 @@
 import React,{useContext, useEffect} from 'react'
-
+import Loading from "../../../assets/gifs/loading.gif"
 import '../style/HomeBody.css'
 import '../style/food.css'
 import Food from './Food';
@@ -13,7 +13,6 @@ function SearchBody() {
         productContext.SearchProduct.DispatchSearchProductState({type: 'SET_LOADING'})
         axios.get(`http://keudepeunajoh.jsmiot.com/Data/search_product/${productContext.Search.SearchState}`)
             .then(response => {
-                console.log(response.data)
                 productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_SUCCESS', payload:response.data})
             })
             .catch(error =>{
@@ -30,7 +29,7 @@ function SearchBody() {
                 </div>
                 <div className="foods">
                     {
-                            productContext.SearchProduct.SearchProductState.loading ? <h2>bentar</h2> :
+                            productContext.SearchProduct.SearchProductState.loading ? <img src={Loading} alt=""/> :
                             <div>
                                 {productContext.SearchProduct.SearchProductState.data.product === false
                                     ? <p>Tidak hasil pencarian untuk {productContext.ButtClickSearch.ButtSearch}</p>
@@ -48,6 +47,7 @@ function SearchBody() {
                         }   
                 </div>
             </div>
+            <div className="clear"></div>
         </div>
         
     )

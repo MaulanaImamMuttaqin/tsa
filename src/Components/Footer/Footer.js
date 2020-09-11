@@ -1,10 +1,13 @@
 import React from 'react'
-
+import './style/Footer.css'
+import Logo from "../../assets/image/logo4.png"
 function Footer() {
     return (
-        <div>
-            
-        </div>
+        <footer>
+            <div className="container">
+                <img src={Logo} alt=""/>
+            </div>
+        </footer>
     )
 }
 
