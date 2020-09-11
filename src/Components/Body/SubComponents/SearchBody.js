@@ -22,7 +22,6 @@ function SearchBody() {
             })
             console.log(productContext.SearchProduct.SearchProductState.loading)
     },[productContext.ButtClickSearch.ButtSearch])
-    console.log(productContext.SearchProduct.SearchProductState.data.product)
     return (
         <div className="content">
             <div className="container">
