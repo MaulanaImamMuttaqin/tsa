@@ -1,13 +1,15 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import '../style/food.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStore } from '@fortawesome/free-solid-svg-icons'
+import {ProductContext} from '../../ParentComponent'
 function Food(props) {
-    const print = () => {
-        console.log('oh yeah')
+    const productContext = useContext(ProductContext)
+    const getDetailed = (id) => {
+        productContext.Component.DispatchComponentState({type: 'CHANGE_COMPONENT', value:3})
     }
     return (
-        <div className="food" onClick={() => print()}>
+        <div className="food" onClick={() => getDetailed(props.Data.id)}>
             <div className="food-content">
                 <div className="food-picture">
                     <img src={`http://jsmiot.com/KeudePeunajoh/${props.Data.gambar_product}`} alt=""/>

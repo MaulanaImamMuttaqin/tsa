@@ -10,35 +10,41 @@ function SearchBody() {
     const productContext = useContext(ProductContext)
 
     useEffect(() => {
+        productContext.SearchProduct.DispatchSearchProductState({type: 'SET_LOADING'})
         axios.get(`http://keudepeunajoh.jsmiot.com/Data/search_product/${productContext.Search.SearchState}`)
             .then(response => {
                 console.log(response.data)
-                productContext.Product.dispatchProductState({type: 'FETCH_SUCCESS', payload:response.data})
+                productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_SUCCESS', payload:response.data})
             })
             .catch(error =>{
                 console.log('error')
-                productContext.Product.dispatchProductState({type: 'FETCH_ERROR'})
+                productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_ERROR'})
             })
-        
-    },[])
+            console.log(productContext.SearchProduct.SearchProductState.loading)
+    },[productContext.ButtClickSearch.ButtSearch])
+    console.log(productContext.SearchProduct.SearchProductState.data.product)
     return (
         <div className="content">
             <div className="container">
                 <div className="content-header">
-                    <h4>Hasil berdasarkan pencarian {productContext.Search.SearchState}</h4>
+                    <h4>Hasil berdasarkan pencarian "{productContext.ButtClickSearch.ButtSearch}"</h4>
                 </div>
                 <div className="foods">
                     {
-                            productContext.Product.ProductState.loading ? <h2>bentar</h2> :
+                            productContext.SearchProduct.SearchProductState.loading ? <h2>bentar</h2> :
                             <div>
-                                <div className="foods">
+                                {productContext.SearchProduct.SearchProductState.data.product === false
+                                    ? <p>Tidak hasil pencarian untuk {productContext.ButtClickSearch.ButtSearch}</p>
+                                    : <div className="foods">
                                     {
-                                        productContext.Product.ProductState.data.product.map(data => 
+                                         productContext.SearchProduct.SearchProductState.data.product.map(data => 
                                             <Food key={data.id} Data={data}/>
                                         )
                                     }
                                     
                                 </div>
+                                }
+                                
                             </div>
                         }   
                 </div>

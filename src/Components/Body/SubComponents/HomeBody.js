@@ -11,6 +11,7 @@ function HomeBody() {
     const productContext = useContext(ProductContext)
 
     useEffect(() => {
+        productContext.Product.dispatchProductState({type: 'SET_LOADING'})
         axios.get('http://keudepeunajoh.jsmiot.com/Data/list_product')
             .then(response => {
                 productContext.Product.dispatchProductState({type: 'FETCH_SUCCESS', payload:response.data})
@@ -20,6 +21,7 @@ function HomeBody() {
             })
         
     },[])
+    // console.log( productContext.Product.ProductState.data);
     return (
         <div className="content">
             <div className="container">

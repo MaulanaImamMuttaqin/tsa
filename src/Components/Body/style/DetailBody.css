@@ -1,0 +1,73 @@
+.food-detailed{
+    /* border: 1px solid; */
+    margin-top: 30px;
+    padding:10px;
+  }
+  .food-header{
+    width:100%;
+    height:auto;
+  }
+  
+  .food-img img{
+    height:400px;
+    width:40%;
+    float:left;
+  }
+  
+  .food-detail{
+    float: right;
+    width:60%;
+    padding-left: 40px;
+  }
+  
+  .food-detail h3,.food-detail p{
+    padding:20px 0;
+    margin-bottom: 0;
+    border-bottom: 1px solid #8f9cff;
+  }
+  .food-detail .p-left{
+    font-weight: 600;
+    display: inline-block;
+    width:80px;
+  }
+  .food-detail .p-right{
+    display: inline-block;
+    border-left: 1px solid #8f9cff;
+    padding-left: 15px;
+  }
+  span.alamat-style{
+    display: inline-block;
+    height:100%;
+    width:100%;
+    display: inline-flex;
+    align-items: center;
+  }
+  .alamat-style .p-left{
+    float:left;
+    display: inline-flex;
+    align-items: center;
+    width:13%;
+  }
+  .alamat-style .p-right{
+    float:right;
+    width:87%;
+  }
+  .food-desc{
+    clear: both;
+  }
+  
+  .prod-button{
+    margin-top:20px;
+  }
+  .prod-button a{
+  border:1px solid;
+  padding:10px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition:all 0.2s;
+  }
+  .prod-button a:hover{
+    background-color: rgba(87, 151, 255, 0.7);
+    color:#e6efff;
+  }
+  

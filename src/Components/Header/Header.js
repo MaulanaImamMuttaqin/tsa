@@ -12,15 +12,23 @@ function Header() {
 
   const submitHandler = e => {
     e.preventDefault()
-    alert(`Hello ${productContext.Search.SearchState}`)
+    if(productContext.Search.SearchState !== ''){
+      productContext.ButtClickSearch.DispatdhButtSearch({type: 'UPDATE_SEARCH_ONCLICK', value: productContext.Search.SearchState})
+      productContext.Component.DispatchComponentState({type: 'CHANGE_COMPONENT', value:2})
+      console.log('this is header')
+    }
+   
   }
-  console.log(productContext.Search.SearchState);
+
+  const ChangeComponent = ()=>{
+    productContext.Component.DispatchComponentState({type: 'CHANGE_COMPONENT', value:1})
+  }
     return (
         <div className="header">
               <div className="container">
 
-                  <div className="header-left">
-                   <img className="logo-tittle center-container" src={Logo} alt=""/>   
+                  <div className="header-left"  >
+                   <img className="logo-tittle center-container" src={Logo} alt="" onClick={ChangeComponent}/>   
                   </div>
 
                   <div className="header-center center-container">
