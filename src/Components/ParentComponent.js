@@ -1,8 +1,10 @@
-import React ,{useReducer} from 'react'
+import React ,{Fragment, useReducer} from 'react'
 import Header from './Header/Header'
 import Body from './Body/Body'
 import Footer from './Footer/Footer'
-
+import {Switch, Route} from "react-router-dom";
+import Login from './Auth/Login';
+import Regist from './Auth/Regist';
 export const ProductContext = React.createContext()
 
 // states
@@ -98,9 +100,18 @@ function ParentComponent() {
             }
         >
             <div>
-                <Header/>
-                <Body/>
-                <Footer/>
+                <Switch>
+                    <Route path='/Login' component={Login}/>
+                    <Route path='/Register' component={Regist}/>
+                    <Route path='/' render={props =>
+                        <Fragment>
+                            <Header/>
+                            <Body/>
+                            <Footer/>
+                        </Fragment>
+                        } />
+                </Switch>
+                
             </div>
         </ProductContext.Provider>
 

@@ -5,6 +5,7 @@ import Logo from "../../assets/image/logo4.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import {ProductContext} from '../ParentComponent'
+import { Link } from 'react-router-dom'
 
 
 function Header() {
@@ -46,7 +47,8 @@ function Header() {
                   </div>
 
                   <div className="header-right">
-                    <a href="">Masuk</a><a href="">Daftar</a>
+                    <Link to='/Login'>Masuk</Link>
+                    <Link to='/Register'>Daftar</Link>
                   </div>
               </div>
         </div>
