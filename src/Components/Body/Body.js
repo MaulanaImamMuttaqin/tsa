@@ -4,17 +4,19 @@ import HomeBody from './SubComponents/HomeBody'
 import SearchBody from './SubComponents/SearchBody'
 import {ProductContext} from '../ParentComponent'
 import DetailBody from './SubComponents/DetailBody'
+import {Switch, Route} from "react-router-dom";
 
 function Body() {
     const productContext = useContext(ProductContext)
     return (
         <div>
-            {
-                (productContext.Component.ComponentState === 1) ? <HomeBody/> :
-                (productContext.Component.ComponentState === 2) ? <SearchBody/> :
-                <DetailBody/>
-                
-            }   
+            <Switch>
+            <Route path='/Product/:id' component={DetailBody}/>
+            <Route path='/Search/:key' component={SearchBody} />
+            <Route path='/' component={HomeBody}/>
+            
+            </Switch>
+           
 
             
         </div>

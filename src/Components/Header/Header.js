@@ -5,24 +5,24 @@ import Logo from "../../assets/image/logo4.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import {ProductContext} from '../ParentComponent'
-import { Link } from 'react-router-dom'
+import { Link, Redirect, withRouter } from 'react-router-dom'
 
 
-function Header() {
+function Header(props) {
   const productContext = useContext(ProductContext)
-
+  console.log(productContext.Search.SearchState)
   const submitHandler = e => {
     e.preventDefault()
     if(productContext.Search.SearchState !== ''){
-      productContext.ButtClickSearch.DispatdhButtSearch({type: 'UPDATE_SEARCH_ONCLICK', value: productContext.Search.SearchState})
-      productContext.Component.DispatchComponentState({type: 'CHANGE_COMPONENT', value:2})
-      console.log('this is header')
+      // productContext.ButtClickSearch.DispatdhButtSearch({type: 'UPDATE_SEARCH_ONCLICK', value: productContext.Search.SearchState})
+      // productContext.Component.DispatchComponentState({type: 'CHANGE_COMPONENT', value:2})
+      // console.log('this is header')
+      props.history.push(`/Search/${productContext.Search.SearchState}`);
     }
-   
   }
 
   const ChangeComponent = ()=>{
-    productContext.Component.DispatchComponentState({type: 'CHANGE_COMPONENT', value:1})
+    props.history.push(`/`);
   }
     return (
         <div className="header">
@@ -48,11 +48,11 @@ function Header() {
 
                   <div className="header-right">
                     <Link to='/Login'>Masuk</Link>
-                    <Link to='/Register'>Daftar</Link>
+                    <Link to='/Register'>Daftar</Link>                  
                   </div>
               </div>
         </div>
     )
 }
 
-export default Header
+export default withRouter(Header) 

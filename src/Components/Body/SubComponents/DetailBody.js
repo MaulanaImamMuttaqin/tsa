@@ -3,12 +3,12 @@ import '../style/DetailBody.css'
 import {ProductContext} from '../../ParentComponent'
 import Loading from "../../../assets/gifs/loading.gif"
 import axios from 'axios'
-function DetailBody() {
+function DetailBody(props) {
     const productContext = useContext(ProductContext)
-    
+    const { match:{ params }}= props
     useEffect(() => {
         productContext.DetailProduct.DispatchDetailProState({type: 'SET_LOADING'})
-        axios.get(`http://keudepeunajoh.jsmiot.com/Data/detail_product/${productContext.proId.ProId}`)
+        axios.get(`http://keudepeunajoh.jsmiot.com/Data/detail_product/${params.id}`)
             .then(response => {
                 console.log(response.data);
                 productContext.DetailProduct.DispatchDetailProState({type: 'FETCH_SUCCESS', payload:response.data})

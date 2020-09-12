@@ -6,12 +6,12 @@ import Food from './Food';
 import {ProductContext} from '../../ParentComponent'
 import axios from 'axios'
 
-function SearchBody() {
+function SearchBody(props) {
     const productContext = useContext(ProductContext)
-
+    const { match:{ params }}= props
     useEffect(() => {
         productContext.SearchProduct.DispatchSearchProductState({type: 'SET_LOADING'})
-        axios.get(`http://keudepeunajoh.jsmiot.com/Data/search_product/${productContext.Search.SearchState}`)
+        axios.get(`http://keudepeunajoh.jsmiot.com/Data/search_product/${params.key}`)
             .then(response => {
                 productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_SUCCESS', payload:response.data})
             })
