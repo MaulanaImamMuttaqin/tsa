@@ -9,7 +9,7 @@ import {Switch, Route} from "react-router-dom";
 function Body() {
     const productContext = useContext(ProductContext)
     return (
-        <div>
+        
             <Switch>
             <Route path='/Product/:id' component={DetailBody}/>
             <Route path='/Search/:key' component={SearchBody} />
@@ -19,7 +19,7 @@ function Body() {
            
 
             
-        </div>
+       
     )
 }
 

@@ -15,13 +15,17 @@ const component =  1
 
 const product_state = {
     loading:true,
-    error:'',
+    error:false,
     data: {}
 }
 const product_id = 0
 const search_state = ''
 const button_click_search_state = ''
 
+const user_state = {
+    loading:false,
+    login: false
+}
 //reducer
 const reducer = (state, action) => {
     switch (action.type) {
@@ -34,17 +38,16 @@ const reducer = (state, action) => {
             return {
                 loading: false,
                 data: action.payload,
-                error:''
+                error:false
             }
         case 'FETCH_ERROR':
             return {
                 loading: false,
                 data: {},
-                error:'Something went wrong'
+                error:true
             }
         case 'UPDATE_SEARCH':
             return action.value
-
         case 'UPDATE_SEARCH_ONCLICK':
             return action.value
             
@@ -52,6 +55,23 @@ const reducer = (state, action) => {
             return action.value
         case 'UPDATE_PRODUCT_ID':
             return action.value
+
+        case 'SET_USER_STATE':
+            return {
+                loading:false,
+                login:true,
+                user: action.data
+            }
+        case 'SET_USER_STATE_FAILED':
+            return {
+                ...user_state
+            }
+        
+        case 'SET_LOADING_USER':
+            return {
+                ...user_state,
+                loading:true
+            }
         default:
             break;
     }
@@ -64,6 +84,7 @@ function ParentComponent() {
     const [buttSearch, dispatchButtSearch] = useReducer(reducer, button_click_search_state)
     const [proId, dispatchProId] = useReducer(reducer, product_id)
     const [detailProState, dispatchDetailProState] = useReducer(reducer, product_state)
+    const [userState, dispatchUserState] = useReducer(reducer, user_state)
     return (
         <ProductContext.Provider
             value={
@@ -95,11 +116,15 @@ function ParentComponent() {
                     DetailProduct: {
                         DetailProState: detailProState,
                         DispatchDetailProState : dispatchDetailProState
+                    },
+                    User:{
+                        UserState: userState,
+                        DispatchUserState: dispatchUserState
                     }
                 }
             }
         >
-            <div>
+            
                 <Switch>
                     <Route path='/Login' component={Login}/>
                     <Route path='/Register' component={Regist}/>
@@ -112,7 +137,7 @@ function ParentComponent() {
                         } />
                 </Switch>
                 
-            </div>
+            
         </ProductContext.Provider>
 
         
