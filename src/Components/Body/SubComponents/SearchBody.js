@@ -9,7 +9,7 @@ import Loading from '../../general/Loading';
 function SearchBody(props) {
     const productContext = useContext(ProductContext)
     const { match:{ params }}= props
-    console.log(params.key)
+
     useEffect(() => {
         productContext.SearchProduct.DispatchSearchProductState({type: 'SET_LOADING'})
         axios.get(`http://keudepeunajoh.jsmiot.com/Data/search_product/${params.key}`)
@@ -20,7 +20,6 @@ function SearchBody(props) {
                 console.log('error')
                 productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_ERROR'})
             })
-            console.log(productContext.SearchProduct.SearchProductState.loading)
     },[productContext.ButtClickSearch.ButtSearch])
     return (
         <div style={

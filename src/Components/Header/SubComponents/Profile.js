@@ -10,12 +10,13 @@ function Profile() {
                 <Link style={{ textDecoration: 'none' }} to="/Profile">
                     <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faUserCircle} />Profile
                 </Link>
-                <Link style={{ textDecoration: 'none' }} to="/Toko">
+                <Link style={{ textDecoration: 'none' }} to="/Toko_Saya">
                     <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
                 </Link>
-                <Link style={{ textDecoration: 'none' }} to="/Keluar">
+                <a href="">
                     <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt} />Keluar
-                </Link>
+                </a>
+                  
             </div>
         </div>
     )

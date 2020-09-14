@@ -2,11 +2,9 @@ import React,{useContext} from 'react'
 import '../style/food.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStore } from '@fortawesome/free-solid-svg-icons'
-import {ProductContext} from '../../ParentComponent'
-import { Link,useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 function Food(props) {
-    const productContext = useContext(ProductContext)
     const history = useHistory()
     // const getDetailed = (id) => {
     //     productContext.proId.DispatchProId({type: 'UPDATE_PRODUCT_ID', value:id})

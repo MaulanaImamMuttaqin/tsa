@@ -5,7 +5,7 @@ import Logo from "../../assets/image/logo4.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch , faUserCircle} from '@fortawesome/free-solid-svg-icons'
 import {ProductContext} from '../ParentComponent'
-import { Link, Redirect, withRouter } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 import Profile from './SubComponents/Profile'
 
 
@@ -20,7 +20,6 @@ function Header(props) {
     e.preventDefault()
     if(productContext.Search.SearchState !== ''){
       productContext.ButtClickSearch.DispatdhButtSearch({type: 'UPDATE_SEARCH_ONCLICK', value: productContext.Search.SearchState})
-      console.log('this is header')
       props.history.push(`/Search/${productContext.Search.SearchState}`);
     }
   }

@@ -50,7 +50,7 @@ function DetailBody(props) {
                                         </span>
                                     </p>
                                     <div className="prod-button">
-                                        <a href={`http://keudepeunajoh.jsmiot.com/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank">Hubungi Penjual</a>
+                                        <a href={`http://keudepeunajoh.jsmiot.com/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
                                     </div>
                                 </div>  
                                 <div className="clear"></div>

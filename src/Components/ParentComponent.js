@@ -85,6 +85,7 @@ function ParentComponent() {
     const [proId, dispatchProId] = useReducer(reducer, product_id)
     const [detailProState, dispatchDetailProState] = useReducer(reducer, product_state)
     const [userState, dispatchUserState] = useReducer(reducer, user_state)
+    const [tokoState, dispatchTokoState] = useReducer(reducer, product_state)
     return (
         <ProductContext.Provider
             value={
@@ -120,10 +121,14 @@ function ParentComponent() {
                     User:{
                         UserState: userState,
                         DispatchUserState: dispatchUserState
+                    },
+                    Toko: {
+                        TokoState: tokoState,
+                        DispatchTokoState: dispatchTokoState
                     }
                 }
             }
-        >
+        >       
             
                 <Switch>
                     <Route path='/Login' component={Login}/>
