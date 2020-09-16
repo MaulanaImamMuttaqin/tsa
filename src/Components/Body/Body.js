@@ -5,6 +5,8 @@ import SearchBody from './SubComponents/SearchBody'
 import DetailBody from './SubComponents/DetailBody'
 import {Switch, Route} from "react-router-dom";
 import TokoBody from './SubComponents/TokoBody'
+import TokoUser from './SubComponents/TokoUser';
+import TokoForm from './SubComponents/TokoForm';
 
 function Body() {
     return (
@@ -12,7 +14,8 @@ function Body() {
             <Switch>
             <Route path='/Product/:id' component={DetailBody}/>
             <Route path='/Search/:key' component={SearchBody} />
-            <Route path='/Toko_Saya' component={TokoBody}/>
+            <Route path='/Toko_Saya' component={TokoUser}/>
+            <Route path='/Buat_Toko' component={TokoForm}/>
             <Route path='/' component={HomeBody}/>
             
             {/* <Route path='/Product/:id'><DetailBody/></Route>

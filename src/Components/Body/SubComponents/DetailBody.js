@@ -3,14 +3,14 @@ import '../style/DetailBody.css'
 import {ProductContext} from '../../ParentComponent'
 import axios from 'axios'
 import Loading from '../../general/Loading'
-function DetailBody(props) {
+import { useParams } from 'react-router-dom'
+function DetailBody() {
     const productContext = useContext(ProductContext)
-    const { match:{ params }}= props
+    let {id} = useParams()
     useEffect(() => {
         productContext.DetailProduct.DispatchDetailProState({type: 'SET_LOADING'})
-        axios.get(`http://keudepeunajoh.jsmiot.com/Data/detail_product/${params.id}`)
+        axios.get(`http://keudepeunajoh.jsmiot.com/Data/detail_product/${id}`)
             .then(response => {
-                console.log(response.data);
                 productContext.DetailProduct.DispatchDetailProState({type: 'FETCH_SUCCESS', payload:response.data})
             })
             .catch(error =>{

@@ -5,21 +5,16 @@ import Footer from './Footer/Footer'
 import {Switch, Route} from "react-router-dom";
 import Login from './Auth/Login';
 import Regist from './Auth/Regist';
+import { useEffect } from 'react';
+import Axios from 'axios';
 export const ProductContext = React.createContext()
 
-// states
-    // state component 1 = HomeBody
-    // state component 2 = SearchBody
-const component =  1
 
-
-const product_state = {
+const state = {
     loading:true,
     error:false,
     data: {}
 }
-const product_id = 0
-const search_state = ''
 const button_click_search_state = ''
 
 const user_state = {
@@ -31,7 +26,7 @@ const reducer = (state, action) => {
     switch (action.type) {
         case 'SET_LOADING':
             return {
-                ...product_state,
+                ...state,
                 loading:true
             }
         case 'FETCH_SUCCESS':
@@ -46,16 +41,9 @@ const reducer = (state, action) => {
                 data: {},
                 error:true
             }
-        case 'UPDATE_SEARCH':
-            return action.value
         case 'UPDATE_SEARCH_ONCLICK':
             return action.value
             
-        case 'CHANGE_COMPONENT':
-            return action.value
-        case 'UPDATE_PRODUCT_ID':
-            return action.value
-
         case 'SET_USER_STATE':
             return {
                 loading:false,
@@ -77,15 +65,26 @@ const reducer = (state, action) => {
     }
 }
 function ParentComponent() {
-    const [ProState, dispatchProState] = useReducer(reducer, product_state)
-    const [searchProState, dispatchSearchProState] = useReducer(reducer, product_state)
-    const [search, dispatchSearch] = useReducer(reducer, search_state)
-    const [CompState, dispatchCompState] = useReducer(reducer, component)
+    
+    const [ProState, dispatchProState] = useReducer(reducer, state)
+    const [searchProState, dispatchSearchProState] = useReducer(reducer, state)
     const [buttSearch, dispatchButtSearch] = useReducer(reducer, button_click_search_state)
-    const [proId, dispatchProId] = useReducer(reducer, product_id)
-    const [detailProState, dispatchDetailProState] = useReducer(reducer, product_state)
+    const [detailProState, dispatchDetailProState] = useReducer(reducer, state)
     const [userState, dispatchUserState] = useReducer(reducer, user_state)
-    const [tokoState, dispatchTokoState] = useReducer(reducer, product_state)
+    const [tokoState, dispatchTokoState] = useReducer(reducer, state)
+    
+
+    // useEffect(() => {
+    //     console.log('called it')
+    //     Axios.get('http://keudepeunajoh.jsmiot.com/Data/session')
+    //     .then(res => {
+    //         if(res.data.logged_in){
+    //             console.log(res.data.user)
+    //         }else{
+    //             console.log("gak ada session")
+    //         }
+    //     })  
+    // },[])
     return (
         <ProductContext.Provider
             value={
@@ -98,21 +97,9 @@ function ParentComponent() {
                         SearchProductState : searchProState,
                         DispatchSearchProductState: dispatchSearchProState
                     },
-                    Search:{
-                        SearchState: search,
-                        DispatchSearchState: dispatchSearch
-                    },
                     ButtClickSearch:{
                         ButtSearch : buttSearch,
-                        DispatdhButtSearch : dispatchButtSearch
-                    },
-                    Component:{
-                        ComponentState : CompState,
-                        DispatchComponentState : dispatchCompState
-                    },
-                    proId: {
-                        ProId: proId,
-                        DispatchProId : dispatchProId
+                        DispatchButtSearch : dispatchButtSearch
                     },
                     DetailProduct: {
                         DetailProState: detailProState,

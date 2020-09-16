@@ -5,27 +5,28 @@ import Logo from "../../assets/image/logo4.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch , faUserCircle} from '@fortawesome/free-solid-svg-icons'
 import {ProductContext} from '../ParentComponent'
-import { Link, withRouter } from 'react-router-dom'
+import { Link, useHistory} from 'react-router-dom'
 import Profile from './SubComponents/Profile'
 
 
 function Header(props) {
   const productContext = useContext(ProductContext)
   const [click, setClick] = useState(false)
-
+  const [search, setSearch] = useState('')
+  const history = useHistory()
   const ToggleClick = () => {
     setClick(!click)
   }
   const submitHandler = e => {
     e.preventDefault()
-    if(productContext.Search.SearchState !== ''){
-      productContext.ButtClickSearch.DispatdhButtSearch({type: 'UPDATE_SEARCH_ONCLICK', value: productContext.Search.SearchState})
-      props.history.push(`/Search/${productContext.Search.SearchState}`);
+    if(search !== ''){
+      productContext.ButtClickSearch.DispatchButtSearch({type: 'UPDATE_SEARCH_ONCLICK', value:search})
+      history.push(`/Search/${search}`);
     }
   }
 
   const ChangeComponent = ()=>{
-    props.history.push(`/`);
+    history.push(`/`);
   }
     return (
         <div className="header">
@@ -41,8 +42,8 @@ function Header(props) {
                           type="text" 
                           className="search" 
                           placeholder="Cari apa yang anda inginkan"
-                          value={productContext.Search.SearchState}
-                          onChange={e => productContext.Search.DispatchSearchState({type: 'UPDATE_SEARCH', value:e.target.value})}
+                          value={search}
+                          onChange={e => setSearch(e.target.value)}
                           />
                           
                         <button className="sub" type="submit"><FontAwesomeIcon icon={faSearch} /></button>
@@ -60,12 +61,10 @@ function Header(props) {
                   </div>
               </div>
               {
-                click ?
-                <Profile/>:
-                <span></span>
+                click && <Profile/>
               }
         </div>
     )
 }
 
-export default withRouter(Header) 
+export default Header

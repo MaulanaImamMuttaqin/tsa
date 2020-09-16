@@ -5,14 +5,14 @@ import Food from './Food';
 import {ProductContext} from '../../ParentComponent'
 import axios from 'axios'
 import Loading from '../../general/Loading';
-
-function SearchBody(props) {
+import { useParams } from 'react-router-dom'
+function SearchBody() {
     const productContext = useContext(ProductContext)
-    const { match:{ params }}= props
+    let {key} = useParams()
 
     useEffect(() => {
         productContext.SearchProduct.DispatchSearchProductState({type: 'SET_LOADING'})
-        axios.get(`http://keudepeunajoh.jsmiot.com/Data/search_product/${params.key}`)
+        axios.get(`http://keudepeunajoh.jsmiot.com/Data/search_product/${key}`)
             .then(response => {
                 productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_SUCCESS', payload:response.data})
             })
@@ -20,7 +20,9 @@ function SearchBody(props) {
                 console.log('error')
                 productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_ERROR'})
             })
+    
     },[productContext.ButtClickSearch.ButtSearch])
+    console.log("params",key)
     return (
         <div style={
             productContext.Product.ProductState.loading ? { height : "100%"}:
@@ -37,7 +39,7 @@ function SearchBody(props) {
                 
                 <div className="container">
                     <div className="content-header">
-                        <h4>Hasil berdasarkan pencarian "{productContext.ButtClickSearch.ButtSearch}"</h4>
+                        <h4>Hasil berdasarkan pencarian "{key}"</h4>
                     </div>
                     <div className="foods">
                         

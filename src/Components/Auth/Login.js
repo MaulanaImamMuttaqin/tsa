@@ -44,6 +44,7 @@ function Login() {
             productContext.User.DispatchUserState({type: "SET_USER_STATE_FAILED"})
         })
     }
+    // console.log("user= ", productContext.User.UserState);
     return (
         <div style={{height: "100%"}}>
             <div className="auth-body">
@@ -64,11 +65,7 @@ function Login() {
             
             </div>
             {
-                productContext.User.UserState.loading ?
-                <Loading color=""/>
-                    
-                :
-                <div></div>
+                productContext.User.UserState.loading && <Loading color=""/>
             }
         </div>
     )

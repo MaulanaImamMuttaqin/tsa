@@ -6,10 +6,6 @@ import { useHistory } from 'react-router-dom'
 
 function Food(props) {
     const history = useHistory()
-    // const getDetailed = (id) => {
-    //     productContext.proId.DispatchProId({type: 'UPDATE_PRODUCT_ID', value:id})
-    //     productContext.Component.DispatchComponentState({type: 'CHANGE_COMPONENT', value:3})
-    // }
     const clicked = () =>{
         history.push(`/Product/${props.Data.id}`)
     }

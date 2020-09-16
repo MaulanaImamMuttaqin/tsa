@@ -23,8 +23,7 @@ function HomeBody() {
                 productContext.Product.dispatchProductState({type: 'FETCH_ERROR'})
             })
         
-    },[])
-    // console.log( productContext.Product.ProductState.data);
+    },[])   
     if(productContext.Product.ProductState.error){
         return(
             <div style={{ height : "100%"}}>
