@@ -19,7 +19,8 @@ const button_click_search_state = ''
 
 const user_state = {
     loading:false,
-    login: false
+    login: false,
+    data:{}
 }
 //reducer
 const reducer = (state, action) => {
@@ -48,7 +49,7 @@ const reducer = (state, action) => {
             return {
                 loading:false,
                 login:true,
-                user: action.data
+                data: action.payload
             }
         case 'SET_USER_STATE_FAILED':
             return {
@@ -74,17 +75,7 @@ function ParentComponent() {
     const [tokoState, dispatchTokoState] = useReducer(reducer, state)
     
 
-    // useEffect(() => {
-    //     console.log('called it')
-    //     Axios.get('http://keudepeunajoh.jsmiot.com/Data/session')
-    //     .then(res => {
-    //         if(res.data.logged_in){
-    //             console.log(res.data.user)
-    //         }else{
-    //             console.log("gak ada session")
-    //         }
-    //     })  
-    // },[])
+    
     return (
         <ProductContext.Provider
             value={

@@ -11,20 +11,24 @@ import Error from '../../general/Error';
 
 
 function HomeBody() {
-    const productContext = useContext(ProductContext)
-
+    const {
+        Product:{
+            ProductState,
+            dispatchProductState
+        }
+    } = useContext(ProductContext)
     useEffect(() => {
-
-        axios.get('http://keudepeunajoh.jsmiot.com/Data/list_product')
+        dispatchProductState({type: 'SET_LOADING'})
+        axios.get('http://localhost/keudepeunajoh-rest-api/api/Data/')
             .then(response => {
-                productContext.Product.dispatchProductState({type: 'FETCH_SUCCESS', payload:response.data})
+                dispatchProductState({type: 'FETCH_SUCCESS', payload:response.data.data})
             })
             .catch(error =>{
-                productContext.Product.dispatchProductState({type: 'FETCH_ERROR'})
+                dispatchProductState({type: 'FETCH_ERROR'})
             })
-        
+        console.log("effect is called")
     },[])   
-    if(productContext.Product.ProductState.error){
+    if(ProductState.error){
         return(
             <div style={{ height : "100%"}}>
                <Error/>
@@ -34,15 +38,15 @@ function HomeBody() {
 
         return (
             <div style={
-                productContext.Product.ProductState.loading ? { height : "100%"}:
+                ProductState.loading ? { height : "100%"}:
                 {height: ""}
             }>
     
                 {
-                    productContext.Product.ProductState.loading ? <Loading color="loading-white"/>:
+                    ProductState.loading ? <Loading color="loading-white"/>:
                         <div className="content"
                             style={
-                                productContext.Product.ProductState.loading ? { height : "100%"}:
+                                ProductState.loading ? { height : "100%"}:
                                 {height: "auto"}
                             }
                         >
@@ -63,11 +67,11 @@ function HomeBody() {
                                                 />
                                             </Carousel.Item>
                                             {
-                                                productContext.Product.ProductState.data.popular.map(data => 
+                                                ProductState.data.popular.map(data => 
                                                     <Carousel.Item key={data.id}>
                                                         <img
                                                             className="d-block w-100"
-                                                            src={`http://jsmiot.com/KeudePeunajoh/${data.gambar_product}`}
+                                                            src={`http://localhost/keudepeunajoh-rest-api/${data.gambar_product}`}
                                                             alt="Second slide"
                                                             width="800" height="300"
                                                         />
@@ -84,7 +88,7 @@ function HomeBody() {
                     
                                     <div className="foods">
                                         {
-                                            productContext.Product.ProductState.data.product.map(data => 
+                                            ProductState.data.product.map(data => 
                                                 <Food key={data.id} Data={data}/>
                                             )
                                         }

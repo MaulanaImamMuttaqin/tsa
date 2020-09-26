@@ -13,47 +13,59 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Login() {
     const [nohp, setNoHp] = useState('')
     const [pass, setPass] = useState('')
-    const [auth, setAuth] = useState({
-        success: true,
-        alert: '',
-        text: ''
-    })
+    const [authf, setAuthf] = useState(false)
     const history = useHistory()
-    const productContext = useContext(ProductContext)
+    const {
+        User :{ 
+            DispatchUserState, 
+            UserState
+        },
+        Toko : {
+            TokoState,
+            DispatchTokoState
+        }
+    } = useContext(ProductContext)
 
     const submit = e => {
         e.preventDefault()
-        productContext.User.DispatchUserState({type: "SET_LOADING_USER"})
-        Axios.post('http://keudepeunajoh.jsmiot.com/Data/login', {
+        DispatchUserState({type: "SET_LOADING_USER"})
+
+        Axios.post('http://localhost/keudepeunajoh-rest-api/api/Data/login', {
             no_hp: nohp,
             password : pass
-        }).then(res => {
-            productContext.User.DispatchUserState({type: "SET_USER_STATE", data: res.data})
-            if(res.data.error === false){
-                setAuth({
-                    success: false,
-                    alert: res.data.alert,
-                    text: res.data.text
-                })
-                setNoHp('')
-                setPass('')
-            }else{
+        }).then(res1 => {
+            console.log("login user",res1.data)
+            Axios.get(`http://localhost/keudepeunajoh-rest-api/api/Data?toko_id=${res1.data.data.id}`)
+            .then(res2 => {
+                
+                DispatchTokoState({type: "FETCH_SUCCESS", payload: res2.data.data})
+                DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
+
+               
                 history.push('/')
-            }
+               
+                   
+
+                
+            }).catch(error => {
+                DispatchTokoState({type: "FETCH_ERROR"})
+            })
+
         }).catch(error => {
-            productContext.User.DispatchUserState({type: "SET_USER_STATE_FAILED"})
+            DispatchUserState({type: "SET_USER_STATE_FAILED"})
+            setAuthf(true)
+            setNoHp('')
+            setPass('')
         })
     }
-    // console.log("user= ", productContext.User.UserState);
+    
     return (
         <div style={{height: "100%"}}>
             <div className="auth-body">
                 <div className="login">
                     <h2>Masuk</h2>
                     {
-                        auth.success === false ?
-                        <Alert variant={auth.alert}>{auth.text}</Alert>:
-                        <span></span>
+                        authf && <Alert variant="danger">Password Salah</Alert>
                     }
                     <form action="" onSubmit={submit} className="form">
                         <input type="text" value={nohp} onChange={e => setNoHp(e.target.value)} placeholder="Masukkan no HP" required/>
@@ -65,7 +77,7 @@ function Login() {
             
             </div>
             {
-                productContext.User.UserState.loading && <Loading color=""/>
+                UserState.loading && <Loading color=""/>
             }
         </div>
     )

@@ -8,34 +8,30 @@ import Axios from 'axios';
 
 function TokoForm() {
     const { register, handleSubmit, errors } = useForm();
-    const [buatToko, setBuatToko] = useState(false)
+    
+    const {User:{UserState}} = useContext(ProductContext)
+
     const history = useHistory()
-    const productContext = useContext(ProductContext)
+    
     const onSubmit = data => {
-        setBuatToko(true)
+    
         const fd = new FormData();
-        fd.append('id', productContext.User.UserState.user.id)
+        fd.append('id', UserState.user.id)
         fd.append('nama', data.nama)
         fd.append('alamat', data.alamat)
         fd.append('deskripsi',data.deskripsi)
         fd.append('gambar', data.gambar[0], data.gambar[0].name )
-        Axios.post('http://keudepeunajoh.jsmiot.com/Data/buat_toko2',fd, {
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }
-          })
+        Axios.post('http://localhost/keudepeunajoh-rest-api/api/Data/BuatToko',fd)
         .then(res => {
-            setBuatToko(false)
-            console.log(res.data)
             history.push('/Toko_Saya')
+
         }).catch(error => {
-            setBuatToko(false)
-            console.log('error')
+            console.log(error)
         })
 
     };
     
-    if(productContext.User.UserState.login){
+    if(UserState.login){
         return (
                 <div style={ { height : "100%"}}>
                     <div className="content">
@@ -65,9 +61,6 @@ function TokoForm() {
                         </div>
                         <div className="clear"></div>
                     </div> 
-                    {
-                        buatToko && <Loading color=""/>
-                    }    
                 </div>
         )
     }else{

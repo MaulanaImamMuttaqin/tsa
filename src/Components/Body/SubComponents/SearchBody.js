@@ -7,32 +7,44 @@ import axios from 'axios'
 import Loading from '../../general/Loading';
 import { useParams } from 'react-router-dom'
 function SearchBody() {
-    const productContext = useContext(ProductContext)
+    const {SearchProduct: {
+            SearchProductState, 
+            DispatchSearchProductState
+        }, 
+            Product:{
+                ProductState
+        }, 
+            ButtClickSearch:{
+                ButtSearch
+        }
+    } = useContext(ProductContext)
+
+
     let {key} = useParams()
 
     useEffect(() => {
-        productContext.SearchProduct.DispatchSearchProductState({type: 'SET_LOADING'})
-        axios.get(`http://keudepeunajoh.jsmiot.com/Data/search_product/${key}`)
+        DispatchSearchProductState({type: 'SET_LOADING'})
+        axios.get(`http://localhost/keudepeunajoh-rest-api/api/Data?search=${key}`)
             .then(response => {
-                productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_SUCCESS', payload:response.data})
+                DispatchSearchProductState({type: 'FETCH_SUCCESS', payload:response.data.data})
             })
             .catch(error =>{
                 console.log('error')
-                productContext.SearchProduct.DispatchSearchProductState({type: 'FETCH_ERROR'})
+                DispatchSearchProductState({type: 'FETCH_ERROR'})
             })
     
-    },[productContext.ButtClickSearch.ButtSearch])
-    console.log("params",key)
+    },[ButtSearch])
+
     return (
         <div style={
-            productContext.Product.ProductState.loading ? { height : "100%"}:
+            ProductState.loading ? { height : "100%"}:
             {height: ""}
         }>
             {
-                productContext.SearchProduct.SearchProductState.loading ? <Loading color="loading-white"/> :
+                SearchProductState.loading ? <Loading color="loading-white"/> :
             <div className="content"
             style={
-                productContext.Product.ProductState.loading ? { height : "100%"}:
+                ProductState.loading ? { height : "100%"}:
                 {height: "auto"}
             }
             >
@@ -44,11 +56,11 @@ function SearchBody() {
                     <div className="foods">
                         
                                 <div>
-                                    {productContext.SearchProduct.SearchProductState.data.product === false
-                                        ? <p>Tidak hasil pencarian untuk {productContext.ButtClickSearch.ButtSearch}</p>
+                                    {SearchProductState.data.product === false
+                                        ? <p>Tidak hasil pencarian untuk {ButtSearch}</p>
                                         : <div className="foods">
                                         {
-                                             productContext.SearchProduct.SearchProductState.data.product.map(data => 
+                                             SearchProductState.data.product.map(data => 
                                                 <Food key={data.id} Data={data}/>
                                             )
                                         }

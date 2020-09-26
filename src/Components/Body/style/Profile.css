@@ -1,0 +1,50 @@
+.profile-data b{
+    display:inline-block;
+    font-weight: bold;
+    width: 60px;
+  }
+   .Toko-data b{
+    display:inline-block;
+    font-weight: bold;
+    width: 120px;
+  }
+  .profile-data .profile-cont, .Toko-data .profile-cont{
+    width: 50%;
+    height:40px;
+    padding:7px 0;
+  }
+  
+  .profile-cont .textarea{
+    height: 80px;
+  }
+
+  .profile-update-form{
+    width:80%;
+  }
+  .Toko-data .profile-update-form{
+    width:70%;
+  }
+  .profile-data input, .Toko-data input{
+    outline: none;
+    text-align: left;
+    height:23px;
+    border:none;
+    border-bottom:1px solid #8f9cff;
+  }
+  .profile-data button, .Toko-data button{
+      border:1px solid #8f9cff;
+      border-radius: 7px;
+      width:130px;
+      height:45px;
+      transition: all 0.2s;
+      background-color: white;
+      margin-top: 10px;
+      margin-right: 10px;
+  }
+  .profile-data button:hover, .Toko-data button:hover{
+    background-color: #8f9cff;
+    color:white;
+  }
+  .profile-data input:focus, .Toko-data input:focus{
+    border-bottom:3px solid #8f9cff;
+  }

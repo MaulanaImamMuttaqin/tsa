@@ -7,6 +7,7 @@
     background-color: white;
     text-decoration: none;
   }
+
   .buat-toko:hover{
     background-color: #8f9cff;
     color:white;
@@ -79,3 +80,36 @@
     background-color: #8f9cff;
     color:white;
   }  
+
+  .previewProfilePic{
+    box-shadow: 2px 2px 24px -5px rgba(0,0,0,0.75);
+    margin: auto;
+    height: 220px;
+    width: 220px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .file{
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  .file-label:hover{
+    cursor: pointer;
+  }
+  /* edit form */
+.editForm input{
+  display:block;
+  width:100%;
+  margin-bottom: 20px;
+  outline: none;
+  text-align: left;
+  height:23px;
+  border:none;
+  border-bottom:1px solid #8f9cff;
+  text-align: left;
+}

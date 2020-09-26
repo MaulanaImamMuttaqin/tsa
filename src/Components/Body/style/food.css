@@ -52,3 +52,9 @@
   .a{
     color:white
   }
+  .editButton{
+    margin-right:10px;
+  }
+  .editButton:hover{
+    padding:8px;
+  }

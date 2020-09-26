@@ -5,30 +5,39 @@ import axios from 'axios'
 import Loading from '../../general/Loading'
 import { useParams } from 'react-router-dom'
 function DetailBody() {
-    const productContext = useContext(ProductContext)
+    const {
+        DetailProduct:{
+            DetailProState,
+            DispatchDetailProState
+        }, 
+        Product:{
+            ProductState
+        }
+    } = useContext(ProductContext)
+
     let {id} = useParams()
     useEffect(() => {
-        productContext.DetailProduct.DispatchDetailProState({type: 'SET_LOADING'})
-        axios.get(`http://keudepeunajoh.jsmiot.com/Data/detail_product/${id}`)
+        DispatchDetailProState({type: 'SET_LOADING'})
+        axios.get(`http://localhost/keudepeunajoh-rest-api/api/Data?id=${id}`)
             .then(response => {
-                productContext.DetailProduct.DispatchDetailProState({type: 'FETCH_SUCCESS', payload:response.data})
+                DispatchDetailProState({type: 'FETCH_SUCCESS', payload:response.data.data})
             })
             .catch(error =>{
                 console.log('error')
-                productContext.DetailProduct.DispatchDetailProState({type: 'FETCH_ERROR'})
+                DispatchDetailProState({type: 'FETCH_ERROR'})
             })
     },[])
-    const Data = productContext.DetailProduct.DetailProState.data.product
+    const Data = DetailProState.data.product
     return (
         <div style={
-            productContext.Product.ProductState.loading ? { height : "100%"}:
+            ProductState.loading ? { height : "100%"}:
             {height: ""}
         }>
             {
-                productContext.DetailProduct.DetailProState.loading ? <Loading color="loading-white"/> :
+                DetailProState.loading ? <Loading color="loading-white"/> :
             <div className="content product-responsive"
             style={
-                productContext.Product.ProductState.loading ? { height : "100%"}:
+                ProductState.loading ? { height : "100%"}:
                 {height: "auto"}
             }
             >
@@ -38,7 +47,7 @@ function DetailBody() {
                     <div className="food-detailed">
                         <div className="food-header">
                                 <div className="food-img">
-                                    <img src={`http://jsmiot.com/KeudePeunajoh/${Data.gambar_product}`} alt=""/>
+                                    <img src={`http://localhost/keudepeunajoh-rest-api/${Data.gambar_product}`} alt=""/>
                                 </div>
                                 <div className="food-detail">
                                     <h3>{Data.nama_product}</h3>
@@ -50,7 +59,7 @@ function DetailBody() {
                                         </span>
                                     </p>
                                     <div className="prod-button">
-                                        <a href={`http://keudepeunajoh.jsmiot.com/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
+                                        <a href={`http://localhost/keudepeunajoh-rest-api/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
                                     </div>
                                 </div>  
                                 <div className="clear"></div>

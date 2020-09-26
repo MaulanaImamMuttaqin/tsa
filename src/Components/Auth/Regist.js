@@ -12,7 +12,7 @@ function Regist() {
     const history = useHistory()
     const onSubmit = data => {
         setRegist(true)
-        Axios.post('http://keudepeunajoh.jsmiot.com/Data/register', {
+        Axios.post('http://localhost/keudepeunajoh-rest-api/api/Data/regist', {
             username:data.username,
             password:data.pass1,
             alamat:data.alamat,
