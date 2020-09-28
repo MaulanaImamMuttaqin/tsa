@@ -26,7 +26,6 @@ function HomeBody() {
             .catch(error =>{
                 dispatchProductState({type: 'FETCH_ERROR'})
             })
-        console.log("effect is called")
     },[])   
     if(ProductState.error){
         return(

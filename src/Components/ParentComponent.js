@@ -1,11 +1,10 @@
-import React ,{Fragment, useReducer} from 'react'
+import React ,{Fragment, useReducer, useEffect} from 'react'
 import Header from './Header/Header'
 import Body from './Body/Body'
 import Footer from './Footer/Footer'
 import {Switch, Route} from "react-router-dom";
 import Login from './Auth/Login';
 import Regist from './Auth/Regist';
-import { useEffect } from 'react';
 import Axios from 'axios';
 export const ProductContext = React.createContext()
 
@@ -66,7 +65,8 @@ const reducer = (state, action) => {
     }
 }
 function ParentComponent() {
-    
+      
+
     const [ProState, dispatchProState] = useReducer(reducer, state)
     const [searchProState, dispatchSearchProState] = useReducer(reducer, state)
     const [buttSearch, dispatchButtSearch] = useReducer(reducer, button_click_search_state)
@@ -75,7 +75,10 @@ function ParentComponent() {
     const [tokoState, dispatchTokoState] = useReducer(reducer, state)
     
 
-    
+    useEffect(()=> {
+        console.log("parent component is called at = ", Date.now())
+    },[])
+
     return (
         <ProductContext.Provider
             value={
