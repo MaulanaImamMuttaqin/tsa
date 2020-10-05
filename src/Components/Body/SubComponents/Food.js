@@ -20,7 +20,7 @@ function Food(props) {
             <div className="food" onClick={clicked}>
                 <div className="food-content">
                     <div className="food-picture">
-                        <img src={`http://localhost/keudepeunajoh-rest-api/${props.Data.gambar_product}`} alt=""/>
+                        <img src={`http://localhost/keudepeunajoh-rest-api2/${props.Data.gambar_product}`} alt=""/>
                     </div>
                     <div className="text-contents">
                         <p className="food-tittle">{props.Data.nama_product}</p>
@@ -29,7 +29,9 @@ function Food(props) {
                         {location.pathname === '/Toko_Saya' && 
                                 <div>
                                     <Badge className="editButton" onClick={()=> props.edit(props.Data)} variant="primary">Edit</Badge>
+                                    
                                     <Badge className="editButton" onClick={() => history.push(`/Product/${props.Data.id}`)} variant="success">Prewiew</Badge>
+                                    <Badge className="editButton" onClick={()=> props.delete(props.Data)} variant="danger">Hapus</Badge>
                                 </div>
                         }
                     </div>

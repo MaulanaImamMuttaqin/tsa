@@ -13,7 +13,7 @@ import { Alert, Button, Modal, Container, Row, Col,InputGroup , FormControl, Ima
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function TokoUser() {
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, reset  } = useForm();
     const { register:register2, handleSubmit:handleSubmit2, errors:errors2 } = useForm();
     const {
         User:{
@@ -48,7 +48,7 @@ function TokoUser() {
         }
         
     };
-
+    
     const [pictureEdit, setPictureEdit] = useState(null);
     const [imgDataEdit, setImgDataEdit] = useState(null);
     const onChangePictureEdit = e => {
@@ -61,11 +61,17 @@ function TokoUser() {
         });
         reader.readAsDataURL(e.target.files[0]);
         }
-        
+        console.log(pictureEdit)
     };
 
+    
+
     const getData = () => {
-        Axios.get(`http://localhost/keudepeunajoh-rest-api/api/Data?toko_id=${UserState.data.id}`)
+        Axios.get(`http://localhost/keudepeunajoh-rest-api2/Data?toko_id=${UserState.data.id}`,{
+            headers: {
+                'Authorization': localStorage.getItem('SavedToken')
+              }
+        })
         .then(res => {
             DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
             
@@ -84,11 +90,17 @@ function TokoUser() {
         fd.append('deskripsi',data.deskripsi)
         fd.append('gambar', data.gambar[0], data.gambar[0].name )
         setaddProd(true)
-        Axios.post('http://localhost/keudepeunajoh-rest-api/api/Data/TambahProduk',fd)
+        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/TambahProduk',fd,{
+            headers: {
+                'Authorization': localStorage.getItem('SavedToken')
+              }
+        })
         .then(res => {
             console.log(res)
             setaddProd(false)
             setUpdate(true)
+            reset()
+            setPicture(null)
             getData()
             setWichProd(data.nama)
         }).catch(error => {
@@ -104,11 +116,81 @@ function TokoUser() {
         console.log(fooddata)
         
     }
+
+    const [del, setDelete] = useState(false)
+    const [delData, setDelData] = useState({})
+    const [delsuc, setDelsuc] = useState(false)
+    const [delProd, setDelProd]  = useState(false)
+    const delModal = deleteData => {
+        setDelete(true)
+        setDelData(deleteData)
+        
+    }
+    const deleteProduct = data => {
+        setDelProd(true)
+        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/HapusProduk',
+        {
+            prodId : data.id,
+            userId : UserState.id,
+            name: data.nama_product,
+            nama_toko: TokoState.data.toko.nama_toko
+        },{
+            headers: {
+                'Authorization': localStorage.getItem('SavedToken')
+              }
+        })
+        .then(res => {
+            console.log(res)
+            
+            getData()
+            setDelProd(false)
+            setDelsuc(true)
+            setDelete(false)
+            setWichProd(data.nama_product)
+        }).catch(error => {
+            setDelProd(false)
+            console.log(error)
+        })
+    }
+
+    const [editProd, setEditProd]  = useState(false)
+    const [editSuc, setEditSuc] = useState(false)
     const onEdit = data => {
         console.log(data)
+        const fd = new FormData();
+        fd.append('id', editData.id)    
+        fd.append('nama', data.editNama)   
+        fd.append('nama_toko', TokoState.data.toko.nama_toko)
+        fd.append('harga', data.editHarga)
+        fd.append('deskripsi',data.editDesc)
+        fd.append('nama_prev',editData.nama_product)
+        if(data.editGambar.length !== 0){
+            fd.append('gambar', data.editGambar[0], data.editGambar[0].name )
+        }
+        
+        setEditProd(true)
+        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/EditProduk',fd,{
+            headers: {
+                'Authorization': localStorage.getItem('SavedToken')
+              }
+        })
+        .then(res => {
+            console.log(res.data)
+            setEditProd(false)
+            setEditSuc(true)
+            getData()
+        }).catch(error => {
+            setaddProd(false)
+            console.log(error)
+        })
     } 
 
-    if(UserState.login){
+    const cancel = () => {
+        setShow(false)
+        setImgDataEdit(null)
+        setPictureEdit(null)
+    }
+    if(localStorage.getItem('SavedToken') !== null){
         return (
                 
                 <div style={ TokoState.loading ? { height : "100%"} : {height: ""} }>
@@ -122,7 +204,7 @@ function TokoUser() {
                                     </div>
                                     <div className="toko">
                                         <div className="logo-toko">
-                                            <img src={`http://localhost/keudepeunajoh-rest-api/${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
+                                            <img src={`http://localhost/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
                                         </div>
                                         <h2>{TokoState.data.toko.nama_toko}</h2>
                                         <p className="toko-ex">Alamat Toko: </p>
@@ -134,7 +216,7 @@ function TokoUser() {
                                         <h4>Tambah Produk</h4>
                                     </div>
                                     {
-                                        update && <Alert variant="success" dismissible>Produk {wichProd} berhasil di promosikan</Alert>
+                                        update && <Alert variant="success" onClose={() => setUpdate(false)} dismissible>Produk {wichProd} berhasil di promosikan</Alert>
                                     }
                                     
                                     
@@ -162,6 +244,7 @@ function TokoUser() {
                                                     </label>
                                                     <input id="file" className="file" type="file" name="gambar" onChange={onChangePicture} required ref={register({
                                                     validate: (value) => {
+                                                        
                                                         return value[0].size < 2048000
                                                     }
                                                     })} required/>
@@ -216,10 +299,14 @@ function TokoUser() {
                                         <h4>Product Yang di Promosikan</h4>
                                     </div>
                                     {
+                                        delsuc && <Alert variant="success" onClose={() => setDelsuc(false)} dismissible>Produk {wichProd} berhasil di hapus</Alert>
+                                    }
+                                    
+                                    {
                                         TokoState.data.product.j_prod == 0 ?
                                         <p>Belum ada Produk yang di promosikan</p>:
                                         TokoState.data.product.map(data => 
-                                            <Food key={data.id} Data={data} edit={fooddata => editForm(fooddata)} />
+                                            <Food key={data.id} Data={data} edit={fooddata => editForm(fooddata)} delete={deleteData => delModal(deleteData)} />
                                         )
                                     }
                                     <div className="clear"></div>
@@ -227,7 +314,7 @@ function TokoUser() {
                                 <Modal
                                     show={show}
                                     size="lg"
-                                    onHide={() => setShow(false)}
+                                    onHide={() => {setShow(false);setPictureEdit(null);setImgDataEdit(null)}}
                                     dialogClassName="modal-90w"
                                     aria-labelledby="example-custom-modal-styling-title"
                                     centered
@@ -246,25 +333,29 @@ function TokoUser() {
                                                         <div className="previewProfilePic">
                                                             {
                                                                 pictureEdit !== null ?
-                                                                <Image  src={imgData} fluid rounded />:
-                                                                <Image  src={`http://localhost/keudepeunajoh-rest-api/${editData.gambar_product}`} fluid rounded />       
+                                                                <Image  src={imgDataEdit} fluid rounded />:
+                                                                <Image  src={`http://localhost/keudepeunajoh-rest-api2/${editData.gambar_product}`} fluid rounded />       
                                                                 
                                                             }
                                                         </div>
                                                     
                                                         {pictureEdit !== null && 
-                                                            <p>{picture.name}</p>
+                                                            <p>{pictureEdit.name}</p>
                                                         }
-                                                    <label className="file-label" htmlFor="file" >
+                                                    <label className="file-label" htmlFor="editfile" >
                                                         <h3>
                                                             <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
                                                         </h3>
                                                     </label>
-                                                    <input id="file" className="file" type="file" name="gambar" onChange={onChangePictureEdit} required ref={register({
+                                                    <input id="editfile" className="file" type="file" name="editGambar" onChange={onChangePictureEdit} ref={register2({
                                                     validate: (value) => {
+                                                        if(value.length == 0){
+                                                            return true
+                                                        }
                                                         return value[0].size < 2048000
+                                                        
                                                     }
-                                                    })} required/>
+                                                    })}/>
                                                     {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
                                                     
                                                 </Col>
@@ -276,7 +367,7 @@ function TokoUser() {
                                                                 aria-label="Username"
                                                                 aria-describedby="basic-addon1"
                                                                 defaultValue={editData.nama_product}
-                                                                name="edit-Nama"
+                                                                name="editNama"
                                                                 ref={register2()}
                                                                 />
                                                             </InputGroup>
@@ -287,7 +378,7 @@ function TokoUser() {
                                                                 aria-label="Username"
                                                                 aria-describedby="basic-addon1"
                                                                 defaultValue={editData.harga}
-                                                                name="edit-harga"
+                                                                name="editHarga"
                                                                 ref={register2()}
                                                                 />
                                                             </InputGroup>
@@ -299,10 +390,14 @@ function TokoUser() {
                                                                 aria-label="Username"
                                                                 aria-describedby="basic-addon1"
                                                                 defaultValue={editData.deskripsi}
-                                                                name="edit-desc"
+                                                                name="editDesc"
                                                                 ref={register2()}
                                                                 />
                                                             </InputGroup>
+                                                            {editProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
+                                                            {
+                                                                editSuc && <Alert variant="success" onClose={() => setEditSuc(false)} dismissible>Produk berhasil di perbaharui</Alert>
+                                                            }
                                                     </Col>
                                                     
                                                 </Row>
@@ -310,12 +405,30 @@ function TokoUser() {
                                             
                                         </Modal.Body>
                                         <Modal.Footer>
-                                            <Button onClick={() => setShow(false)}>Batal</Button>
+                                            <Button onClick={cancel}>Batal</Button>
                                             <Button type="submit">Simpan</Button>
                                         </Modal.Footer>
                                     </form>
                                 </Modal>
-                            
+
+
+                                <Modal show={del} onHide={()=> setDelete(false)} centered>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>Hapus Produk</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>
+                                        Hapus produk "{delData.nama_product}"?
+                                        {delProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
+                                    </Modal.Body>
+                                    <Modal.Footer>
+                                    <Button variant="secondary" onClick={()=> setDelete(false)}>
+                                        Close
+                                    </Button>
+                                    <Button variant="primary" onClick={()=>deleteProduct(delData)}>
+                                        Hapus
+                                    </Button>
+                                    </Modal.Footer>
+                                </Modal>
 
                             
                         </div>

@@ -7,7 +7,8 @@ import { faSearch , faUserCircle, faSignOutAlt,faStore} from '@fortawesome/free-
 import {ProductContext} from '../ParentComponent'
 import { Link, useHistory} from 'react-router-dom'
 import { useEffect } from 'react'
-
+import { Dropdown } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function Header(props) {
   const {ButtClickSearch:{DispatchButtSearch},User:{UserState}} = useContext(ProductContext)
@@ -43,6 +44,21 @@ function Header(props) {
   const ChangeComponent = ()=>{
     history.push(`/`);
   }
+
+  // const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
+  //   <a
+  //     href=""
+  //     ref={ref}
+  //      className="profile"
+  //     onClick={(e) => {
+  //       e.preventDefault();
+  //       onClick(e);
+  //     }}
+  //   >
+  //     {children}
+      
+  //   </a>
+  // ));
     return (
         <div className="header">
               <div className="container">
@@ -66,8 +82,25 @@ function Header(props) {
                   </div>
 
                   <div className="header-right">
-                    {UserState.login ? 
+                    {localStorage.getItem('SavedToken') !== null ? 
                       <a ref={wrapperRef1} className="profile" onClick={() => setClick(!click)}><FontAwesomeIcon size="lg" icon={faUserCircle} /></a>
+                      // <Dropdown alignRight  >
+                      //   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
+                      //       <FontAwesomeIcon size="lg" icon={faUserCircle} />
+                      //   </Dropdown.Toggle>
+
+                      //   <Dropdown.Menu className="dropdown" >
+                      //       <Link style={{ textDecoration: 'none' }} to="/Profile">
+                      //           <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faUserCircle} />Profile
+                      //       </Link>
+                      //       <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }>
+                      //           <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
+                      //       </Link>
+                      //       <a href=""  onClick={()=> localStorage.removeItem("SavedToken")}>
+                      //           <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
+                      //       </a>
+                      //   </Dropdown.Menu>
+                      // </Dropdown>
                       :<div>
                           <Link to='/Login'>Masuk</Link>
                           <Link to='/Register'>Daftar</Link>                  
@@ -79,15 +112,15 @@ function Header(props) {
                 click && 
                 <div ref={wrapperRef2} className="profile-dropdown">
                   <div className="profile-content">
-                      <Link style={{ textDecoration: 'none' }} to="/Profile">
+                      <Link style={{ textDecoration: 'none' }} to="/Profile" onClick={()=> setClick(false)}>
                           <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faUserCircle} />Profile
                       </Link>
-                      <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }>
+                      <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }  onClick={()=> setClick(false)}>
                           <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
                       </Link>
-                      <a href="">
-                          <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt} />Keluar
-                      </a>
+                      <Link style={{ textDecoration: 'none' }} to="/Login"  onClick={()=> localStorage.removeItem("SavedToken")}>
+                          <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
+                      </Link>
                         
                   </div>
               </div>
@@ -98,3 +131,4 @@ function Header(props) {
 
 
 export default Header
+	

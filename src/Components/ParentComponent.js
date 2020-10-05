@@ -21,6 +21,7 @@ const user_state = {
     login: false,
     data:{}
 }
+
 //reducer
 const reducer = (state, action) => {
     switch (action.type) {
@@ -64,6 +65,8 @@ const reducer = (state, action) => {
             break;
     }
 }
+
+
 function ParentComponent() {
       
 
@@ -76,9 +79,66 @@ function ParentComponent() {
     
 
     useEffect(()=> {
-        console.log("parent component is called at = ", Date.now())
-    },[])
+        if(localStorage.getItem('SavedToken') !== null){
 
+            Axios.post('http://localhost/keudepeunajoh-rest-api2/Auth/Authorization',{}, {
+                headers: {
+                    'Authorization': localStorage.getItem('SavedToken')
+                  }
+            }).then(res1 => {
+                
+                Axios.get(`http://localhost/keudepeunajoh-rest-api2/Data?toko_id=${res1.data.id}`, {
+                    headers: {
+                      'Authorization': localStorage.getItem('SavedToken')
+                    }
+                  })
+                .then(res2 => {
+                    
+                    dispatchTokoState({type: "FETCH_SUCCESS", payload: res2.data.data})
+                    dispatchUserState({type: "SET_USER_STATE", payload: res1.data})
+
+                    
+                }).catch(error => {
+                    dispatchTokoState({type: "FETCH_ERROR"})
+                })
+    
+            }).catch(error => {
+                dispatchUserState({type: "SET_USER_STATE_FAILED"})
+            })
+        }
+        console.log("parent called")
+        
+    },[])
+    useEffect(() => {
+        Axios.get('http://localhost/keudepeunajoh-rest-api2/Data/')
+            .then(response => {
+                dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
+                
+            })
+            .catch(error =>{
+                dispatchProState({type: 'FETCH_ERROR'})
+            })
+        
+    },[tokoState.data])   
+    // useEffect(()=>{
+    //     // if(localStorage.getItem('SavedToken') !== null){
+    
+    //     //     Axios.post('http://localhost/keudepeunajoh-rest-api2/Auth/Authorization',{}, {
+    //     //         headers: {
+    //     //             'Authorization': localStorage.getItem('SavedToken')
+    //     //             }
+    //     //     }).then(res1 => {
+    //     //             dispatchUserState({type: "SET_USER_STATE", payload: res1.data})
+        
+    //     //     }).catch(error => {
+    //     //         dispatchUserState({type: "SET_USER_STATE_FAILED"})
+    //     //     })
+    //     // }
+    //     console.log(Math.floor(Math.random() * 100))
+    // },[])
+   
+    
+    
     return (
         <ProductContext.Provider
             value={

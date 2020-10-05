@@ -17,16 +17,7 @@ function HomeBody() {
             dispatchProductState
         }
     } = useContext(ProductContext)
-    useEffect(() => {
-        dispatchProductState({type: 'SET_LOADING'})
-        axios.get('http://localhost/keudepeunajoh-rest-api/api/Data/')
-            .then(response => {
-                dispatchProductState({type: 'FETCH_SUCCESS', payload:response.data.data})
-            })
-            .catch(error =>{
-                dispatchProductState({type: 'FETCH_ERROR'})
-            })
-    },[])   
+
     if(ProductState.error){
         return(
             <div style={{ height : "100%"}}>
@@ -70,7 +61,7 @@ function HomeBody() {
                                                     <Carousel.Item key={data.id}>
                                                         <img
                                                             className="d-block w-100"
-                                                            src={`http://localhost/keudepeunajoh-rest-api/${data.gambar_product}`}
+                                                            src={`http://localhost/keudepeunajoh-rest-api2/${data.gambar_product}`}
                                                             alt="Second slide"
                                                             width="800" height="300"
                                                         />

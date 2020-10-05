@@ -30,26 +30,30 @@ function Login() {
         e.preventDefault()
         DispatchUserState({type: "SET_LOADING_USER"})
 
-        Axios.post('http://localhost/keudepeunajoh-rest-api/api/Data/login', {
+        Axios.post('http://localhost/keudepeunajoh-rest-api2/Auth/login', {
             no_hp: nohp,
             password : pass
         }).then(res1 => {
-            console.log("login user",res1.data)
-            Axios.get(`http://localhost/keudepeunajoh-rest-api/api/Data?toko_id=${res1.data.data.id}`)
-            .then(res2 => {
+            let token = res1.data.JWT;
+            localStorage.setItem("SavedToken", token);
+            DispatchTokoState({type: "FETCH_SUCCESS", payload: res1.data.toko_user})
+            DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
+            history.push('/')
+            // Axios.get(`http://localhost/keudepeunajoh-rest-api2/Data?toko_id=${res1.data.data.id}`, {
+            //     headers: {
+            //       'Authorization': localStorage.getItem('SavedToken')
+            //     }
+            //   })
+            // .then(res2 => {
                 
-                DispatchTokoState({type: "FETCH_SUCCESS", payload: res2.data.data})
-                DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
+            //     DispatchTokoState({type: "FETCH_SUCCESS", payload: res2.data.data})
+            //     DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
 
-               
-                history.push('/')
-               
-                   
-
+            //     
                 
-            }).catch(error => {
-                DispatchTokoState({type: "FETCH_ERROR"})
-            })
+            // }).catch(error => {
+            //     DispatchTokoState({type: "FETCH_ERROR"})
+            // })
 
         }).catch(error => {
             DispatchUserState({type: "SET_USER_STATE_FAILED"})
@@ -59,6 +63,32 @@ function Login() {
         })
     }
     
+    // const submit = e => {
+    //     e.preventDefault()
+    //     DispatchUserState({type: "SET_LOADING_USER"})
+
+    //     Axios.post('http://localhost/keudepeunajoh-rest-api2/Auth/login', {
+    //         no_hp: nohp,
+    //         password : pass
+    //     }).then(res1 => {
+            
+    //         let token = res1.data.JWT;
+    //         localStorage.setItem("SavedToken", token);
+    //         DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
+            
+    //         history.push('/')
+
+
+    //     }).catch(error => {
+    //         DispatchUserState({type: "SET_USER_STATE_FAILED"})
+    //         setAuthf(true)
+    //         setNoHp('')
+    //         setPass('')
+    //     })
+    // }
+    
+
+
     return (
         <div style={{height: "100%"}}>
             <div className="auth-body">
