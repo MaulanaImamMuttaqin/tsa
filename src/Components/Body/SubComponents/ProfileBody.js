@@ -10,7 +10,7 @@ import MiniLoad from '../../../assets/gifs/mini-loading.gif';
 import Loading from '../../general/Loading';
 import {Button, Modal, Container, Row, Col, Image, Badge} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserCircle, faImage } from '@fortawesome/free-solid-svg-icons'
+import { faUserCircle, faImage , faUpload} from '@fortawesome/free-solid-svg-icons'
 function ProfileBody() {
     const {
         User :{ 
@@ -24,7 +24,9 @@ function ProfileBody() {
     } = useContext(ProductContext)
     const history = useHistory()
     const Location = useLocation()
-    const { register, handleSubmit, errors } = useForm();
+    const { register, handleSubmit, errors, reset  } = useForm();
+    const { register:register2, handleSubmit:handleSubmit2, errors:errors2 } = useForm();
+
     const [editProf, setEditProf] = useState(true)
     const [editToko, setEditToko] = useState(true)
 
@@ -59,14 +61,17 @@ function ProfileBody() {
 
     const UpdateToko = data => {
         setTokoLoad(true)
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/editToko', {
-            id: TokoState.data.toko.id,
-            user_id:UserState.data.id,
-            nama_prev: TokoState.data.toko.nama_toko,
-            nama:data.nama,
-            alamat:data.alamat,
-            deskripsi:data.deskripsi
-        },{
+        const fd = new FormData();
+        fd.append('id', TokoState.data.toko.id)
+        fd.append('user_id', UserState.data.id)
+        fd.append('nama_prev', TokoState.data.toko.nama_toko)
+        fd.append('nama', data.nama)
+        fd.append('alamat', data.alamat)
+        fd.append('deskripsi', data.deskripsi)
+        if(data.gambarToko.length !== 0){
+            fd.append('gambar', data.gambarToko[0], data.gambarToko[0].name )
+        }
+        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/editToko',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -81,6 +86,36 @@ function ProfileBody() {
             console.log(error)
         })
     }
+
+    const [picture, setPicture] = useState(null);
+    const [imgData, setImgData] = useState(null);
+    const onChangePicture = e => {
+        if (e.target.files[0]) {
+        console.log("picture: ", e.target.files[0].name);
+        setPicture(e.target.files[0]);
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            setImgData(reader.result);
+        });
+        reader.readAsDataURL(e.target.files[0]);
+        }
+        
+    };
+
+    const [pictureEdit, setPictureEdit] = useState(null);
+    const [imgDataEdit, setImgDataEdit] = useState(null);
+    const onChangePictureEdit = e => {
+        if (e.target.files[0]) {
+        console.log("picture: ", e.target.files[0].name);
+        setPictureEdit(e.target.files[0]);
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+            setImgDataEdit(reader.result);
+        });
+        reader.readAsDataURL(e.target.files[0]);
+        }
+        console.log(pictureEdit)
+    };
 
     if(localStorage.getItem('SavedToken') !== null){
         return (
@@ -97,43 +132,40 @@ function ProfileBody() {
                                             updateProfile && <Alert variant="success" onClose={() => setUpdateProfile(false)} dismissible>Profile berhasil di update</Alert>
                                         }
                                         <div className="profile-data">
-                                            {/* <form onSubmit={handleSubmit(UpdateProfile)}>
-                                                <div className="profile-cont"><b>Nama</b>   : 
-                                                    {editProf ? UserState.data.username : 
-                                                    <input className="profile-update-form" type="text" name="username" defaultValue={UserState.data.username} ref={register()}></input>  
-                                                    } 
-                                                </div>
-                                                <div className="profile-cont"><b>Alamat</b> : 
-                                                    {editProf ? UserState.data.alamat : 
-                                                    <input className="profile-update-form" type="text" name="alamat" defaultValue={UserState.data.alamat} ref={register()} ></input>
-                                                    } 
-                                                </div>
-                                                <div className="profile-cont"><b>Email</b>  : 
-                                                    {editProf ? UserState.data.email : 
-                                                    <input className="profile-update-form" type="text" name="email" defaultValue={UserState.data.email} ref={register()}></input> 
-                                                    } 
-                                                </div>
-                                                <div className="profile-cont"><b>No HP</b>  : 
-                                                    {editProf ? UserState.data.no_hp : 
-                                                    <input className="profile-update-form" type="text" name="nohp" defaultValue={UserState.data.no_hp} ref={register()} ></input> 
-                                                    } 
-                                                </div>
-
-                                                {
-                                                    editProf ? <button onClick={() => setEditProf(false)} className="ubah" type="button">Ubah</button>:
-                                                    <div  className="profile-update-confirm">
-                                                        <button onClick={() => setEditProf(true)} className="cancel" type="button" >Batal</button>
-                                                        <button className="simpan" type="submit">Simpan</button>{profLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
-                                                    </div>
-                                                }
-                                            </form> */}
+                                            
                                             <Row>
                                                 <Col style={{textAlign: "center"}} xs={6} md={4}>
                                                     
                                                         <div className="previewProfilePic">
-                                                            <FontAwesomeIcon icon={faUserCircle} size="6x"/>    
+                                                            {
+                                                                picture !== null ?
+                                                                <Image  src={imgData} fluid rounded />:
+                                                                <FontAwesomeIcon icon={faUserCircle} size="6x"/>         
+                                                                
+                                                            }
+                                                                
                                                         </div>
-                                                    
+
+                                                    {
+                                                        !editProf &&
+                                                        <div>
+                                                            <label className="file-label" htmlFor="file" >
+                                                                <h3>
+                                                                    <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
+                                                                </h3>
+                                                            </label>
+                                                            <input id="file" className="file" type="file" name="gambar" onChange={onChangePicture} required ref={register({
+                                                            validate: (value) => {
+                                                                if(value.length == 0){
+                                                                    return true
+                                                                }
+                                                                return value[0].size < 2048000
+                                                            }
+                                                            })} required/>
+                                                            {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
+                                                        </div>
+                                                    }
+                                                        
                                                 </Col>
                                                 <Col xs={12} md={8}>
                                                    <form onSubmit={handleSubmit(UpdateProfile)}>
@@ -195,31 +227,12 @@ function ProfileBody() {
                                                                 </InputGroup>
                                                            </div>
                                                        }
-                                                        {/* <div className="profile-cont"><b>Nama</b>   : 
-                                                            {editProf ? UserState.data.username : 
-                                                            <input className="profile-update-form" type="text" name="username" defaultValue={UserState.data.username} ref={register()}></input>  
-                                                            } 
-                                                        </div>
-                                                        <div className="profile-cont"><b>Alamat</b> : 
-                                                            {editProf ? UserState.data.alamat : 
-                                                            <input className="profile-update-form" type="text" name="alamat" defaultValue={UserState.data.alamat} ref={register()} ></input>
-                                                            } 
-                                                        </div>
-                                                        <div className="profile-cont"><b>Email</b>  : 
-                                                            {editProf ? UserState.data.email : 
-                                                            <input className="profile-update-form" type="text" name="email" defaultValue={UserState.data.email} ref={register()}></input> 
-                                                            } 
-                                                        </div>
-                                                        <div className="profile-cont"><b>No HP</b>  : 
-                                                            {editProf ? UserState.data.no_hp : 
-                                                            <input className="profile-update-form" type="text" name="nohp" defaultValue={UserState.data.no_hp} ref={register()} ></input> 
-                                                            } 
-                                                        </div> */}
+                                                       
 
                                                         {
                                                             editProf ? <Button onClick={() => setEditProf(false)} size="lg" variant="outline-primary" type="submit">Edit</Button>:
                                                             <div  className="profile-update-confirm">
-                                                                <Button  onClick={() => setEditProf(true)} size="lg" variant="outline-primary" type="submit">Cancel</Button>
+                                                                <Button  onClick={() => {setEditProf(true);setPicture(null);setImgData(null)}} size="lg" variant="outline-primary" type="submit">Cancel</Button>
                                                                 <Button  type="submit" size="lg" variant="outline-primary" type="submit">Edit</Button>{profLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
                                                                 
                                                             </div>
@@ -250,12 +263,37 @@ function ProfileBody() {
                                                     <Col style={{textAlign: "center"}} xs={6} md={4}>
                                                         
                                                             <div className="previewProfilePic">
-                                                            <img src={`http://localhost/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
+                                                                {
+                                                                    pictureEdit !== null ?
+                                                                    <Image  src={imgDataEdit} fluid rounded />:
+                                                                    <Image  src={`http://localhost/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} fluid rounded />       
+                                                                    
+                                                                }
+                                                                
                                                             </div>
+                                                            {
+                                                        !editToko &&
+                                                        <div>
+                                                            <label className="file-label" htmlFor="file" >
+                                                                <h3>
+                                                                    <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
+                                                                </h3>
+                                                            </label>
+                                                            <input id="file" className="file" type="file" name="gambarToko" onChange={onChangePictureEdit} ref={register2({
+                                                            validate: (value) => {
+                                                                if(value.length == 0){
+                                                                    return true
+                                                                }
+                                                                return value[0].size < 2048000
+                                                            }
+                                                            })}/>
+                                                            {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
+                                                        </div>
+                                                    }
                                                         
                                                     </Col>
                                                     <Col xs={12} md={8}>
-                                                        <form onSubmit={handleSubmit(UpdateToko)}>
+                                                        <form onSubmit={handleSubmit2(UpdateToko)}>
                                                             {editToko ? 
                                                             <div>
                                                                 <div className="profile-cont"><b>Nama Toko</b>   : {TokoState.data.toko.nama_toko}</div>
@@ -268,7 +306,7 @@ function ProfileBody() {
                                                                     placeholder="Masukkan Nama Toko"
                                                                     name="nama"
                                                                     defaultValue={TokoState.data.toko.nama_toko}
-                                                                    ref={register()}
+                                                                    ref={register2()}
                                                                     required
                                                                     />
                                                                 </InputGroup>
@@ -278,7 +316,7 @@ function ProfileBody() {
                                                                     placeholder="Masukkan Alamat"
                                                                     defaultValue={TokoState.data.toko.alamat_toko}
                                                                     name="alamat"
-                                                                    ref={register()}
+                                                                    ref={register2()}
                                                                     required
                                                                     />
                                                                 </InputGroup>
@@ -289,32 +327,17 @@ function ProfileBody() {
                                                                     placeholder="Deskripsi Toko"
                                                                     name="deskripsi"
                                                                     defaultValue={TokoState.data.toko.deskripsi}
-                                                                    ref={register()}
+                                                                    ref={register2()}
                                                                     required
                                                                     />
                                                                 </InputGroup>
                                                             </div>
                                                             }
-                                                            
-                                                                {/* {editToko ? TokoState.data.toko.nama_toko : 
-                                                                <input className="profile-update-form" type="text" name="nama" defaultValue={TokoState.data.toko.nama_toko} ref={register()}></input>  
-                                                                }  */}
-                                                            
-                                                            
-                                                                {/* {editToko ? TokoState.data.toko.alamat_toko : 
-                                                                <input className="profile-update-form" type="text" name="alamat" defaultValue={TokoState.data.toko.alamat_toko} ref={register()} ></input>
-                                                                }  */}
-                                                            
-                                                            
-                                                                {/* {editToko ? TokoState.data.toko.deskripsi : 
-                                                                <textarea className="profile-update-form textarea" type="text" name="deskripsi" defaultValue={TokoState.data.toko.deskripsi} ref={register()} ></textarea> 
-                                                                }  */}
-                                                            
 
                                                             {
                                                             editToko ? <Button onClick={() => setEditToko(false)} size="lg" variant="outline-primary">Edit</Button>:
                                                             <div  className="profile-update-confirm">
-                                                                <Button  onClick={() => setEditToko(true)} size="lg" variant="outline-primary" >Cancel</Button>
+                                                                <Button  onClick={() => {setEditToko(true);setPictureEdit(null);setImgDataEdit(null)}} size="lg" variant="outline-primary" >Cancel</Button>
                                                                 <Button  type="submit" size="lg" variant="outline-primary" type="submit">Edit</Button>{profLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
                                                                 
                                                             </div>
