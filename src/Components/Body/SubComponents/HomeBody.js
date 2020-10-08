@@ -1,23 +1,35 @@
-import React,{useContext} from 'react'
+import React,{useContext, useEffect, useState} from 'react'
 import '../style/HomeBody.css'
 import Logo from "../../../assets/image/logo5.png"
-import { Carousel } from 'react-bootstrap';
+import { Carousel, Alert } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Food from './Food';
 import {ProductContext} from '../../ParentComponent'
 import Loading from '../../general/Loading';
 import Error from '../../general/Error';
-
+import { Link} from 'react-router-dom'
 
 function HomeBody() {
     const {
         Product:{
             ProductState
-        }, 
-        DetailProduct: {
-            DetailProState
+        },
+        User:{
+            UserState
         }
     } = useContext(ProductContext)
+    const [alertLogin, setAlertLogin] = useState(false)
+
+
+    useEffect(()=> {
+        if(localStorage.getItem('SavedToken') !== null){
+            setAlertLogin(true)
+        }else{
+            setAlertLogin(false)
+        }
+        console.log(alertLogin)
+    },[UserState])
+    
     if(ProductState.error){
         return(
             <div style={{ height : "100%"}}>
@@ -42,7 +54,17 @@ function HomeBody() {
                         >
                             
                             <div className="container" style={{height: "100%"}}>
+                               
+                                
                                 <div>
+                                {alertLogin ?
+                                    <Alert variant="info" style={{marginTop:"10px"}}>
+                                        Selamat Datang, <b>{UserState.data.username}</b>
+                                    </Alert>:
+                                     <Alert variant="warning" style={{marginTop:"10px"}}>
+                                        Anda belum terlogin, silahkan <Link to='/Login'><b>Login</b></Link> terlebih dahulu
+                                    </Alert>
+                                }
                                     <div className="content-header">
                                         <h4>Paling Populer</h4>
                                     </div>

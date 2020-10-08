@@ -12,8 +12,10 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function Header(props) {
   const {
     User:{
-      UserState
+      UserState,
+      DispatchUserState
     }} = useContext(ProductContext)
+
   const wrapperRef1 = useRef(null)
   const wrapperRef2 = useRef(null)
   const [click, setClick] = useState(false)
@@ -94,7 +96,7 @@ function Header(props) {
                             <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }  onClick={()=> setClick(false)}>
                                 <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
                             </Link>
-                            <Link style={{ textDecoration: 'none' }} to="/"  onClick={()=> {localStorage.removeItem("SavedToken");setClick(false)}}>
+                            <Link style={{ textDecoration: 'none' }} to="/"  onClick={()=> {localStorage.removeItem("SavedToken");setClick(false); DispatchUserState({type: "LOGOUT"})}}>
                                 <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
                             </Link>
                         </Col>
@@ -142,7 +144,7 @@ function Header(props) {
                             <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }  onClick={()=> setClickBars(false)}>
                                 <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
                             </Link>
-                            <Link style={{ textDecoration: 'none' }} to="/"  onClick={()=> {localStorage.removeItem("SavedToken");setClickBars(false)}}>
+                            <Link style={{ textDecoration: 'none' }} to="/"  onClick={()=> {localStorage.removeItem("SavedToken");setClickBars(false);}}>
                                 <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
                             </Link>
                              

@@ -31,6 +31,11 @@ const reducer = (state, action) => {
                 ...state,
                 loading:true
             }
+        case 'LOGOUT' :
+            return {
+                ...user_state,
+                data:{}
+            }
         case 'FETCH_SUCCESS':
             return {
                 loading: false,
