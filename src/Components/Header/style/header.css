@@ -25,7 +25,7 @@
     float: right;
   }
 
-  .header-right a, .menu-icon{
+  .header-right a, .menu-icon,.header-right span{
     line-height: 62px;
     display: block;
     float: left;
@@ -34,7 +34,7 @@
     font-weight: bolder;
     color:rgb(87, 151, 255);
   }
-  .header-right a,.menu-icon{
+  .header-right a,.menu-icon,.header-right span{
     padding:0 25px;
   }
   .header-center .form{
@@ -58,7 +58,7 @@
     border:1px solid #8f9cff;
   }
   
-  .header-right a:hover, .form .sub:hover, .profile-content a:hover, .menu-icon:hover, .menu-content a:hover{
+  .header-right a:hover,.header-right span:hover, .form .sub:hover, .profile-content a:hover, .menu-icon:hover, .menu-content a:hover{
     background-color: rgba(87, 151, 255, 0.7);
     color:#e6efff;
   }
@@ -70,14 +70,14 @@
   .profile-dropdown{
     box-shadow: 8px 4px 32px -9px rgba(0,0,0,0.75);
     position:fixed;
-    right:85px;
+    right:35px;
     top:65px;
-    height:auto;
-    width:200px;
+    height:190px;
+    width:360px;
     background-color: white;
     z-index: 10;
     border-radius: 4px;
-    padding: 0 7px;
+    padding: 0 15px;
   }
   .profile-dropdown a{
     display: block;
@@ -99,4 +99,21 @@
 
   .dropdown a{
     width:100%;
+  }
+  .ProfilePic{
+    margin: auto;
+    height: 150px;
+    width: 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .ProfilePic img, .ProfilePic span{
+    box-shadow: 2px 2px 24px -5px rgba(0,0,0,0.75);
+  }
+  .profileName {
+    width:100%;
+    text-align: center;
+    font-weight: bold;
+    color:rgb(87, 151, 255);
   }

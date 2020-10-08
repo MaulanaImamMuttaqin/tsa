@@ -5,7 +5,7 @@ import '../style/TokoBody.css'
 import {ProductContext} from '../../ParentComponent'
 import {useHistory} from "react-router-dom"
 import Axios from 'axios';
-import {Button, Modal, Container, Row, Col,InputGroup , FormControl, Image, Badge} from 'react-bootstrap';
+import {Button, Row, Col,InputGroup , FormControl, Image, Badge} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload, faImage } from '@fortawesome/free-solid-svg-icons'
@@ -28,19 +28,6 @@ function TokoForm() {
     const [addProd, setaddProd] = useState(false)
     const [picture, setPicture] = useState(null);
     const [imgData, setImgData] = useState(null);
-    const getData = () => {
-        Axios.get(`http://localhost/keudepeunajoh-rest-api2/Data?toko_id=${UserState.data.id}`,{
-            headers: {
-                'Authorization': localStorage.getItem('SavedToken')
-              }
-        })
-        .then(res => {
-            DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
-            history.push('/Toko_Saya')
-        }).catch(error => {
-            DispatchTokoState({type: "FETCH_ERROR"})
-        })
-    }
     
     const onSubmit = data => {
     
@@ -60,9 +47,8 @@ function TokoForm() {
         })
         .then(res => {
             setaddProd(true)
-            getData()
-            
-
+            DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data})
+            history.push('/Toko_Saya')
         }).catch(error => {
             console.log(error)
         })

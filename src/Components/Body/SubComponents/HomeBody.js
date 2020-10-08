@@ -1,11 +1,10 @@
-import React,{useContext, useEffect} from 'react'
+import React,{useContext} from 'react'
 import '../style/HomeBody.css'
 import Logo from "../../../assets/image/logo5.png"
 import { Carousel } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Food from './Food';
 import {ProductContext} from '../../ParentComponent'
-import axios from 'axios'
 import Loading from '../../general/Loading';
 import Error from '../../general/Error';
 
@@ -13,8 +12,7 @@ import Error from '../../general/Error';
 function HomeBody() {
     const {
         Product:{
-            ProductState,
-            dispatchProductState
+            ProductState
         }
     } = useContext(ProductContext)
 

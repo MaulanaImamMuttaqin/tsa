@@ -7,11 +7,13 @@ import { faSearch , faUserCircle, faSignOutAlt,faStore} from '@fortawesome/free-
 import {ProductContext} from '../ParentComponent'
 import { Link, useHistory} from 'react-router-dom'
 import { useEffect } from 'react'
-import { Dropdown } from 'react-bootstrap';
+import { Col, Row, Image} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-
 function Header(props) {
-  const {ButtClickSearch:{DispatchButtSearch},User:{UserState}} = useContext(ProductContext)
+  const {
+    User:{
+      UserState
+    }} = useContext(ProductContext)
   const wrapperRef1 = useRef(null)
   const wrapperRef2 = useRef(null)
   const [click, setClick] = useState(false)
@@ -36,7 +38,6 @@ function Header(props) {
   const submitHandler = e => {
     e.preventDefault()
     if(search !== ''){
-      DispatchButtSearch({type: 'UPDATE_SEARCH_ONCLICK', value:search})
       history.push(`/Search/${search}`);
     }
   }
@@ -44,21 +45,6 @@ function Header(props) {
   const ChangeComponent = ()=>{
     history.push(`/`);
   }
-
-  // const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
-  //   <a
-  //     href=""
-  //     ref={ref}
-  //      className="profile"
-  //     onClick={(e) => {
-  //       e.preventDefault();
-  //       onClick(e);
-  //     }}
-  //   >
-  //     {children}
-      
-  //   </a>
-  // ));
     return (
         <div className="header">
               <div className="container">
@@ -83,24 +69,7 @@ function Header(props) {
 
                   <div className="header-right">
                     {localStorage.getItem('SavedToken') !== null ? 
-                      <a ref={wrapperRef1} className="profile" onClick={() => setClick(!click)}><FontAwesomeIcon size="lg" icon={faUserCircle} /></a>
-                      // <Dropdown alignRight  >
-                      //   <Dropdown.Toggle as={CustomToggle} id="dropdown-custom-components">
-                      //       <FontAwesomeIcon size="lg" icon={faUserCircle} />
-                      //   </Dropdown.Toggle>
-
-                      //   <Dropdown.Menu className="dropdown" >
-                      //       <Link style={{ textDecoration: 'none' }} to="/Profile">
-                      //           <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faUserCircle} />Profile
-                      //       </Link>
-                      //       <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }>
-                      //           <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
-                      //       </Link>
-                      //       <a href=""  onClick={()=> localStorage.removeItem("SavedToken")}>
-                      //           <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
-                      //       </a>
-                      //   </Dropdown.Menu>
-                      // </Dropdown>
+                      <span ref={wrapperRef1} className="profile" onClick={() => setClick(!click)}><FontAwesomeIcon size="lg" icon={faUserCircle} /></span>
                       :<div>
                           <Link to='/Login'>Masuk</Link>
                           <Link to='/Register'>Daftar</Link>                  
@@ -112,15 +81,35 @@ function Header(props) {
                 click && 
                 <div ref={wrapperRef2} className="profile-dropdown">
                   <div className="profile-content">
-                      <Link style={{ textDecoration: 'none' }} to="/Profile" onClick={()=> setClick(false)}>
-                          <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faUserCircle} />Profile
-                      </Link>
-                      <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }  onClick={()=> setClick(false)}>
-                          <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
-                      </Link>
-                      <Link style={{ textDecoration: 'none' }} to="/Login"  onClick={()=> localStorage.removeItem("SavedToken")}>
-                          <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
-                      </Link>
+                    <Row>
+                        <Col  >
+                          <Link style={{ textDecoration: 'none' }} to="/Profile" onClick={()=> setClick(false)}>
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faUserCircle} />Profile
+                            </Link>
+                            <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }  onClick={()=> setClick(false)}>
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
+                            </Link>
+                            <Link style={{ textDecoration: 'none' }} to="/Login"  onClick={()=> localStorage.removeItem("SavedToken")}>
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
+                            </Link>
+                        </Col>
+                        <Col xs={7} style={{borderLeft: "2px solid #8f9cff"}}>
+                          <Row>
+                            <div  className="ProfilePic">
+                                {UserState.data.profile === "" ? <span><FontAwesomeIcon icon={faUserCircle} size="6x"/></span> :
+                                  <Image src={`http://localhost/keudepeunajoh-rest-api2/${UserState.data.profile}`} height="130" width="130" roundedCircle   />
+                                }
+                            </div>
+                          </Row>
+                          <Row>
+                            <div className="profileName">
+                              <p>{UserState.data.username}</p>
+                            </div>
+                            
+                          </Row>
+                        </Col>
+                    </Row>
+                    
                         
                   </div>
               </div>

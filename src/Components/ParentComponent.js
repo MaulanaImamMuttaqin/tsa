@@ -14,7 +14,7 @@ const state = {
     error:false,
     data: {}
 }
-const button_click_search_state = ''
+// const button_click_search_state = ''
 
 const user_state = {
     loading:false,
@@ -72,7 +72,7 @@ function ParentComponent() {
 
     const [ProState, dispatchProState] = useReducer(reducer, state)
     const [searchProState, dispatchSearchProState] = useReducer(reducer, state)
-    const [buttSearch, dispatchButtSearch] = useReducer(reducer, button_click_search_state)
+    // const [buttSearch, dispatchButtSearch] = useReducer(reducer, button_click_search_state)
     const [detailProState, dispatchDetailProState] = useReducer(reducer, state)
     const [userState, dispatchUserState] = useReducer(reducer, user_state)
     const [tokoState, dispatchTokoState] = useReducer(reducer, state)
@@ -85,29 +85,15 @@ function ParentComponent() {
                 headers: {
                     'Authorization': localStorage.getItem('SavedToken')
                   }
-            }).then(res1 => {
-                
-                Axios.get(`http://localhost/keudepeunajoh-rest-api2/Data?toko_id=${res1.data.id}`, {
-                    headers: {
-                      'Authorization': localStorage.getItem('SavedToken')
-                    }
-                  })
-                .then(res2 => {
-                    
-                    dispatchTokoState({type: "FETCH_SUCCESS", payload: res2.data.data})
-                    dispatchUserState({type: "SET_USER_STATE", payload: res1.data})
-
-                    
-                }).catch(error => {
-                    dispatchTokoState({type: "FETCH_ERROR"})
-                })
-    
+            }).then(res => {
+                dispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
+                dispatchUserState({type: "SET_USER_STATE", payload: res.data.user})
             }).catch(error => {
                 dispatchUserState({type: "SET_USER_STATE_FAILED"})
             })
         }
         console.log("parent called")
-        
+
     },[])
     useEffect(() => {
         Axios.get('http://localhost/keudepeunajoh-rest-api2/Data/')
@@ -120,25 +106,7 @@ function ParentComponent() {
             })
         
     },[tokoState.data])   
-    // useEffect(()=>{
-    //     // if(localStorage.getItem('SavedToken') !== null){
-    
-    //     //     Axios.post('http://localhost/keudepeunajoh-rest-api2/Auth/Authorization',{}, {
-    //     //         headers: {
-    //     //             'Authorization': localStorage.getItem('SavedToken')
-    //     //             }
-    //     //     }).then(res1 => {
-    //     //             dispatchUserState({type: "SET_USER_STATE", payload: res1.data})
-        
-    //     //     }).catch(error => {
-    //     //         dispatchUserState({type: "SET_USER_STATE_FAILED"})
-    //     //     })
-    //     // }
-    //     console.log(Math.floor(Math.random() * 100))
-    // },[])
-   
-    
-    
+
     return (
         <ProductContext.Provider
             value={
@@ -150,10 +118,6 @@ function ParentComponent() {
                     SearchProduct:{
                         SearchProductState : searchProState,
                         DispatchSearchProductState: dispatchSearchProState
-                    },
-                    ButtClickSearch:{
-                        ButtSearch : buttSearch,
-                        DispatchButtSearch : dispatchButtSearch
                     },
                     DetailProduct: {
                         DetailProState: detailProState,

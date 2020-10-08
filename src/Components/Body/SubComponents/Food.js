@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React from 'react'
 import '../style/food.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faStore } from '@fortawesome/free-solid-svg-icons'

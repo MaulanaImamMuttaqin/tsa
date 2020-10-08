@@ -1,16 +1,16 @@
 import Axios from 'axios'
 import React ,{useContext,useState}from 'react'
 import { useForm } from 'react-hook-form'
-import { useHistory, useLocation } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import {ProductContext} from '../../ParentComponent'
 import '../style/Profile.css'
 import { Alert, InputGroup , FormControl} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MiniLoad from '../../../assets/gifs/mini-loading.gif';
 import Loading from '../../general/Loading';
-import {Button, Modal, Container, Row, Col, Image, Badge} from 'react-bootstrap';
+import {Button, Row, Col, Image, Badge} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserCircle, faImage , faUpload} from '@fortawesome/free-solid-svg-icons'
+import { faUserCircle , faUpload} from '@fortawesome/free-solid-svg-icons'
 function ProfileBody() {
     const {
         User :{ 
@@ -23,8 +23,8 @@ function ProfileBody() {
         }
     } = useContext(ProductContext)
     const history = useHistory()
-    const Location = useLocation()
-    const { register, handleSubmit, errors, reset  } = useForm();
+    // const Location = useLocation()
+    const { register, handleSubmit, errors  } = useForm();
     const { register:register2, handleSubmit:handleSubmit2, errors:errors2 } = useForm();
 
     const [editProf, setEditProf] = useState(true)
@@ -38,13 +38,16 @@ function ProfileBody() {
     // const [editForm , setEditForm] = (UserState.data)
     const UpdateProfile = data => {
         setProfLoad(true)
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/editData', {
-            id: UserState.data.id,
-            username:data.username,
-            alamat:data.alamat,
-            email:data.email,
-            nohp:data.nohp
-        },{
+        const fd = new FormData()
+        fd.append('id', UserState.data.id)
+        fd.append('username',data.username)
+        fd.append('alamat', data.alamat)
+        fd.append('email', data.email)
+        fd.append('nohp', data.nohp)
+        if(data.gambarProfile.length !== 0){
+            fd.append('gambar', data.gambarProfile[0], data.gambarProfile[0].name )
+        }
+        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/editData', fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -53,10 +56,12 @@ function ProfileBody() {
             setEditProf(true)
             setProfLoad(false)
             setUpdateProfile(true)
+            console.log(res.data.data)
         }).catch(error => {
             setProfLoad(false)
-            console.log('error')
+            console.log(error)
         })
+        console.log(data)
     }
 
     const UpdateToko = data => {
@@ -116,7 +121,6 @@ function ProfileBody() {
         }
         console.log(pictureEdit)
     };
-
     if(localStorage.getItem('SavedToken') !== null){
         return (
 
@@ -140,7 +144,12 @@ function ProfileBody() {
                                                             {
                                                                 picture !== null ?
                                                                 <Image  src={imgData} fluid rounded />:
-                                                                <FontAwesomeIcon icon={faUserCircle} size="6x"/>         
+                                                                <div>
+                                                                    {UserState.data.profile === "" ? <FontAwesomeIcon icon={faUserCircle} size="6x"/> :
+                                                                        <Image src={`http://localhost/keudepeunajoh-rest-api2/${UserState.data.profile}`}  fluid rounded />
+                                                                    }
+                                                                </div>
+                                                                        
                                                                 
                                                             }
                                                                 
@@ -154,15 +163,15 @@ function ProfileBody() {
                                                                     <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
                                                                 </h3>
                                                             </label>
-                                                            <input id="file" className="file" type="file" name="gambar" onChange={onChangePicture} required ref={register({
+                                                            <input id="file" className="file" type="file" name="gambarProfile" onChange={onChangePicture}  ref={register({
                                                             validate: (value) => {
-                                                                if(value.length == 0){
+                                                                if(value.length ===  0){
                                                                     return true
                                                                 }
                                                                 return value[0].size < 2048000
                                                             }
-                                                            })} required/>
-                                                            {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
+                                                            })} />
+                                                            {errors.gambarProfile && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
                                                         </div>
                                                     }
                                                         
@@ -233,7 +242,7 @@ function ProfileBody() {
                                                             editProf ? <Button onClick={() => setEditProf(false)} size="lg" variant="outline-primary" type="submit">Edit</Button>:
                                                             <div  className="profile-update-confirm">
                                                                 <Button  onClick={() => {setEditProf(true);setPicture(null);setImgData(null)}} size="lg" variant="outline-primary" type="submit">Cancel</Button>
-                                                                <Button  type="submit" size="lg" variant="outline-primary" type="submit">Edit</Button>{profLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
+                                                                <Button  type="submit" size="lg" variant="outline-primary" >Simpan</Button>{profLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
                                                                 
                                                             </div>
                                                         }
@@ -281,13 +290,13 @@ function ProfileBody() {
                                                             </label>
                                                             <input id="file" className="file" type="file" name="gambarToko" onChange={onChangePictureEdit} ref={register2({
                                                             validate: (value) => {
-                                                                if(value.length == 0){
+                                                                if(value.length === 0){
                                                                     return true
                                                                 }
                                                                 return value[0].size < 2048000
                                                             }
                                                             })}/>
-                                                            {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
+                                                            {errors2.gambarToko && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
                                                         </div>
                                                     }
                                                         
@@ -338,7 +347,7 @@ function ProfileBody() {
                                                             editToko ? <Button onClick={() => setEditToko(false)} size="lg" variant="outline-primary">Edit</Button>:
                                                             <div  className="profile-update-confirm">
                                                                 <Button  onClick={() => {setEditToko(true);setPictureEdit(null);setImgDataEdit(null)}} size="lg" variant="outline-primary" >Cancel</Button>
-                                                                <Button  type="submit" size="lg" variant="outline-primary" type="submit">Edit</Button>{profLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
+                                                                <Button  type="submit" size="lg" variant="outline-primary">Simpan</Button>{tokoLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
                                                                 
                                                             </div>
                                                         }

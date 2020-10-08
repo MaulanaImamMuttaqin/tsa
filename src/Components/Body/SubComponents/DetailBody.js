@@ -1,15 +1,14 @@
-import React,{useContext,useEffect,useState} from 'react'
+import React,{useContext} from 'react'
 import '../style/DetailBody.css'
 import {ProductContext} from '../../ParentComponent'
-import axios from 'axios'
-import Loading from '../../general/Loading'
 import { useParams } from 'react-router-dom'
+import nl2br from 'react-nl2br'
 function DetailBody() {
     const {
-        Toko : {
-            TokoState,
-            DispatchTokoState
-        }, 
+        // Toko : {
+        //     TokoState,
+        //     DispatchTokoState
+        // }, 
         Product:{
             ProductState
         }
@@ -36,7 +35,7 @@ function DetailBody() {
     // },[])
     // useEffect(()=>{
         for(var prod in ProductState.data.product){
-            if(ProductState.data.product[prod].id == id){
+            if(ProductState.data.product[prod].id === id){
                 detail = ProductState.data.product[prod]
             }
         }
@@ -76,7 +75,7 @@ function DetailBody() {
                                     <div className="content-header">
                                         <h4>Deskripsi Produk</h4>
                                     </div>
-                                    <p>{Data.deskripsi}</p>
+                                    <p>{nl2br(Data.deskripsi)}</p>
                                 </div>
                             </div>
                         

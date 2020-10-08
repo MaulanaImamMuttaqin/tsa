@@ -13,10 +13,11 @@ function SearchBody() {
         }, 
             Product:{
                 ProductState
-        }, 
-            ButtClickSearch:{
-                ButtSearch
         }
+        // , 
+        //     ButtClickSearch:{
+        //         ButtSearch
+        // }
     } = useContext(ProductContext)
 
 
@@ -33,8 +34,8 @@ function SearchBody() {
                 DispatchSearchProductState({type: 'FETCH_ERROR'})
             })
     
-    },[ButtSearch])
-
+    },[key])
+    // console.log(ButtSearch)
     return (
         <div style={
             ProductState.loading ? { height : "100%"}:
@@ -57,7 +58,7 @@ function SearchBody() {
                         
                                 <div>
                                     {SearchProductState.data.product === false
-                                        ? <p>Tidak hasil pencarian untuk {ButtSearch}</p>
+                                        ? <p>Tidak hasil pencarian untuk {key}</p>
                                         : <div className="foods">
                                         {
                                              SearchProductState.data.product.map(data => 

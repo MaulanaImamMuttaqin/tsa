@@ -1,4 +1,4 @@
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {ProductContext} from '../../ParentComponent'
 import Loading from '../../general/Loading';
@@ -8,7 +8,7 @@ import Axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload, faImage } from '@fortawesome/free-solid-svg-icons'
 import '../style/TokoBody.css'
-import {useHistory, useLocation} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import { Alert, Button, Modal, Container, Row, Col,InputGroup , FormControl, Image, Badge} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -63,26 +63,10 @@ function TokoUser() {
         }
         console.log(pictureEdit)
     };
-
-    
-
-    const getData = () => {
-        Axios.get(`http://localhost/keudepeunajoh-rest-api2/Data?toko_id=${UserState.data.id}`,{
-            headers: {
-                'Authorization': localStorage.getItem('SavedToken')
-              }
-        })
-        .then(res => {
-            DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
-            
-        }).catch(error => {
-            DispatchTokoState({type: "FETCH_ERROR"})
-        })
-    }
-
     const onSubmit = data => {
         
         const fd = new FormData();
+        fd.append('user_id', UserState.data.id)
         fd.append('id', TokoState.data.toko.id)
         fd.append('nama', data.nama)    
         fd.append('nama_toko', TokoState.data.toko.nama_toko)
@@ -96,12 +80,12 @@ function TokoUser() {
               }
         })
         .then(res => {
-            console.log(res)
+            console.log(res.data.data)
             setaddProd(false)
             setUpdate(true)
             reset()
             setPicture(null)
-            getData()
+            DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
             setWichProd(data.nama)
         }).catch(error => {
             setaddProd(false)
@@ -131,7 +115,7 @@ function TokoUser() {
         Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/HapusProduk',
         {
             prodId : data.id,
-            userId : UserState.id,
+            userId : UserState.data.id,
             name: data.nama_product,
             nama_toko: TokoState.data.toko.nama_toko
         },{
@@ -141,8 +125,7 @@ function TokoUser() {
         })
         .then(res => {
             console.log(res)
-            
-            getData()
+            DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
             setDelProd(false)
             setDelsuc(true)
             setDelete(false)
@@ -158,6 +141,7 @@ function TokoUser() {
     const onEdit = data => {
         console.log(data)
         const fd = new FormData();
+        fd.append('user_id', UserState.data.id)
         fd.append('id', editData.id)    
         fd.append('nama', data.editNama)   
         fd.append('nama_toko', TokoState.data.toko.nama_toko)
@@ -178,7 +162,7 @@ function TokoUser() {
             console.log(res.data)
             setEditProd(false)
             setEditSuc(true)
-            getData()
+            DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
         }).catch(error => {
             setaddProd(false)
             console.log(error)
@@ -247,7 +231,7 @@ function TokoUser() {
                                                         
                                                         return value[0].size < 2048000
                                                     }
-                                                    })} required/>
+                                                    })} />
                                                     {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
                                                     
                                                 </Col>
@@ -303,7 +287,7 @@ function TokoUser() {
                                     }
                                     
                                     {
-                                        TokoState.data.product.j_prod == 0 ?
+                                        TokoState.data.product.j_prod === 0 ?
                                         <p>Belum ada Produk yang di promosikan</p>:
                                         TokoState.data.product.map(data => 
                                             <Food key={data.id} Data={data} edit={fooddata => editForm(fooddata)} delete={deleteData => delModal(deleteData)} />
@@ -349,14 +333,14 @@ function TokoUser() {
                                                     </label>
                                                     <input id="editfile" className="file" type="file" name="editGambar" onChange={onChangePictureEdit} ref={register2({
                                                     validate: (value) => {
-                                                        if(value.length == 0){
+                                                        if(value.length === 0){
                                                             return true
                                                         }
                                                         return value[0].size < 2048000
                                                         
                                                     }
                                                     })}/>
-                                                    {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
+                                                    {errors2.editGambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
                                                     
                                                 </Col>
                                                     <Col xs={12} md={8}>

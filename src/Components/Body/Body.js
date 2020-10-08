@@ -4,7 +4,7 @@ import HomeBody from './SubComponents/HomeBody'
 import SearchBody from './SubComponents/SearchBody'
 import DetailBody from './SubComponents/DetailBody'
 import {Switch, Route} from "react-router-dom";
-import TokoBody from './SubComponents/TokoBody'
+// import TokoBody from './SubComponents/TokoBody'
 import TokoUser from './SubComponents/TokoUser';
 import TokoForm from './SubComponents/TokoForm';
 import ProfileBody from './SubComponents/ProfileBody';
