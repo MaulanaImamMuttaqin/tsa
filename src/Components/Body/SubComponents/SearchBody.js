@@ -14,18 +14,15 @@ function SearchBody() {
             Product:{
                 ProductState
         }
-        // , 
-        //     ButtClickSearch:{
-        //         ButtSearch
-        // }
     } = useContext(ProductContext)
 
 
     let {key} = useParams()
 
     useEffect(() => {
+        document.title = `KeudePeunajoh Cari ${key}`
         DispatchSearchProductState({type: 'SET_LOADING'})
-        axios.get(`http://192.168.43.239/keudepeunajoh-rest-api2/Data?search=${key}`)
+        axios.get(`http://keudepeunajohapi.jsmiot.com/Data?search=${key}`)
             .then(response => {
                 DispatchSearchProductState({type: 'FETCH_SUCCESS', payload:response.data.data})
             })
@@ -33,9 +30,8 @@ function SearchBody() {
                 console.log('error')
                 DispatchSearchProductState({type: 'FETCH_ERROR'})
             })
-    
+        
     },[key])
-    // console.log(ButtSearch)
     return (
         <div style={
             ProductState.loading ? { height : "100%"}:

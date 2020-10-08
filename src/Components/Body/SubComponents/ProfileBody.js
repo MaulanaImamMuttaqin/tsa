@@ -12,6 +12,7 @@ import {Button, Row, Col, Image, Badge} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserCircle , faUpload} from '@fortawesome/free-solid-svg-icons'
 function ProfileBody() {
+    document.title = 'KeudePeunajoh Profile'
     const {
         User :{ 
             DispatchUserState, 
@@ -23,7 +24,6 @@ function ProfileBody() {
         }
     } = useContext(ProductContext)
     const history = useHistory()
-    // const Location = useLocation()
     const { register, handleSubmit, errors  } = useForm();
     const { register:register2, handleSubmit:handleSubmit2, errors:errors2 } = useForm();
 
@@ -35,7 +35,6 @@ function ProfileBody() {
 
     const [profLoad, setProfLoad] = useState(false)
     const [tokoLoad, setTokoLoad] = useState(false)
-    // const [editForm , setEditForm] = (UserState.data)
     const UpdateProfile = data => {
         setProfLoad(true)
         const fd = new FormData()
@@ -47,7 +46,7 @@ function ProfileBody() {
         if(data.gambarProfile.length !== 0){
             fd.append('gambar', data.gambarProfile[0], data.gambarProfile[0].name )
         }
-        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/editData', fd,{
+        Axios.post('http://keudepeunajohapi.jsmiot.com/Data/editData', fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -76,7 +75,7 @@ function ProfileBody() {
         if(data.gambarToko.length !== 0){
             fd.append('gambar', data.gambarToko[0], data.gambarToko[0].name )
         }
-        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/editToko',fd,{
+        Axios.post('http://keudepeunajohapi.jsmiot.com/Data/editToko',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -146,7 +145,7 @@ function ProfileBody() {
                                                                 <Image  src={imgData} fluid rounded />:
                                                                 <div>
                                                                     {UserState.data.profile === "" ? <FontAwesomeIcon icon={faUserCircle} size="6x"/> :
-                                                                        <Image src={`http://192.168.43.239/keudepeunajoh-rest-api2/${UserState.data.profile}`}  fluid rounded />
+                                                                        <Image src={`http://keudepeunajohapi.jsmiot.com/${UserState.data.profile}`}  fluid rounded />
                                                                     }
                                                                 </div>
                                                                         
@@ -199,7 +198,6 @@ function ProfileBody() {
                                                                     required
                                                                     />
                                                                 </InputGroup>
-                                                                {/* <input type="text" name="nama" placeholder="Masukkan Nama Produk"  ref={register()} required/> */}
                                                                 <InputGroup className="mb-3">
                                                                     <FormControl
                                                                     placeholder="Masukkan Alamat"
@@ -211,7 +209,6 @@ function ProfileBody() {
                                                                     required
                                                                     />
                                                                 </InputGroup>
-                                                                {/* <input type="number" name="harga" placeholder="Masukkan Harga"  ref={register} required/> */}
                                                                 <InputGroup className="mb-3">
                                                                     <FormControl
                                                                     placeholder="Masukkan Enail"
@@ -275,7 +272,7 @@ function ProfileBody() {
                                                                 {
                                                                     pictureEdit !== null ?
                                                                     <Image  src={imgDataEdit} fluid rounded />:
-                                                                    <Image  src={`http://192.168.43.239/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} fluid rounded />       
+                                                                    <Image  src={`http://keudepeunajohapi.jsmiot.com/${TokoState.data.toko.gambar_toko}`} fluid rounded />       
                                                                     
                                                                 }
                                                                 
@@ -319,7 +316,6 @@ function ProfileBody() {
                                                                     required
                                                                     />
                                                                 </InputGroup>
-                                                                {/* <input type="text" name="nama" placeholder="Masukkan Nama Produk"  ref={register()} required/> */}
                                                                 <InputGroup className="mb-3">
                                                                     <FormControl
                                                                     placeholder="Masukkan Alamat"
@@ -329,7 +325,6 @@ function ProfileBody() {
                                                                     required
                                                                     />
                                                                 </InputGroup>
-                                                                {/* <input type="number" name="harga" placeholder="Masukkan Harga"  ref={register} required/> */}
                                                                 <InputGroup className="mb-3">
                                                                     <FormControl
                                                                     as="textarea"

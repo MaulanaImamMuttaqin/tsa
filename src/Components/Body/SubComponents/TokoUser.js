@@ -13,6 +13,7 @@ import { Alert, Button, Modal, Container, Row, Col,InputGroup , FormControl, Ima
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function TokoUser() {
+    document.title = `KeudePeunajoh Toko Anda`
     const { register, handleSubmit, errors, reset  } = useForm();
     const { register:register2, handleSubmit:handleSubmit2, errors:errors2 } = useForm();
     const {
@@ -74,7 +75,7 @@ function TokoUser() {
         fd.append('deskripsi',data.deskripsi)
         fd.append('gambar', data.gambar[0], data.gambar[0].name )
         setaddProd(true)
-        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/TambahProduk',fd,{
+        Axios.post('http://keudepeunajohapi.jsmiot.com//Data/TambahProduk',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -112,7 +113,7 @@ function TokoUser() {
     }
     const deleteProduct = data => {
         setDelProd(true)
-        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/HapusProduk',
+        Axios.post('http://keudepeunajohapi.jsmiot.com//Data/HapusProduk',
         {
             prodId : data.id,
             userId : UserState.data.id,
@@ -153,7 +154,7 @@ function TokoUser() {
         }
         
         setEditProd(true)
-        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/EditProduk',fd,{
+        Axios.post('http://keudepeunajohapi.jsmiot.com//Data/EditProduk',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -188,7 +189,7 @@ function TokoUser() {
                                     </div>
                                     <div className="toko">
                                         <div className="logo-toko">
-                                            <img src={`http://192.168.43.239/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
+                                            <img src={`http://keudepeunajohapi.jsmiot.com//${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
                                         </div>
                                         <h2>{TokoState.data.toko.nama_toko}</h2>
                                         <p className="toko-ex">Alamat Toko: </p>
@@ -318,7 +319,7 @@ function TokoUser() {
                                                             {
                                                                 pictureEdit !== null ?
                                                                 <Image  src={imgDataEdit} fluid rounded />:
-                                                                <Image  src={`http://192.168.43.239/keudepeunajoh-rest-api2/${editData.gambar_product}`} fluid rounded />       
+                                                                <Image  src={`http://keudepeunajohapi.jsmiot.com//${editData.gambar_product}`} fluid rounded />       
                                                                 
                                                             }
                                                         </div>

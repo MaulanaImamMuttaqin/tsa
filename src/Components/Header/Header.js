@@ -104,7 +104,7 @@ function Header(props) {
                           <Row>
                             <div  className="ProfilePic">
                                 {UserState.data.profile === "" ? <span><FontAwesomeIcon icon={faUserCircle} size="6x"/></span> :
-                                  <Image src={`http://localhost/keudepeunajoh-rest-api2/${UserState.data.profile}`} height="130" width="130" roundedCircle   />
+                                  <Image src={`http://keudepeunajohapi.jsmiot.com/${UserState.data.profile}`} height="130" width="130" roundedCircle   />
                                 }
                             </div>
                           </Row>

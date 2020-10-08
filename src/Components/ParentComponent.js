@@ -86,7 +86,7 @@ function ParentComponent() {
     useEffect(()=> {
         if(localStorage.getItem('SavedToken') !== null){
 
-            Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Auth/Authorization',{}, {
+            Axios.post('http://keudepeunajohapi.jsmiot.com/Auth/Authorization',{}, {
                 headers: {
                     'Authorization': localStorage.getItem('SavedToken')
                   }
@@ -97,11 +97,10 @@ function ParentComponent() {
                 dispatchUserState({type: "SET_USER_STATE_FAILED"})
             })
         }
-        console.log("parent called")
 
     },[])
     useEffect(() => {
-        Axios.get('http://192.168.43.239/keudepeunajoh-rest-api2/Data/')
+        Axios.get('http://keudepeunajohapi.jsmiot.com/Data/')
             .then(response => {
                 dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
                 

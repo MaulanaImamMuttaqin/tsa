@@ -22,12 +22,12 @@ function HomeBody() {
 
 
     useEffect(()=> {
+        document.title = `KeudePeunajoh`
         if(localStorage.getItem('SavedToken') !== null){
             setAlertLogin(true)
         }else{
             setAlertLogin(false)
         }
-        console.log(alertLogin)
     },[UserState])
     
     if(ProductState.error){
@@ -38,7 +38,7 @@ function HomeBody() {
         )
     }else{
 
-        return (
+        return (    
             <div style={
                 ProductState.loading ? { height : "100%"}:
                 {height: ""}
@@ -83,7 +83,7 @@ function HomeBody() {
                                                     <Carousel.Item key={data.id}>
                                                         <img
                                                             className="d-block w-100"
-                                                            src={`http://192.168.43.239/keudepeunajoh-rest-api2/${data.gambar_product}`}
+                                                            src={`http://keudepeunajohapi.jsmiot.com/${data.gambar_product}`}
                                                             alt="Second slide"
                                                             width="800" height="300"
                                                         />

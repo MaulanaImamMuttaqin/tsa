@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 function Login() {
+    document.title = `KeudePeunajoh Login`
     const [nohp, setNoHp] = useState('')
     const [pass, setPass] = useState('')
     const [authf, setAuthf] = useState(false)
@@ -29,8 +30,8 @@ function Login() {
     const submit = e => {
         e.preventDefault()
         DispatchUserState({type: "SET_LOADING_USER"})
-
-        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Auth/login', {
+        
+        Axios.post('http://keudepeunajohapi.jsmiot.com/Auth/login', {
             no_hp: nohp,
             password : pass
         }).then(res1 => {

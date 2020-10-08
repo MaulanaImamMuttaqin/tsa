@@ -12,6 +12,7 @@ import { faUpload, faImage } from '@fortawesome/free-solid-svg-icons'
 import MiniLoad from '../../../assets/gifs/mini-loading.gif';
 
 function TokoForm() {
+    document.title = `KeudePeunajoh Buat Toko`
     const { register, handleSubmit, errors } = useForm();
     
     const {
@@ -40,7 +41,7 @@ function TokoForm() {
             fd.append('gambar', data.gambar[0], data.gambar[0].name )
         }
         setaddProd(true)
-        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/BuatToko',fd,{
+        Axios.post('http://keudepeunajohapi.jsmiot.com/Data/BuatToko',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -87,19 +88,6 @@ function TokoForm() {
                                 </div>
                                 <div className="toko-form">
                                     <h2>Buat Toko</h2>
-                                    {/* <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" action="" className="form">
-                                        <label htmlFor="file">foto untuk toko anda (opsional)</label>
-                                        <input type="file" className="file" name="gambar" ref={register({
-                                        validate: (value) => {
-                                            return value[0].size < 2048000
-                                        }
-                                        })} />
-                                        {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
-                                        <input type="text" name="nama" placeholder="Masukkan Nama Toko Anda" ref={register} required/>
-                                        <input type="te xt" name="alamat" placeholder="Masukkan Alamat Toko Anda" ref={register} required/>
-                                        <textarea name="deskripsi" id="" cols="80" rows="8" placeholder="Deskripsi Toko (opsional)" ref={register}></textarea>
-                                        <button type="submit">Buat</button>
-                                    </form> */}
                                     <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" action="" className="form2">
                                                 <Row>
                                                     <Col style={{textAlign: "center"}} xs={6} md={4}>
@@ -143,7 +131,6 @@ function TokoForm() {
                                                                     required
                                                                     />
                                                                 </InputGroup>
-                                                                {/* <input type="text" name="nama" placeholder="Masukkan Nama Produk"  ref={register()} required/> */}
                                                                 <InputGroup className="mb-3">
                                                                     <FormControl
                                                                     placeholder="Masukkan Alamat Toko Anda"
@@ -154,7 +141,6 @@ function TokoForm() {
                                                                     required
                                                                     />
                                                                 </InputGroup>
-                                                                {/* <input type="number" name="harga" placeholder="Masukkan Harga"  ref={register} required/> */}
                                                                 <InputGroup className="mb-3">
                                                                     <FormControl
                                                                     as="textarea"
@@ -166,7 +152,6 @@ function TokoForm() {
                                                                     required
                                                                     />
                                                                 </InputGroup>
-                                                                {/* <textarea name="deskripsi" id="" cols="80" rows="8" placeholder="Deskripsi Produk"  ref={register} required></textarea> */}
                                                                 <Button size="lg" variant="outline-primary" type="submit">Buat</Button>{addProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
                                                             
                                                     </Col>

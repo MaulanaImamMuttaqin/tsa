@@ -16,20 +16,24 @@ function DetailBody() {
     let {id} = useParams()
     
     useEffect(() => {
+        document.title = `KeudePeunajoh Produk`
         DispatchDetailProState({type: 'SET_LOADING'})
-        axios.get(`http://192.168.43.239/keudepeunajoh-rest-api2/Data?id=${id}`)
+        axios.get(`http://keudepeunajohapi.jsmiot.com/Data?id=${id}`)
             .then(response => {
                 DispatchDetailProState({type: 'FETCH_SUCCESS', payload:response.data.data})
+                
             })
             .catch(error =>{
                 console.log('error')
                 DispatchDetailProState({type: 'FETCH_ERROR'})
             })
+            // 
     },[])
     const numberWithCommas = x => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     const Data = DetailProState.data.product
+
     return (
         <div style={ DetailProState.loading ? { height : "100%"} : {height: ""} }>
             {
@@ -41,7 +45,7 @@ function DetailBody() {
                             <div className="food-detailed">
                                 <div className="food-header">
                                         <div className="food-img">
-                                            <img src={`http://192.168.43.239/keudepeunajoh-rest-api2/${Data.gambar_product}`} alt=""/>
+                                            <img src={`http://keudepeunajohapi.jsmiot.com/${Data.gambar_product}`} alt=""/>
                                         </div>
                                         <div className="food-detail">
                                             <h3>{Data.nama_product}</h3>
@@ -53,7 +57,7 @@ function DetailBody() {
                                                 </span>
                                             </p>
                                             <div className="prod-button">
-                                                <a href={`http://192.168.43.239/keudepeunajoh-rest-api2/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
+                                                <a href={`http://keudepeunajohapi.jsmiot.com/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
                                             </div>
                                         </div>  
                                         <div className="clear"></div>

@@ -7,12 +7,13 @@ import { Link, useHistory } from 'react-router-dom'
 import Axios from 'axios'
 
 function Regist() {
+    document.title = `KeudePeunajoh Daftar`
     const { register, handleSubmit, watch, errors } = useForm();
     const [regist, setRegist] = useState(false)
     const history = useHistory()
     const onSubmit = data => {
         setRegist(true)
-        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Auth/regist', {
+        Axios.post('http://keudepeunajohapi.jsmiot.com/Auth/regist', {
             username:data.username,
             password:data.pass1,
             alamat:data.alamat,
