@@ -10,4 +10,8 @@ footer{
     height:30px;
     width:150px;
   }
-  
+  @media all and (max-width: 670px) {
+    footer{
+      text-align: center;
+    }
+  }

@@ -40,7 +40,7 @@ function TokoForm() {
             fd.append('gambar', data.gambar[0], data.gambar[0].name )
         }
         setaddProd(true)
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/BuatToko',fd,{
+        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/BuatToko',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }

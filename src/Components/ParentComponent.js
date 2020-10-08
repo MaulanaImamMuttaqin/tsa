@@ -6,6 +6,7 @@ import {Switch, Route} from "react-router-dom";
 import Login from './Auth/Login';
 import Regist from './Auth/Regist';
 import Axios from 'axios';
+import "../App.css"
 export const ProductContext = React.createContext()
 
 
@@ -72,7 +73,6 @@ function ParentComponent() {
 
     const [ProState, dispatchProState] = useReducer(reducer, state)
     const [searchProState, dispatchSearchProState] = useReducer(reducer, state)
-    // const [buttSearch, dispatchButtSearch] = useReducer(reducer, button_click_search_state)
     const [detailProState, dispatchDetailProState] = useReducer(reducer, state)
     const [userState, dispatchUserState] = useReducer(reducer, user_state)
     const [tokoState, dispatchTokoState] = useReducer(reducer, state)
@@ -81,7 +81,7 @@ function ParentComponent() {
     useEffect(()=> {
         if(localStorage.getItem('SavedToken') !== null){
 
-            Axios.post('http://localhost/keudepeunajoh-rest-api2/Auth/Authorization',{}, {
+            Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Auth/Authorization',{}, {
                 headers: {
                     'Authorization': localStorage.getItem('SavedToken')
                   }
@@ -96,7 +96,7 @@ function ParentComponent() {
 
     },[])
     useEffect(() => {
-        Axios.get('http://localhost/keudepeunajoh-rest-api2/Data/')
+        Axios.get('http://192.168.43.239/keudepeunajoh-rest-api2/Data/')
             .then(response => {
                 dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
                 

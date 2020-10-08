@@ -13,9 +13,11 @@ function HomeBody() {
     const {
         Product:{
             ProductState
+        }, 
+        DetailProduct: {
+            DetailProState
         }
     } = useContext(ProductContext)
-
     if(ProductState.error){
         return(
             <div style={{ height : "100%"}}>
@@ -59,7 +61,7 @@ function HomeBody() {
                                                     <Carousel.Item key={data.id}>
                                                         <img
                                                             className="d-block w-100"
-                                                            src={`http://localhost/keudepeunajoh-rest-api2/${data.gambar_product}`}
+                                                            src={`http://192.168.43.239/keudepeunajoh-rest-api2/${data.gambar_product}`}
                                                             alt="Second slide"
                                                             width="800" height="300"
                                                         />

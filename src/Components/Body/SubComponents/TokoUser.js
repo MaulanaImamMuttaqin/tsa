@@ -28,7 +28,7 @@ function TokoUser() {
 
 
     const[update, setUpdate] = useState(false)//buat manggil notifikasi kalo tambah produk berhasil
-    const [addProd, setaddProd] = useState(false)//buat manggil miniload
+    const[addProd, setaddProd] = useState(false)//buat manggil miniload
     const[wichProd, setWichProd] = useState('')
     const[show, setShow] = useState(false)
     const[editData, setEditData] = useState({})
@@ -74,7 +74,7 @@ function TokoUser() {
         fd.append('deskripsi',data.deskripsi)
         fd.append('gambar', data.gambar[0], data.gambar[0].name )
         setaddProd(true)
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/TambahProduk',fd,{
+        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/TambahProduk',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -112,7 +112,7 @@ function TokoUser() {
     }
     const deleteProduct = data => {
         setDelProd(true)
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/HapusProduk',
+        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/HapusProduk',
         {
             prodId : data.id,
             userId : UserState.data.id,
@@ -153,7 +153,7 @@ function TokoUser() {
         }
         
         setEditProd(true)
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/EditProduk',fd,{
+        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/EditProduk',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -188,7 +188,7 @@ function TokoUser() {
                                     </div>
                                     <div className="toko">
                                         <div className="logo-toko">
-                                            <img src={`http://localhost/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
+                                            <img src={`http://192.168.43.239/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
                                         </div>
                                         <h2>{TokoState.data.toko.nama_toko}</h2>
                                         <p className="toko-ex">Alamat Toko: </p>
@@ -318,7 +318,7 @@ function TokoUser() {
                                                             {
                                                                 pictureEdit !== null ?
                                                                 <Image  src={imgDataEdit} fluid rounded />:
-                                                                <Image  src={`http://localhost/keudepeunajoh-rest-api2/${editData.gambar_product}`} fluid rounded />       
+                                                                <Image  src={`http://192.168.43.239/keudepeunajoh-rest-api2/${editData.gambar_product}`} fluid rounded />       
                                                                 
                                                             }
                                                         </div>
@@ -358,6 +358,7 @@ function TokoUser() {
                                                             <label htmlFor="harga">Harga Produk:</label>
                                                             <InputGroup className="mb-3">
                                                                 <FormControl
+                                                                type="number"
                                                                 placeholder="Harga Produk"
                                                                 aria-label="Username"
                                                                 aria-describedby="basic-addon1"

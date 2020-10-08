@@ -30,7 +30,7 @@ function Login() {
         e.preventDefault()
         DispatchUserState({type: "SET_LOADING_USER"})
 
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Auth/login', {
+        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Auth/login', {
             no_hp: nohp,
             password : pass
         }).then(res1 => {
@@ -39,21 +39,6 @@ function Login() {
             DispatchTokoState({type: "FETCH_SUCCESS", payload: res1.data.toko_user})
             DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
             history.push('/')
-            // Axios.get(`http://localhost/keudepeunajoh-rest-api2/Data?toko_id=${res1.data.data.id}`, {
-            //     headers: {
-            //       'Authorization': localStorage.getItem('SavedToken')
-            //     }
-            //   })
-            // .then(res2 => {
-                
-            //     DispatchTokoState({type: "FETCH_SUCCESS", payload: res2.data.data})
-            //     DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
-
-            //     
-                
-            // }).catch(error => {
-            //     DispatchTokoState({type: "FETCH_ERROR"})
-            // })
 
         }).catch(error => {
             DispatchUserState({type: "SET_USER_STATE_FAILED"})
@@ -62,31 +47,7 @@ function Login() {
             setPass('')
         })
     }
-    
-    // const submit = e => {
-    //     e.preventDefault()
-    //     DispatchUserState({type: "SET_LOADING_USER"})
 
-    //     Axios.post('http://localhost/keudepeunajoh-rest-api2/Auth/login', {
-    //         no_hp: nohp,
-    //         password : pass
-    //     }).then(res1 => {
-            
-    //         let token = res1.data.JWT;
-    //         localStorage.setItem("SavedToken", token);
-    //         DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
-            
-    //         history.push('/')
-
-
-    //     }).catch(error => {
-    //         DispatchUserState({type: "SET_USER_STATE_FAILED"})
-    //         setAuthf(true)
-    //         setNoHp('')
-    //         setPass('')
-    //     })
-    // }
-    
 
 
     return (

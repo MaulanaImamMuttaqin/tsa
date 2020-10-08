@@ -14,17 +14,20 @@ function Food(props) {
         }
         
     }
-    
+    const numberWithCommas = x => {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+
     return (
         
             <div className="food" onClick={clicked}>
                 <div className="food-content">
                     <div className="food-picture">
-                        <img src={`http://localhost/keudepeunajoh-rest-api2/${props.Data.gambar_product}`} alt=""/>
+                        <img src={`http://192.168.43.239/keudepeunajoh-rest-api2/${props.Data.gambar_product}`} alt=""/>
                     </div>
                     <div className="text-contents">
                         <p className="food-tittle">{props.Data.nama_product}</p>
-                        <p>Rp {props.Data.harga}</p>
+                        <p>Rp {numberWithCommas(props.Data.harga)}</p>
                         <p><FontAwesomeIcon icon={faStore} /> {props.Data.nama_toko}</p>
                         {location.pathname === '/Toko_Saya' && 
                                 <div>

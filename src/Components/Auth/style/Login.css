@@ -42,4 +42,6 @@
     background-color: #8f9cff;
     color:white;
   }  
+  @media all and (max-width: 670px) {
 
+  }

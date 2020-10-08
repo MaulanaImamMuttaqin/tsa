@@ -1,5 +1,5 @@
 .food,.food-toko{
-    height:370px;
+    height:350px;
     width:20%;
     float:left;
     margin-bottom:30px;
@@ -58,3 +58,24 @@
   .editButton:hover{
     padding:8px;
   }
+  
+  @media all and (max-width: 670px) {
+    /*style makanan*/
+    .food,.food-toko{
+      width: 50%;
+      height:390px;
+    }
+    .text-contents p{
+      font-size: 13px;
+    }
+    .food{
+      height:320px;
+    }
+    .food-picture img{
+      margin-bottom: 0px;
+    }
+    .editButton{
+      margin-right:1px;
+    }
+  }
+  

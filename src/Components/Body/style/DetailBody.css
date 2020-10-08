@@ -70,4 +70,42 @@
     background-color: rgba(87, 151, 255, 0.7);
     color:#e6efff;
   }
+  @media all and (max-width: 670px) {
+
+    .food-detailed{
+      /* border: 1px solid; */
+      margin-top: 0px;
+      padding:0px;
+    }
+    .food-img img{
+      height:300px;
+      width:100%;
+    }
+    .food-detail{
+      width:100%;
+      padding:0;
+    }
+    .food-detail h3{
+      font-size:20px;
+    }
+    .food-detail p{
+      font-size:12px;
+    }
+    .food-detail h3,.food-detail p{
+      padding:10px 0 10px 5px;
+    }
+    .food-detail .p-left{
+      width:50px;
+    }
+    .food-detail .p-right{
+      padding-left: 15px;
+    }
+  
+    .alamat-style .p-left{
+      width:16.3%;
+    }
+    .alamat-style .p-right{
+      width:83.7%;
+    }
+  }
   

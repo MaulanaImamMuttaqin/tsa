@@ -66,4 +66,19 @@
   .form small{
     padding:0;
   }
+  @media all and (max-width: 670px) {
+    .auth-body{
+
+    }
+    .regist-content{
+      width:100%;
+    }
+    .logo{
+      display:none;
+    }
+    .regist-form{
+      float:none;
+      width :100%;
+    }
   
+  }

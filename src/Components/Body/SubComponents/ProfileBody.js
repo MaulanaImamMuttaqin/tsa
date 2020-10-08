@@ -47,7 +47,7 @@ function ProfileBody() {
         if(data.gambarProfile.length !== 0){
             fd.append('gambar', data.gambarProfile[0], data.gambarProfile[0].name )
         }
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/editData', fd,{
+        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/editData', fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -76,7 +76,7 @@ function ProfileBody() {
         if(data.gambarToko.length !== 0){
             fd.append('gambar', data.gambarToko[0], data.gambarToko[0].name )
         }
-        Axios.post('http://localhost/keudepeunajoh-rest-api2/Data/editToko',fd,{
+        Axios.post('http://192.168.43.239/keudepeunajoh-rest-api2/Data/editToko',fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -146,7 +146,7 @@ function ProfileBody() {
                                                                 <Image  src={imgData} fluid rounded />:
                                                                 <div>
                                                                     {UserState.data.profile === "" ? <FontAwesomeIcon icon={faUserCircle} size="6x"/> :
-                                                                        <Image src={`http://localhost/keudepeunajoh-rest-api2/${UserState.data.profile}`}  fluid rounded />
+                                                                        <Image src={`http://192.168.43.239/keudepeunajoh-rest-api2/${UserState.data.profile}`}  fluid rounded />
                                                                     }
                                                                 </div>
                                                                         
@@ -275,7 +275,7 @@ function ProfileBody() {
                                                                 {
                                                                     pictureEdit !== null ?
                                                                     <Image  src={imgDataEdit} fluid rounded />:
-                                                                    <Image  src={`http://localhost/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} fluid rounded />       
+                                                                    <Image  src={`http://192.168.43.239/keudepeunajoh-rest-api2/${TokoState.data.toko.gambar_toko}`} fluid rounded />       
                                                                     
                                                                 }
                                                                 
