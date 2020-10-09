@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import './style/Regist.css'
+import '../../assets/style/Regist.css'
 import Loading from '../general/Loading'
 import Logo from '../../assets/image/logo4.png'
 import {useForm } from 'react-hook-form'

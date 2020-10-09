@@ -1,14 +1,13 @@
 import React,{useContext, useState} from 'react'
 import {useForm } from 'react-hook-form'
 import Loading from '../../general/Loading';
-import '../style/TokoBody.css'
+import '../../../assets/style/TokoBody.css'
 import {ProductContext} from '../../ParentComponent'
 import {useHistory} from "react-router-dom"
 import Axios from 'axios';
-import {Button, Row, Col,InputGroup , FormControl, Image, Badge} from 'react-bootstrap';
+import {Button, Row, Col,InputGroup , FormControl, Image, Badge, Container} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpload, faImage } from '@fortawesome/free-solid-svg-icons'
 import MiniLoad from '../../../assets/gifs/mini-loading.gif';
 
 function TokoForm() {
@@ -79,7 +78,7 @@ function TokoForm() {
                 {
                     TokoState.loading ? <Loading color="loading-white"/>:
                         <div className="content">
-                            <div className="container">
+                            <Container>
                                 <div className="content-header">
                                     <h4>Profil Toko</h4>
                                 </div>
@@ -96,7 +95,7 @@ function TokoForm() {
                                                                 {
                                                                     picture !== null ?
                                                                     <Image  src={imgData} fluid rounded />:
-                                                                    <FontAwesomeIcon icon={faImage} size="6x"/>         
+                                                                    <FontAwesomeIcon icon="image" size="6x"/>         
                                                                     
                                                                 }
                                                             </div>
@@ -106,7 +105,7 @@ function TokoForm() {
                                                             }
                                                         <label className="file-label" htmlFor="file" >
                                                             <h3>
-                                                                <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
+                                                                <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
                                                             </h3>
                                                         </label>
                                                         <input id="file" className="file" type="file" name="gambar" onChange={onChangePicture} ref={register({
@@ -158,7 +157,7 @@ function TokoForm() {
                                                 </Row>
                                             </form>
                                 </div>
-                            </div>
+                            </Container>
                             <div className="clear"></div>
                         </div> 
                       } 

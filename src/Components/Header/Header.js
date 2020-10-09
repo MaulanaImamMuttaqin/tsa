@@ -1,13 +1,12 @@
 import React,{useContext, useState, useRef}  from 'react'
 import '../../App.css'
-import './style/header.css'
+import '../../assets/style/header.css'
 import Logo from "../../assets/image/logo4.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch , faUserCircle, faSignOutAlt,faStore, faBars} from '@fortawesome/free-solid-svg-icons'
 import {ProductContext} from '../ParentComponent'
 import { Link, useHistory} from 'react-router-dom'
 import { useEffect } from 'react'
-import { Col, Row, Image} from 'react-bootstrap';
+import { Col, Row, Image, Container} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function Header(props) {
   const {
@@ -51,7 +50,7 @@ function Header(props) {
   }
     return (
         <div className="header">
-              <div className="container">
+              <Container>
 
                   <div className="header-left"  >
                    <img className="logo-tittle center-container" src={Logo} alt="" onClick={ChangeComponent}/>   
@@ -67,23 +66,23 @@ function Header(props) {
                           onChange={e => setSearch(e.target.value)}
                           />
                           
-                        <button className="sub" type="submit"><FontAwesomeIcon icon={faSearch} /></button>
+                        <button className="sub" type="submit"><FontAwesomeIcon icon="search" /></button>
                     </form>
                   </div>
                   <div className="menu-icon" onClick={()=> setClickBars(!clickBars)}>
-                    <FontAwesomeIcon size="sm" icon={faBars}/>
+                    <FontAwesomeIcon size="sm" icon="bars"/>
                   </div>
                   
                   <div className="header-right">
                     {localStorage.getItem('SavedToken') !== null ? 
-                      <span ref={wrapperRef1} className="profile" onClick={() => setClick(!click)}><FontAwesomeIcon size="lg" icon={faUserCircle} /></span>
+                      <span ref={wrapperRef1} className="profile" onClick={() => setClick(!click)}><FontAwesomeIcon size="lg" icon="user-circle" /></span>
                       :<div>
                           <Link to='/Login'>Masuk</Link>
                           <Link to='/Register'>Daftar</Link>                  
                       </div>
                     }
                   </div>
-              </div>
+              </Container>
               {
                 click && 
                 <div ref={wrapperRef2} className="profile-dropdown">
@@ -91,19 +90,19 @@ function Header(props) {
                     <Row>
                         <Col  >
                           <Link style={{ textDecoration: 'none' }} to="/Profile" onClick={()=> setClick(false)}>
-                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faUserCircle} />Profile
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon="user-circle" />Profile
                             </Link>
                             <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }  onClick={()=> setClick(false)}>
-                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon="store" />Toko Anda
                             </Link>
                             <Link style={{ textDecoration: 'none' }} to="/"  onClick={()=> {localStorage.removeItem("SavedToken");setClick(false); DispatchUserState({type: "LOGOUT"})}}>
-                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon="sign-out-alt"/>Keluar
                             </Link>
                         </Col>
                         <Col xs={7} style={{borderLeft: "2px solid #8f9cff"}}>
                           <Row>
                             <div  className="ProfilePic">
-                                {UserState.data.profile === "" ? <span><FontAwesomeIcon icon={faUserCircle} size="6x"/></span> :
+                                {UserState.data.profile === "" ? <span><FontAwesomeIcon icon="usercircle" size="6x"/></span> :
                                   <Image src={`http://keudepeunajohapi.jsmiot.com/${UserState.data.profile}`} height="130" width="130" roundedCircle   />
                                 }
                             </div>
@@ -134,18 +133,18 @@ function Header(props) {
                             onChange={e => setSearch(e.target.value)}
                             />
                             
-                          <button className="sub" type="submit"><FontAwesomeIcon icon={faSearch} /></button>
+                          <button className="sub" type="submit"><FontAwesomeIcon icon="search" /></button>
                     </form>
                        {localStorage.getItem('SavedToken') !== null ? 
                          <div>
                            <Link style={{ textDecoration: 'none' }} to="/Profile" onClick={()=> setClickBars(false)}>
-                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faUserCircle} />Profile
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon="usercircle" />Profile
                             </Link>
                             <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }  onClick={()=> setClickBars(false)}>
-                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon={faStore} />Toko Anda
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon="store" />Toko Anda
                             </Link>
                             <Link style={{ textDecoration: 'none' }} to="/"  onClick={()=> {localStorage.removeItem("SavedToken");setClickBars(false);}}>
-                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon={faSignOutAlt}/>Keluar
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon="signoutalt"/>Keluar
                             </Link>
                              
                          </div>:

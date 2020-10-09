@@ -1,16 +1,14 @@
 import Axios from 'axios'
 import React ,{useContext,useState}from 'react'
 import { useForm } from 'react-hook-form'
-import { useHistory } from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import {ProductContext} from '../../ParentComponent'
-import '../style/Profile.css'
-import { Alert, InputGroup , FormControl} from 'react-bootstrap';
+import '../../../assets/style/Profile.css'
+import { Alert, InputGroup , FormControl,Button, Row, Col, Image, Badge, Container} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MiniLoad from '../../../assets/gifs/mini-loading.gif';
 import Loading from '../../general/Loading';
-import {Button, Row, Col, Image, Badge} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUserCircle , faUpload} from '@fortawesome/free-solid-svg-icons'
 function ProfileBody() {
     document.title = 'KeudePeunajoh Profile'
     const {
@@ -127,7 +125,7 @@ function ProfileBody() {
                     {
                         TokoState.loading ? <Loading color="loading-white"/>:
                                 <div className="content">
-                                    <div className="container">
+                                    <Container>
                                         <div className="content-header">
                                             <h4>Profile User</h4>
                                         </div>
@@ -144,7 +142,7 @@ function ProfileBody() {
                                                                 picture !== null ?
                                                                 <Image  src={imgData} fluid rounded />:
                                                                 <div>
-                                                                    {UserState.data.profile === "" ? <FontAwesomeIcon icon={faUserCircle} size="6x"/> :
+                                                                    {UserState.data.profile === "" ? <FontAwesomeIcon icon="usercircle" size="6x"/> :
                                                                         <Image src={`http://keudepeunajohapi.jsmiot.com/${UserState.data.profile}`}  fluid rounded />
                                                                     }
                                                                 </div>
@@ -159,7 +157,7 @@ function ProfileBody() {
                                                         <div>
                                                             <label className="file-label" htmlFor="file" >
                                                                 <h3>
-                                                                    <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
+                                                                    <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
                                                                 </h3>
                                                             </label>
                                                             <input id="file" className="file" type="file" name="gambarProfile" onChange={onChangePicture}  ref={register({
@@ -282,7 +280,7 @@ function ProfileBody() {
                                                         <div>
                                                             <label className="file-label" htmlFor="file" >
                                                                 <h3>
-                                                                    <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
+                                                                    <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
                                                                 </h3>
                                                             </label>
                                                             <input id="file" className="file" type="file" name="gambarToko" onChange={onChangePictureEdit} ref={register2({
@@ -356,7 +354,7 @@ function ProfileBody() {
                                         </div>
                                         }
                                         
-                                    </div>
+                                    </Container>
                                     <div className="clear"></div>
                                 </div>
                                             

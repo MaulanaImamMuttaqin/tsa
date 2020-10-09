@@ -1,5 +1,5 @@
 import React from 'react'
-import './loading.css'
+import '../../assets/style/loading.css'
 function Loading(props) {
     return (
         <div className={`loading-container ${props.color}`}>

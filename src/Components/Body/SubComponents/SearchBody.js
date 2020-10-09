@@ -1,11 +1,10 @@
 import React,{useContext, useEffect} from 'react'
-import '../style/HomeBody.css'
-import '../style/food.css'
 import Food from './Food';
 import {ProductContext} from '../../ParentComponent'
 import axios from 'axios'
 import Loading from '../../general/Loading';
 import { useParams } from 'react-router-dom'
+import { Container } from 'react-bootstrap';
 function SearchBody() {
     const {SearchProduct: {
             SearchProductState, 
@@ -46,7 +45,7 @@ function SearchBody() {
             }
             >
                 
-                <div className="container">
+                <Container>
                     <div className="content-header">
                         <h4>Hasil berdasarkan pencarian "{key}"</h4>
                     </div>
@@ -68,7 +67,7 @@ function SearchBody() {
                                 </div>
                              
                     </div>
-                </div>
+                </Container>
                  
                 <div className="clear"></div>
             </div>

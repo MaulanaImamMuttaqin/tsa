@@ -1,5 +1,5 @@
 import React from 'react'
-import './Error.css'
+import '../../assets/style/Error.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFrown} from '@fortawesome/free-solid-svg-icons'
 function Error() {

@@ -7,7 +7,7 @@ import Food from './Food'
 import Axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUpload, faImage } from '@fortawesome/free-solid-svg-icons'
-import '../style/TokoBody.css'
+import '../../../assets/style/TokoBody.css'
 import {useHistory} from "react-router-dom";
 import { Alert, Button, Modal, Container, Row, Col,InputGroup , FormControl, Image, Badge} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -183,7 +183,7 @@ function TokoUser() {
                         TokoState.loading ? <Loading color="loading-white"/>:
                             <div className="content" style={TokoState.loading ? { height : "100%"}:{height: "auto"}}>
                                 
-                                <div className="container" style={{height: "100%"}}>
+                                <Container style={{height: "100%"}}>
                                     <div className="content-header">
                                         <h4>Profil Toko</h4>
                                     </div>
@@ -214,7 +214,7 @@ function TokoUser() {
                                                             {
                                                                 picture !== null ?
                                                                 <Image  src={imgData} fluid rounded />:
-                                                                <FontAwesomeIcon icon={faImage} size="6x"/>         
+                                                                <FontAwesomeIcon icon="image" size="6x"/>         
                                                                 
                                                             }
                                                         </div>
@@ -224,7 +224,7 @@ function TokoUser() {
                                                         }
                                                     <label className="file-label" htmlFor="file" >
                                                         <h3>
-                                                            <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
+                                                            <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
                                                         </h3>
                                                     </label>
                                                     <input id="file" className="file" type="file" name="gambar" onChange={onChangePicture} required ref={register({
@@ -295,7 +295,7 @@ function TokoUser() {
                                         )
                                     }
                                     <div className="clear"></div>
-                            </div>
+                            </Container>
                                 <Modal
                                     show={show}
                                     size="lg"
@@ -329,7 +329,7 @@ function TokoUser() {
                                                         }
                                                     <label className="file-label" htmlFor="editfile" >
                                                         <h3>
-                                                            <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon={faUpload} /></Badge>
+                                                            <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
                                                         </h3>
                                                     </label>
                                                     <input id="editfile" className="file" type="file" name="editGambar" onChange={onChangePictureEdit} ref={register2({

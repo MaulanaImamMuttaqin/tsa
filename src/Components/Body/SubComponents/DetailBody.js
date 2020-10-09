@@ -1,10 +1,11 @@
 import React,{useContext , useEffect} from 'react'
-import '../style/DetailBody.css'
+import '../../../assets/style/DetailBody.css'
 import {ProductContext} from '../../ParentComponent'
 import { useParams } from 'react-router-dom'
 import nl2br from 'react-nl2br'
 import axios from 'axios';
 import Loading from '../../general/Loading';
+import {Container} from 'react-bootstrap';
 function DetailBody() {
     const {
         DetailProduct: {
@@ -40,7 +41,7 @@ function DetailBody() {
                 DetailProState.loading ? <Loading color="loading-white"/>:
                     <div className="content product-responsive">
                     
-                        <div className="container">
+                        <Container>
                         
                             <div className="food-detailed">
                                 <div className="food-header">
@@ -70,7 +71,7 @@ function DetailBody() {
                                 </div>
                             </div>
                         
-                        </div>
+                        </Container>
                         
                     </div>
             } 

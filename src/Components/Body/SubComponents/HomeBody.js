@@ -1,7 +1,7 @@
 import React,{useContext, useEffect, useState} from 'react'
-import '../style/HomeBody.css'
+import '../../../assets/style/HomeBody.css'
 import Logo from "../../../assets/image/logo5.png"
-import { Carousel, Alert } from 'react-bootstrap';
+import { Carousel, Alert, Container } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Food from './Food';
 import {ProductContext} from '../../ParentComponent'
@@ -53,7 +53,7 @@ function HomeBody() {
                             }
                         >
                             
-                            <div className="container" style={{height: "100%"}}>
+                            <Container style={{height: "100%"}}>
                                
                                 
                                 <div>
@@ -106,7 +106,7 @@ function HomeBody() {
                                         }
                                     </div>
                                 </div>
-                            </div>
+                            </Container>
                             
                             <div className="clear"></div>
                         </div>

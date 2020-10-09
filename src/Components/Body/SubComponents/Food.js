@@ -1,7 +1,6 @@
 import React from 'react'
-import '../style/food.css'
+import '../../../assets/style/food.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faStore } from '@fortawesome/free-solid-svg-icons'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Badge } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -28,7 +27,7 @@ function Food(props) {
                     <div className="text-contents">
                         <p className="food-tittle">{props.Data.nama_product}</p>
                         <p>Rp {numberWithCommas(props.Data.harga)}</p>
-                        <p><FontAwesomeIcon icon={faStore} /> {props.Data.nama_toko}</p>
+                        <p><FontAwesomeIcon icon="store" /> {props.Data.nama_toko}</p>
                         {location.pathname === '/Toko_Saya' && 
                                 <div>
                                     <Badge className="editButton" onClick={()=> props.edit(props.Data)} variant="primary">Edit</Badge>
