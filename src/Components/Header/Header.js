@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {ProductContext} from '../ParentComponent'
 import { Link, useHistory} from 'react-router-dom'
 import { useEffect } from 'react'
-import { Col, Row, Image, Container} from 'react-bootstrap';
+import { Col, Row, Image, Container, FormControl, InputGroup, Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 function Header(props) {
   const {
@@ -51,37 +51,46 @@ function Header(props) {
     return (
         <div className="header">
               <Container>
+              {/* style={{border:"1px solid"}} */}
+                  <Row className="header-container"  >
+                      <Col xs={3}>
+                          <img className="logo-tittle center-container" src={Logo} alt="" onClick={ChangeComponent}/>
+                      </Col>
 
-                  <div className="header-left"  >
-                   <img className="logo-tittle center-container" src={Logo} alt="" onClick={ChangeComponent}/>   
-                  </div>
+                      <Col className="header-center" >
+                          <form onSubmit={submitHandler} className="form-search">
+                          <InputGroup size="md"  >
+                            <FormControl
+                              className="search" 
+                              placeholder="Cari apa yang anda inginkan"
+                              aria-label="Recipient's username"
+                              aria-describedby="basic-addon2"
+                              value={search}
+                              onChange={e => setSearch(e.target.value)}
+                            />
+                            <InputGroup.Append>
+                              <Button className="sub" type="submit" variant="outline-primary"><FontAwesomeIcon icon="search" /></Button>
+                            </InputGroup.Append>
+                          </InputGroup>
+                        </form>
+                      </Col>
+                      <Col className="menu-icon-container">
+                        <div className="menu-icon" onClick={()=> setClickBars(!clickBars)}>
+                          <FontAwesomeIcon size="sm" icon="bars"/>
+                        </div>
+                      </Col>
+                     
+                      <Col className="header-right" xs={3} >
+                          {localStorage.getItem('SavedToken') !== null ? 
+                          <span ref={wrapperRef1} className="profile" onClick={() => setClick(!click)}><FontAwesomeIcon size="lg" icon="user-circle" /></span>
+                          :<div>
+                              <Link to='/Login'>Masuk</Link>
+                              <Link to='/Register'>Daftar</Link>                  
+                          </div>
+                        }
+                      </Col>
+                  </Row>
 
-                  <div className="header-center center-container">
-                    <form onSubmit={submitHandler} className="form center-container">
-                        <input 
-                          type="text" 
-                          className="search" 
-                          placeholder="Cari apa yang anda inginkan"
-                          value={search}
-                          onChange={e => setSearch(e.target.value)}
-                          />
-                          
-                        <button className="sub" type="submit"><FontAwesomeIcon icon="search" /></button>
-                    </form>
-                  </div>
-                  <div className="menu-icon" onClick={()=> setClickBars(!clickBars)}>
-                    <FontAwesomeIcon size="sm" icon="bars"/>
-                  </div>
-                  
-                  <div className="header-right">
-                    {localStorage.getItem('SavedToken') !== null ? 
-                      <span ref={wrapperRef1} className="profile" onClick={() => setClick(!click)}><FontAwesomeIcon size="lg" icon="user-circle" /></span>
-                      :<div>
-                          <Link to='/Login'>Masuk</Link>
-                          <Link to='/Register'>Daftar</Link>                  
-                      </div>
-                    }
-                  </div>
               </Container>
               {
                 click && 
@@ -138,13 +147,13 @@ function Header(props) {
                        {localStorage.getItem('SavedToken') !== null ? 
                          <div>
                            <Link style={{ textDecoration: 'none' }} to="/Profile" onClick={()=> setClickBars(false)}>
-                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon="usercircle" />Profile
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon="user-circle" />Profile
                             </Link>
                             <Link style={{ textDecoration: 'none' }} to={UserState.data.role_id === "1" ? '/Toko_Saya' : '/Buat_Toko' }  onClick={()=> setClickBars(false)}>
                                 <FontAwesomeIcon style={{ marginRight: "7px" }} size="xs" icon="store" />Toko Anda
                             </Link>
                             <Link style={{ textDecoration: 'none' }} to="/"  onClick={()=> {localStorage.removeItem("SavedToken");setClickBars(false);}}>
-                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon="signoutalt"/>Keluar
+                                <FontAwesomeIcon style={{ marginRight: "7px" }} size="sm" icon="sign-out-alt"/>Keluar
                             </Link>
                              
                          </div>:

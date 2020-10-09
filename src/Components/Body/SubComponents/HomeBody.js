@@ -28,6 +28,7 @@ function HomeBody() {
         }else{
             setAlertLogin(false)
         }
+        
     },[UserState])
     
     if(ProductState.error){

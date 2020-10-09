@@ -10,22 +10,26 @@
   
   .food-img img{
     height:400px;
-    width:40%;
-    float:left;
+    width:100%;
   }
   
-  .food-detail{
-    float: right;
-    width:60%;
-    padding-left: 40px;
+  /* .food-detail{
+
   }
-  
-  .food-detail h3,.food-detail p{
+   */
+  .food-detail h3,.food-detail .detailed{
     padding:20px 0;
     margin-bottom: 0;
     border-bottom: 1px solid #8f9cff;
   }
-  .food-detail .p-left{
+  .food-detail .detailed{
+    padding:10px 0;
+  }
+
+  .detailed > :first-child {
+    border-right:1px solid #8f9cff;
+  }
+  /* .food-detail .p-left{
     font-weight: 600;
     display: inline-block;
     width:80px;
@@ -51,7 +55,7 @@
   .alamat-style .p-right{
     float:right;
     width:87%;
-  }
+  } */
   .food-desc{
     clear: both;
   }

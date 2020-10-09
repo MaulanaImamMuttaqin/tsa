@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom'
 import nl2br from 'react-nl2br'
 import axios from 'axios';
 import Loading from '../../general/Loading';
-import {Container} from 'react-bootstrap';
+import {Container,Row, Col} from 'react-bootstrap';
 function DetailBody() {
     const {
         DetailProduct: {
@@ -45,22 +45,35 @@ function DetailBody() {
                         
                             <div className="food-detailed">
                                 <div className="food-header">
-                                        <div className="food-img">
-                                            <img src={`http://keudepeunajohapi.jsmiot.com/${Data.gambar_product}`} alt=""/>
-                                        </div>
-                                        <div className="food-detail">
-                                            <h3>{Data.nama_product}</h3>
-                                            <p><span className="p-left">Harga  </span><span className="p-right"> Rp {numberWithCommas(Data.harga)}</span></p>
-                                            <p><span className="p-left">Toko   </span><span className="p-right">{Data.nama_toko}</span></p>
-                                            <p>
-                                                <span className="alamat-style">
-                                                    <span className="p-left">Alamat </span><span className="p-right">{Data.alamat_toko}</span>
-                                                </span>
-                                            </p>
-                                            <div className="prod-button">
-                                                <a href={`http://keudepeunajohapi.jsmiot.com/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
+                                    <Row>
+                                        <Col sm={5} >
+                                            <div className="food-img">
+                                                <img src={`http://keudepeunajohapi.jsmiot.com/${Data.gambar_product}`} alt=""/>
                                             </div>
-                                        </div>  
+                                        </Col>
+                                        <Col sm={7}>
+                                            <div className="food-detail" >
+                                                <h3>{Data.nama_product}</h3>
+                                                <Row className="detailed">
+                                                    <Col xs={2}><b>Harga</b></Col>
+                                                    <Col xs={10}><p>Rp {numberWithCommas(Data.harga)}</p></Col>
+                                                </Row>
+                                                <Row className="detailed">
+                                                    <Col xs={2}><b>Toko</b></Col>
+                                                    <Col xs={10}><p>{Data.nama_toko}</p></Col>
+                                                </Row>
+                                                <Row className="detailed">
+                                                    <Col xs={2}><b>Alamat</b></Col>
+                                                    <Col xs={10}><p>{Data.alamat_toko}</p></Col>
+                                                </Row>
+                                                <div className="prod-button">
+                                                    <a href={`http://keudepeunajohapi.jsmiot.com/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
+                                                </div>
+                                            </div>  
+                                        </Col>
+                                    </Row>
+                                        
+                                        
                                         <div className="clear"></div>
                                 </div>
                                 <div className="food-desc">

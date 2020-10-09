@@ -97,20 +97,17 @@ function ParentComponent() {
                 dispatchUserState({type: "SET_USER_STATE_FAILED"})
             })
         }
-
-    },[])
-    useEffect(() => {
         Axios.get('http://keudepeunajohapi.jsmiot.com/Data/')
-            .then(response => {
-                dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
-                
-            })
-            .catch(error =>{
-                dispatchProState({type: 'FETCH_ERROR'})
-            })
-        
-    },[tokoState.data])   
+        .then(response => {
+            console.log(response.data.data.product)
+            dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
+        })
+        .catch(error =>{
+            dispatchProState({type: 'FETCH_ERROR'})
+        })
+    },[])
 
+    console.log(ProState.data.product)
     return (
         <ProductContext.Provider
             value={

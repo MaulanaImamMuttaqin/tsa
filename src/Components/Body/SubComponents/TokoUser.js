@@ -1,16 +1,15 @@
 import React, {useContext, useState} from 'react'
 import {useForm} from 'react-hook-form'
 import {ProductContext} from '../../ParentComponent'
-import Loading from '../../general/Loading';
-import MiniLoad from '../../../assets/gifs/mini-loading.gif';
+import Loading from '../../general/Loading'
+import MiniLoad from '../../../assets/gifs/mini-loading.gif'
 import Food from './Food'
-import Axios from 'axios';
+import Axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faUpload, faImage } from '@fortawesome/free-solid-svg-icons'
 import '../../../assets/style/TokoBody.css'
-import {useHistory} from "react-router-dom";
-import { Alert, Button, Modal, Container, Row, Col,InputGroup , FormControl, Image, Badge} from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import {useHistory} from "react-router-dom"
+import { Alert, Button, Modal, Container, Row, Col,InputGroup , FormControl, Image, Badge} from 'react-bootstrap'
+import 'bootstrap/dist/css/bootstrap.min.css'
 
 function TokoUser() {
     document.title = `KeudePeunajoh Toko Anda`
@@ -28,18 +27,25 @@ function TokoUser() {
     const history = useHistory()
 
 
-    const[update, setUpdate] = useState(false)//buat manggil notifikasi kalo tambah produk berhasil
-    const[addProd, setaddProd] = useState(false)//buat manggil miniload
-    const[wichProd, setWichProd] = useState('')
-    const[show, setShow] = useState(false)
-    const[editData, setEditData] = useState({})
-
-
+    const [update, setUpdate] = useState(false)//buat manggil notifikasi kalo tambah produk berhasil
+    const [addProd, setaddProd] = useState(false)//buat manggil miniload
+    const [wichProd, setWichProd] = useState('')
+    const [show, setShow] = useState(false)
+    const [editData, setEditData] = useState({})
     const [picture, setPicture] = useState(null);
     const [imgData, setImgData] = useState(null);
+    const [pictureEdit, setPictureEdit] = useState(null);
+    const [imgDataEdit, setImgDataEdit] = useState(null);
+    const [del, setDelete] = useState(false)
+    const [delData, setDelData] = useState({})
+    const [delsuc, setDelsuc] = useState(false)
+    const [delProd, setDelProd]  = useState(false)
+    const [editProd, setEditProd]  = useState(false)
+    const [editSuc, setEditSuc] = useState(false)
+
+
     const onChangePicture = e => {
         if (e.target.files[0]) {
-        console.log("picture: ", e.target.files[0].name);
         setPicture(e.target.files[0]);
         const reader = new FileReader();
         reader.addEventListener("load", () => {
@@ -50,8 +56,7 @@ function TokoUser() {
         
     };
     
-    const [pictureEdit, setPictureEdit] = useState(null);
-    const [imgDataEdit, setImgDataEdit] = useState(null);
+    
     const onChangePictureEdit = e => {
         if (e.target.files[0]) {
         console.log("picture: ", e.target.files[0].name);
@@ -62,8 +67,7 @@ function TokoUser() {
         });
         reader.readAsDataURL(e.target.files[0]);
         }
-        console.log(pictureEdit)
-    };
+    }
     const onSubmit = data => {
         
         const fd = new FormData();
@@ -81,7 +85,6 @@ function TokoUser() {
               }
         })
         .then(res => {
-            console.log(res.data.data)
             setaddProd(false)
             setUpdate(true)
             reset()
@@ -98,14 +101,10 @@ function TokoUser() {
     const editForm = fooddata => {
         setShow(true)
         setEditData(fooddata)
-        console.log(fooddata)
         
     }
 
-    const [del, setDelete] = useState(false)
-    const [delData, setDelData] = useState({})
-    const [delsuc, setDelsuc] = useState(false)
-    const [delProd, setDelProd]  = useState(false)
+    
     const delModal = deleteData => {
         setDelete(true)
         setDelData(deleteData)
@@ -125,7 +124,6 @@ function TokoUser() {
               }
         })
         .then(res => {
-            console.log(res)
             DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
             setDelProd(false)
             setDelsuc(true)
@@ -137,8 +135,7 @@ function TokoUser() {
         })
     }
 
-    const [editProd, setEditProd]  = useState(false)
-    const [editSuc, setEditSuc] = useState(false)
+    
     const onEdit = data => {
         console.log(data)
         const fd = new FormData();
@@ -160,7 +157,6 @@ function TokoUser() {
               }
         })
         .then(res => {
-            console.log(res.data)
             setEditProd(false)
             setEditSuc(true)
             DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
@@ -247,7 +243,6 @@ function TokoUser() {
                                                                 required
                                                                 />
                                                             </InputGroup>
-                                                            {/* <input type="text" name="nama" placeholder="Masukkan Nama Produk"  ref={register()} required/> */}
                                                             <InputGroup className="mb-3">
                                                                 <FormControl
                                                                 type="number"
@@ -259,7 +254,6 @@ function TokoUser() {
                                                                 required
                                                                 />
                                                             </InputGroup>
-                                                            {/* <input type="number" name="harga" placeholder="Masukkan Harga"  ref={register} required/> */}
                                                             <InputGroup className="mb-3">
                                                                 <FormControl
                                                                 as="textarea"
@@ -271,7 +265,6 @@ function TokoUser() {
                                                                 required
                                                                 />
                                                             </InputGroup>
-                                                            {/* <textarea name="deskripsi" id="" cols="80" rows="8" placeholder="Deskripsi Produk"  ref={register} required></textarea> */}
                                                             <Button size="lg" variant="outline-primary" type="submit">Buat</Button>{addProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
                                                         
                                                 </Col>

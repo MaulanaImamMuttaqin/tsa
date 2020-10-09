@@ -178,57 +178,91 @@ function ProfileBody() {
                                                        {
                                                            editProf ?
                                                            <div>
-                                                               <div className="profile-cont"><b>Nama</b>   : {UserState.data.username} </div>
-                                                               <div className="profile-cont"><b>Nama</b>   : {UserState.data.alamat} </div>
-                                                               <div className="profile-cont"><b>Email</b>  : {UserState.data.email} </div>
-                                                               <div className="profile-cont"><b>No HP</b>  : {UserState.data.no_hp} </div>
+                                                                <Row>
+                                                                    <Col xs={3} md={1}><b>Nama</b></Col>
+                                                                    <Col xs={12} md={11}><p>:  {UserState.data.username}</p></Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={1}><b>Alamat</b></Col>
+                                                                    <Col  xs={12} md={11}><p>:  {UserState.data.alamat}</p></Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={1}><b>Email</b></Col>
+                                                                    <Col  xs={12} md={11}><p>:  {UserState.data.email}</p></Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={1}><b>No HP</b></Col>
+                                                                    <Col  xs={12} md={11}><p>:  {UserState.data.no_hp}</p></Col>
+                                                                </Row>
+                                                               
                                                            </div>
                                                            :
                                                            <div>
-                                                               <InputGroup className="mb-3">
+                                                               <Row>
+                                                                    <Col xs={3} md={1}><b>Nama</b></Col>
+                                                                    <Col  xs={12} md={11}>
+                                                                    <InputGroup className="mb-3">:
+                                                                        <FormControl
+                                                                        placeholder="Masukkan Nama Anda"
+                                                                        aria-label="Username"
+                                                                        aria-describedby="basic-addon1"
+                                                                        name="username"
+                                                                        defaultValue={UserState.data.username}
+                                                                        ref={register()}
+                                                                        required
+                                                                        />
+                                                                    </InputGroup>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={1}><b>Alamat</b></Col>
+                                                                    <Col  xs={12} md={11}>
+                                                                    <InputGroup className="mb-3">:
+                                                                        <FormControl
+                                                                        placeholder="Masukkan Alamat"
+                                                                        aria-label="Username"
+                                                                        aria-describedby="basic-addon1"
+                                                                        defaultValue={UserState.data.alamat}
+                                                                        name="alamat"
+                                                                        ref={register()}
+                                                                        required
+                                                                        />
+                                                                    </InputGroup>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={1}><b>Email</b></Col>
+                                                                    <Col  xs={12} md={11}>
+                                                                    <InputGroup className="mb-3">:
+                                                                        <FormControl
+                                                                        placeholder="Masukkan Email"
+                                                                        aria-label="Username"
+                                                                        aria-describedby="basic-addon1"
+                                                                        name="email"
+                                                                        defaultValue={UserState.data.email}
+                                                                        ref={register()}
+                                                                        required
+                                                                        />
+                                                                    </InputGroup>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={1}><b>No HP</b></Col>
+                                                                    <Col  xs={12} md={11}>
+                                                                    <InputGroup className="mb-3">:
                                                                     <FormControl
-                                                                    placeholder="Masukkan Nama Anda"
-                                                                    aria-label="Username"
-                                                                    aria-describedby="basic-addon1"
-                                                                    name="username"
-                                                                    defaultValue={UserState.data.username}
-                                                                    ref={register()}
-                                                                    required
-                                                                    />
-                                                                </InputGroup>
-                                                                <InputGroup className="mb-3">
-                                                                    <FormControl
-                                                                    placeholder="Masukkan Alamat"
-                                                                    aria-label="Username"
-                                                                    aria-describedby="basic-addon1"
-                                                                    defaultValue={UserState.data.alamat}
-                                                                    name="alamat"
-                                                                    ref={register()}
-                                                                    required
-                                                                    />
-                                                                </InputGroup>
-                                                                <InputGroup className="mb-3">
-                                                                    <FormControl
-                                                                    placeholder="Masukkan Enail"
-                                                                    aria-label="Username"
-                                                                    aria-describedby="basic-addon1"
-                                                                    name="email"
-                                                                    defaultValue={UserState.data.email}
-                                                                    ref={register()}
-                                                                    required
-                                                                    />
-                                                                </InputGroup>
-                                                                <InputGroup className="mb-3">
-                                                                    <FormControl
-                                                                    placeholder="Masukkan No HP"
-                                                                    aria-label="Username"
-                                                                    aria-describedby="basic-addon1"
-                                                                    name="nohp"
-                                                                    defaultValue={UserState.data.no_hp}
-                                                                    ref={register()}
-                                                                    required
-                                                                    />
-                                                                </InputGroup>
+                                                                        placeholder="Masukkan No HP"
+                                                                        aria-label="Username"
+                                                                        aria-describedby="basic-addon1"
+                                                                        name="nohp"
+                                                                        defaultValue={UserState.data.no_hp}
+                                                                        ref={register()}
+                                                                        required
+                                                                        />
+                                                                    </InputGroup>
+                                                                    </Col>
+                                                                </Row>
+                                                                
                                                            </div>
                                                        }
                                                        
@@ -300,39 +334,65 @@ function ProfileBody() {
                                                         <form onSubmit={handleSubmit2(UpdateToko)}>
                                                             {editToko ? 
                                                             <div>
-                                                                <div className="profile-cont"><b>Nama Toko</b>   : {TokoState.data.toko.nama_toko}</div>
-                                                                <div className="profile-cont"><b>Alamat Toko</b> : {TokoState.data.toko.alamat_toko}</div>
-                                                                <div className="profile-cont"><b>Deskripsi Toko</b>  : {TokoState.data.toko.deskripsi}</div>
+                                                                <Row>
+                                                                    <Col xs={3} md={2}><b>Nama Toko</b></Col>
+                                                                    <Col xs={12} md={10}><p>:  {TokoState.data.toko.nama_toko}</p></Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={2}><b>Alamat Toko</b></Col>
+                                                                    <Col xs={12} md={10}><p>:  {TokoState.data.toko.alamat_toko}</p></Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={2}><b>Deskripsi Toko</b></Col>
+                                                                    <Col xs={12} md={10}><p>:  {TokoState.data.toko.deskripsi}</p></Col>
+                                                                </Row>
+                                                                
                                                             </div> :
                                                             <div>
-                                                                <InputGroup className="mb-3">
-                                                                    <FormControl
-                                                                    placeholder="Masukkan Nama Toko"
-                                                                    name="nama"
-                                                                    defaultValue={TokoState.data.toko.nama_toko}
-                                                                    ref={register2()}
-                                                                    required
-                                                                    />
-                                                                </InputGroup>
-                                                                <InputGroup className="mb-3">
-                                                                    <FormControl
-                                                                    placeholder="Masukkan Alamat"
-                                                                    defaultValue={TokoState.data.toko.alamat_toko}
-                                                                    name="alamat"
-                                                                    ref={register2()}
-                                                                    required
-                                                                    />
-                                                                </InputGroup>
-                                                                <InputGroup className="mb-3">
-                                                                    <FormControl
-                                                                    as="textarea"
-                                                                    placeholder="Deskripsi Toko"
-                                                                    name="deskripsi"
-                                                                    defaultValue={TokoState.data.toko.deskripsi}
-                                                                    ref={register2()}
-                                                                    required
-                                                                    />
-                                                                </InputGroup>
+                                                                <Row>
+                                                                    <Col xs={3} md={2}><b>Nama Toko</b></Col>
+                                                                    <Col xs={12} md={10}>
+                                                                    <InputGroup className="mb-3">:
+                                                                        <FormControl
+                                                                        placeholder="Masukkan Nama Toko"
+                                                                        name="nama"
+                                                                        defaultValue={TokoState.data.toko.nama_toko}
+                                                                        ref={register2()}
+                                                                        required
+                                                                        />
+                                                                    </InputGroup>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={2}><b>Alamat Toko</b></Col>
+                                                                    <Col xs={12} md={10}>
+                                                                    <InputGroup className="mb-3">:
+                                                                        <FormControl
+                                                                        placeholder="Masukkan Alamat"
+                                                                        defaultValue={TokoState.data.toko.alamat_toko}
+                                                                        name="alamat"
+                                                                        ref={register2()}
+                                                                        required
+                                                                        />
+                                                                    </InputGroup>
+                                                                    </Col>
+                                                                </Row>
+                                                                <Row>
+                                                                    <Col xs={3} md={2}><b>Deskripsi Toko</b></Col>
+                                                                    <Col xs={12} md={10}>
+                                                                    <InputGroup className="mb-3">:
+                                                                        <FormControl
+                                                                        as="textarea"
+                                                                        placeholder="Deskripsi Toko"
+                                                                        name="deskripsi"
+                                                                        defaultValue={TokoState.data.toko.deskripsi}
+                                                                        ref={register2()}
+                                                                        required
+                                                                        />
+                                                                    </InputGroup>
+                                                                    </Col>
+                                                                </Row>
+                                                                
                                                             </div>
                                                             }
 
