@@ -39,7 +39,7 @@ function Header(props) {
 
   const submitHandler = e => {
     e.preventDefault()
-    if(search !== ''){
+    if(search !== '' && !(!search.replace(/\s/g, '').length)){
       setClickBars(false)
       history.push(`/Search/${search}`);
     }
