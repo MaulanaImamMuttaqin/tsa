@@ -55,16 +55,16 @@ function DetailBody() {
                                             <div className="food-detail" >
                                                 <h3>{Data.nama_product}</h3>
                                                 <Row className="detailed">
-                                                    <Col xs={2}><b>Harga</b></Col>
-                                                    <Col xs={10}><p>Rp {numberWithCommas(Data.harga)}</p></Col>
+                                                    <Col xs={2}><span>Harga</span></Col>
+                                                    <Col xs={10}><span>Rp {numberWithCommas(Data.harga)}</span></Col>
                                                 </Row>
                                                 <Row className="detailed">
-                                                    <Col xs={2}><b>Toko</b></Col>
-                                                    <Col xs={10}><p>{Data.nama_toko}</p></Col>
+                                                    <Col xs={2}><span>Toko</span></Col>
+                                                    <Col xs={10}><span>{Data.nama_toko}</span></Col>
                                                 </Row>
                                                 <Row className="detailed">
-                                                    <Col xs={2}><b>Alamat</b></Col>
-                                                    <Col xs={10}><p>{Data.alamat_toko}</p></Col>
+                                                    <Col xs={2}><span>Alamat</span></Col>
+                                                    <Col xs={10}><span>{Data.alamat_toko}</span></Col>
                                                 </Row>
                                                 <div className="prod-button">
                                                     <a href={`http://keudepeunajohapi.jsmiot.com/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>

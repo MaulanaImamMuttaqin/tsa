@@ -99,7 +99,7 @@ function ParentComponent() {
         }
         Axios.get('http://keudepeunajohapi.jsmiot.com/Data/')
         .then(response => {
-            console.log(response.data.data.product)
+            
             dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
         })
         .catch(error =>{
@@ -107,7 +107,6 @@ function ParentComponent() {
         })
     },[])
 
-    console.log(ProState.data.product)
     return (
         <ProductContext.Provider
             value={

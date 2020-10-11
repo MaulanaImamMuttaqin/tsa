@@ -1,5 +1,4 @@
 import React,{useContext, useState, useRef}  from 'react'
-import '../../App.css'
 import '../../assets/style/header.css'
 import Logo from "../../assets/image/logo4.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -8,6 +7,7 @@ import { Link, useHistory} from 'react-router-dom'
 import { useEffect } from 'react'
 import { Col, Row, Image, Container, FormControl, InputGroup, Button} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 function Header(props) {
   const {
     User:{
@@ -57,7 +57,7 @@ function Header(props) {
                           <img className="logo-tittle center-container" src={Logo} alt="" onClick={ChangeComponent}/>
                       </Col>
 
-                      <Col className="header-center" >
+                      <Col className="header-center">
                           <form onSubmit={submitHandler} className="form-search">
                           <InputGroup size="md"  >
                             <FormControl
