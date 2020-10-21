@@ -1,10 +1,15 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import '../../../assets/style/food.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useHistory, useLocation } from 'react-router-dom'
 import { Badge } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {ProductContext} from '../../ParentComponent'
 function Food(props) {
+    const {
+        url
+    } = useContext(ProductContext)
+
     const history = useHistory()
     const location = useLocation()
     const clicked = () =>{
@@ -22,7 +27,7 @@ function Food(props) {
             <div className="food" onClick={clicked}>
                 <div className="food-content">
                     <div className="food-picture">
-                        <img src={`http://keudepeunajohapi.jsmiot.com/${props.Data.gambar_product}`} alt=""/>
+                        <img src={`${url}${props.Data.gambar_product}`} alt=""/>
                     </div>
                     <div className="text-contents">
                         <p className="food-tittle">{props.Data.nama_product}</p>

@@ -11,7 +11,8 @@ function DetailBody() {
         DetailProduct: {
             DetailProState,
             DispatchDetailProState
-        }
+        },
+        url
     } = useContext(ProductContext)
 
     let {id} = useParams()
@@ -19,7 +20,7 @@ function DetailBody() {
     useEffect(() => {
         document.title = `KeudePeunajoh Produk`
         DispatchDetailProState({type: 'SET_LOADING'})
-        axios.get(`http://keudepeunajohapi.jsmiot.com/Data?id=${id}`)
+        axios.get(`${url}Data?id=${id}`)
             .then(response => {
                 DispatchDetailProState({type: 'FETCH_SUCCESS', payload:response.data.data})
                 
@@ -48,7 +49,7 @@ function DetailBody() {
                                     <Row>
                                         <Col sm={5} >
                                             <div className="food-img">
-                                                <img src={`http://keudepeunajohapi.jsmiot.com/${Data.gambar_product}`} alt=""/>
+                                                <img src={`${url}${Data.gambar_product}`} alt=""/>
                                             </div>
                                         </Col>
                                         <Col sm={7}>
@@ -67,7 +68,7 @@ function DetailBody() {
                                                     <Col xs={10}><span>{Data.alamat_toko}</span></Col>
                                                 </Row>
                                                 <div className="prod-button">
-                                                    <a href={`http://keudepeunajohapi.jsmiot.com/Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
+                                                    <a href={`${url}Data/contact/${Data.no_hp}/${Data.id}`} target="_blank" rel="noopener noreferrer">Hubungi Penjual</a>
                                                 </div>
                                             </div>  
                                         </Col>

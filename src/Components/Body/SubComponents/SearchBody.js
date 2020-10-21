@@ -12,7 +12,8 @@ function SearchBody() {
         }, 
             Product:{
                 ProductState
-        }
+        },
+        url
     } = useContext(ProductContext)
 
 
@@ -21,7 +22,7 @@ function SearchBody() {
     useEffect(() => {
         document.title = `KeudePeunajoh Cari ${key}`
         DispatchSearchProductState({type: 'SET_LOADING'})
-        axios.get(`http://keudepeunajohapi.jsmiot.com/Data?search=${key}`)
+        axios.get(`${url}Data?search=${key}`)
             .then(response => {
                 DispatchSearchProductState({type: 'FETCH_SUCCESS', payload:response.data.data})
             })

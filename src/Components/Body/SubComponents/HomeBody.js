@@ -16,10 +16,10 @@ function HomeBody() {
         },
         User:{
             UserState
-        }
+        },
+        url
     } = useContext(ProductContext)
     const [alertLogin, setAlertLogin] = useState(false)
-
 
     useEffect(()=> {
         document.title = `KeudePeunajoh`
@@ -84,7 +84,7 @@ function HomeBody() {
                                                     <Carousel.Item key={data.id}>
                                                         <img
                                                             className="d-block w-100"
-                                                            src={`http://keudepeunajohapi.jsmiot.com/${data.gambar_product}`}
+                                                            src={`${url}${data.gambar_product}`}
                                                             alt="Second slide"
                                                             width="800" height="300"
                                                         />

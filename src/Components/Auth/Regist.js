@@ -1,19 +1,23 @@
-import React,{useState} from 'react'
+import React,{useState, useContext} from 'react'
 import '../../assets/style/Regist.css'
 import Loading from '../general/Loading'
 import Logo from '../../assets/image/logo4.png'
 import {useForm } from 'react-hook-form'
+import {ProductContext} from '../ParentComponent'
 import { Link, useHistory } from 'react-router-dom'
 import Axios from 'axios'
 
 function Regist() {
     document.title = `KeudePeunajoh Daftar`
+    const {
+        url
+    } = useContext(ProductContext)
     const { register, handleSubmit, watch, errors } = useForm();
     const [regist, setRegist] = useState(false)
     const history = useHistory()
     const onSubmit = data => {
         setRegist(true)
-        Axios.post('http://keudepeunajohapi.jsmiot.com/Auth/regist', {
+        Axios.post(`${url}Auth/regist`, {
             username:data.username,
             password:data.pass1,
             alamat:data.alamat,

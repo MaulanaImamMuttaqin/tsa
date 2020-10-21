@@ -22,7 +22,8 @@ function TokoUser() {
         Toko:{
             TokoState,
             DispatchTokoState
-        }
+        },
+        url
     } = useContext(ProductContext)
     const history = useHistory()
 
@@ -79,7 +80,7 @@ function TokoUser() {
         fd.append('deskripsi',data.deskripsi)
         fd.append('gambar', data.gambar[0], data.gambar[0].name )
         setaddProd(true)
-        Axios.post('http://keudepeunajohapi.jsmiot.com//Data/TambahProduk',fd,{
+        Axios.post(`${url}Data/TambahProduk`,fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -112,7 +113,7 @@ function TokoUser() {
     }
     const deleteProduct = data => {
         setDelProd(true)
-        Axios.post('http://keudepeunajohapi.jsmiot.com//Data/HapusProduk',
+        Axios.post(`${url}Data/HapusProduk`,
         {
             prodId : data.id,
             userId : UserState.data.id,
@@ -151,7 +152,7 @@ function TokoUser() {
         }
         
         setEditProd(true)
-        Axios.post('http://keudepeunajohapi.jsmiot.com//Data/EditProduk',fd,{
+        Axios.post(`${url}/Data/EditProduk`,fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -185,7 +186,7 @@ function TokoUser() {
                                     </div>
                                     <div className="toko">
                                         <div className="logo-toko">
-                                            <img src={`http://keudepeunajohapi.jsmiot.com//${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
+                                            <img src={`${url}${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
                                         </div>
                                         <h2>{TokoState.data.toko.nama_toko}</h2>
                                         <p className="toko-ex">Alamat Toko: </p>
@@ -312,7 +313,7 @@ function TokoUser() {
                                                             {
                                                                 pictureEdit !== null ?
                                                                 <Image  src={imgDataEdit} fluid rounded />:
-                                                                <Image  src={`http://keudepeunajohapi.jsmiot.com//${editData.gambar_product}`} fluid rounded />       
+                                                                <Image  src={`${url}/${editData.gambar_product}`} fluid rounded />       
                                                                 
                                                             }
                                                         </div>

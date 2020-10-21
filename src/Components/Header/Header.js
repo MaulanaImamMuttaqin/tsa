@@ -13,7 +13,9 @@ function Header(props) {
     User:{
       UserState,
       DispatchUserState
-    }} = useContext(ProductContext)
+    },
+    url
+  } = useContext(ProductContext)
 
   const wrapperRef1 = useRef(null)
   const wrapperRef2 = useRef(null)
@@ -112,7 +114,7 @@ function Header(props) {
                           <Row>
                             <div  className="ProfilePic">
                                 {UserState.data.profile === "" ? <span><FontAwesomeIcon icon="usercircle" size="6x"/></span> :
-                                  <Image src={`http://keudepeunajohapi.jsmiot.com/${UserState.data.profile}`} height="130" width="130" roundedCircle   />
+                                  <Image src={`${url}${UserState.data.profile}`} height="130" width="130" roundedCircle   />
                                 }
                             </div>
                           </Row>

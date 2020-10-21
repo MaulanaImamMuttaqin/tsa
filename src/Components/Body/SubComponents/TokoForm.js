@@ -21,7 +21,8 @@ function TokoForm() {
         Toko:{
             TokoState,
             DispatchTokoState
-        }
+        },
+        url
     } = useContext(ProductContext)
 
     const history = useHistory()
@@ -40,7 +41,7 @@ function TokoForm() {
             fd.append('gambar', data.gambar[0], data.gambar[0].name )
         }
         setaddProd(true)
-        Axios.post('http://keudepeunajohapi.jsmiot.com/Data/BuatToko',fd,{
+        Axios.post(`${url}Data/BuatToko`,fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }

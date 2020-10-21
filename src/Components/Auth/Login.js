@@ -24,14 +24,15 @@ function Login() {
         Toko : {
             // TokoState,
             DispatchTokoState
-        }
+        },
+        url
     } = useContext(ProductContext)
 
     const submit = e => {
         e.preventDefault()
         DispatchUserState({type: "SET_LOADING_USER"})
         
-        Axios.post('http://keudepeunajohapi.jsmiot.com/Auth/login', {
+        Axios.post(`${url}Auth/login`, {
             no_hp: nohp,
             password : pass
         }).then(res1 => {

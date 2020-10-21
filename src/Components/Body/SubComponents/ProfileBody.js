@@ -19,7 +19,8 @@ function ProfileBody() {
         Toko : {
             TokoState,
             DispatchTokoState
-        }
+        },
+        url
     } = useContext(ProductContext)
     const history = useHistory()
     const { register, handleSubmit, errors  } = useForm();
@@ -44,7 +45,7 @@ function ProfileBody() {
         if(data.gambarProfile.length !== 0){
             fd.append('gambar', data.gambarProfile[0], data.gambarProfile[0].name )
         }
-        Axios.post('http://keudepeunajohapi.jsmiot.com/Data/editData', fd,{
+        Axios.post(`${url}Data/editData`, fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -73,7 +74,7 @@ function ProfileBody() {
         if(data.gambarToko.length !== 0){
             fd.append('gambar', data.gambarToko[0], data.gambarToko[0].name )
         }
-        Axios.post('http://keudepeunajohapi.jsmiot.com/Data/editToko',fd,{
+        Axios.post(`${url}Data/editToko`,fd,{
             headers: {
                 'Authorization': localStorage.getItem('SavedToken')
               }
@@ -143,7 +144,7 @@ function ProfileBody() {
                                                                 <Image  src={imgData} fluid rounded />:
                                                                 <div>
                                                                     {UserState.data.profile === "" ? <FontAwesomeIcon icon="usercircle" size="6x"/> :
-                                                                        <Image src={`http://keudepeunajohapi.jsmiot.com/${UserState.data.profile}`}  fluid rounded />
+                                                                        <Image src={`${url}${UserState.data.profile}`}  fluid rounded />
                                                                     }
                                                                 </div>
                                                                         
@@ -304,7 +305,7 @@ function ProfileBody() {
                                                                 {
                                                                     pictureEdit !== null ?
                                                                     <Image  src={imgDataEdit} fluid rounded />:
-                                                                    <Image  src={`http://keudepeunajohapi.jsmiot.com/${TokoState.data.toko.gambar_toko}`} fluid rounded />       
+                                                                    <Image  src={`${url}${TokoState.data.toko.gambar_toko}`} fluid rounded />       
                                                                     
                                                                 }
                                                                 

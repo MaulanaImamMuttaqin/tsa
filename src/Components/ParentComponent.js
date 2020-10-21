@@ -15,8 +15,7 @@ const state = {
     error:false,
     data: {}
 }
-// const button_click_search_state = ''
-
+const link = "http://keudepeunajohapi.jsmiot.com/"
 const user_state = {
     loading:false,
     login: false,
@@ -86,7 +85,7 @@ function ParentComponent() {
     useEffect(()=> {
         if(localStorage.getItem('SavedToken') !== null){
 
-            Axios.post('http://keudepeunajohapi.jsmiot.com/Auth/Authorization',{}, {
+            Axios.post(`${link}Auth/Authorization`,{}, {
                 headers: {
                     'Authorization': localStorage.getItem('SavedToken')
                   }
@@ -97,7 +96,7 @@ function ParentComponent() {
                 dispatchUserState({type: "SET_USER_STATE_FAILED"})
             })
         }
-        Axios.get('http://keudepeunajohapi.jsmiot.com/Data/')
+        Axios.get(`${link}Data/`)
         .then(response => {
             
             dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
@@ -130,7 +129,8 @@ function ParentComponent() {
                     Toko: {
                         TokoState: tokoState,
                         DispatchTokoState: dispatchTokoState
-                    }
+                    },
+                    url: link
                 }
             }
         >       
