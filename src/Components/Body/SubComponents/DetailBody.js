@@ -30,7 +30,7 @@ function DetailBody() {
                 DispatchDetailProState({type: 'FETCH_ERROR'})
             })
             // 
-    },[])
+    },[DispatchDetailProState,id,url])
     const numberWithCommas = x => {
         return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }

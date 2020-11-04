@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react'
+import React, {useContext, useState, useEffect} from 'react'
 import {useForm} from 'react-hook-form'
 import {ProductContext} from '../../ParentComponent'
 import Loading from '../../general/Loading'
@@ -17,7 +17,8 @@ function TokoUser() {
     const { register:register2, handleSubmit:handleSubmit2, errors:errors2 } = useForm();
     const {
         User:{
-            UserState
+            UserState,
+            DispatchUserState
         },
         Toko:{
             TokoState,
@@ -27,6 +28,52 @@ function TokoUser() {
     } = useContext(ProductContext)
     const history = useHistory()
 
+    useEffect(() => {
+        if(Object.keys(TokoState.data).length === 0){
+            DispatchTokoState({type: "SET_LOADING"})
+            if(UserState.login === false){
+                console.log("user")
+                if(localStorage.getItem('SavedToken') !== null){
+                    Axios.post(`${url}Auth/Authorization2`,{}, {
+                        headers: {
+                            'Authorization': localStorage.getItem('SavedToken')
+                            }
+                    }).then(res => {
+                        DispatchUserState({type: "SET_USER_STATE", payload: res.data.user})
+                        Axios.get(`${url}Data?toko_id=${res.data.user.id}`,{
+                            headers: {
+                                'Authorization': localStorage.getItem('SavedToken')
+                              }
+                        }).then(res => {
+                            
+                            DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
+                        }).catch(error => {
+                            console.log("error")
+                            console.log(error)
+                        })
+                    }).catch(error => {
+                        DispatchUserState({type: "SET_USER_STATE_FAILED"})
+                    })
+                }
+            }else{
+                if(localStorage.getItem('SavedToken') !== null){
+                    
+                    Axios.get(`${url}Data?toko_id=${UserState.data.id}`,{
+                        headers: {
+                            'Authorization': localStorage.getItem('SavedToken')
+                          }
+                    }).then(res => {
+                        console.log(res.data)
+                        DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
+                    }).catch(error => {
+                        console.log("error")
+                        console.log(error)
+                    })
+                }
+    
+            }
+        }
+    },[])
 
     const [update, setUpdate] = useState(false)//buat manggil notifikasi kalo tambah produk berhasil
     const [addProd, setaddProd] = useState(false)//buat manggil miniload
@@ -138,7 +185,6 @@ function TokoUser() {
 
     
     const onEdit = data => {
-        console.log(data)
         const fd = new FormData();
         fd.append('user_id', UserState.data.id)
         fd.append('id', editData.id)    
@@ -160,6 +206,8 @@ function TokoUser() {
         .then(res => {
             setEditProd(false)
             setEditSuc(true)
+            console.log(res.data.data)
+            console.log(res.data.new_prod)
             DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
         }).catch(error => {
             setaddProd(false)

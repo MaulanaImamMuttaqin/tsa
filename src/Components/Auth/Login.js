@@ -21,10 +21,6 @@ function Login() {
             DispatchUserState, 
             UserState
         },
-        Toko : {
-            // TokoState,
-            DispatchTokoState
-        },
         url
     } = useContext(ProductContext)
 
@@ -32,13 +28,12 @@ function Login() {
         e.preventDefault()
         DispatchUserState({type: "SET_LOADING_USER"})
         
-        Axios.post(`${url}Auth/login`, {
+        Axios.post(`${url}Auth/login2`, {
             no_hp: nohp,
             password : pass
         }).then(res1 => {
             let token = res1.data.JWT;
             localStorage.setItem("SavedToken", token);
-            DispatchTokoState({type: "FETCH_SUCCESS", payload: res1.data.toko_user})
             DispatchUserState({type: "SET_USER_STATE", payload: res1.data.data})
             history.push('/')
 

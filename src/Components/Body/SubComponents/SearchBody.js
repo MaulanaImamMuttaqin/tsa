@@ -31,7 +31,7 @@ function SearchBody() {
                 DispatchSearchProductState({type: 'FETCH_ERROR'})
             })
         
-    },[key])
+    },[key, DispatchSearchProductState, url])
     return (
         <div style={
             ProductState.loading ? { height : "100%"}:
@@ -53,7 +53,7 @@ function SearchBody() {
                     <div className="foods">
                         
                                 <div>
-                                    {SearchProductState.data.product === false
+                                    {Object.keys(SearchProductState.data.product).length === 0
                                         ? <p>Tidak hasil pencarian untuk {key}</p>
                                         : <div className="foods">
                                         {

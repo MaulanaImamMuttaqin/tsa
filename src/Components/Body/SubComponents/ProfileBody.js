@@ -1,5 +1,5 @@
 import Axios from 'axios'
-import React ,{useContext,useState}from 'react'
+import React ,{useContext,useState, useEffect}from 'react'
 import { useForm } from 'react-hook-form'
 import {useHistory} from 'react-router-dom'
 import {ProductContext} from '../../ParentComponent'
@@ -16,12 +16,61 @@ function ProfileBody() {
             DispatchUserState, 
             UserState
         },
-        Toko : {
-            TokoState,
-            DispatchTokoState
+        TokoProfile : {
+            TokoProfState,
+            DispatchTokoProfState
         },
         url
     } = useContext(ProductContext)
+
+
+    useEffect(()=> {
+        if(Object.keys(TokoProfState.data).length === 0){
+            DispatchTokoProfState({type: "SET_LOADING"})
+            if(UserState.login === false){
+                if(localStorage.getItem('SavedToken') !== null){
+                    Axios.post(`${url}Auth/Authorization2`,{}, {
+                        headers: {
+                            'Authorization': localStorage.getItem('SavedToken')
+                            }
+                    }).then(res => {
+                        console.log(res.data.user)
+                        DispatchUserState({type: "SET_USER_STATE", payload: res.data.user})
+                        Axios.get(`${url}Data/TokoProfile`,{
+                            params: {
+                                user_id: res.data.user.id
+                            }
+                        }).then(res => {
+                            console.log(res.data)
+                            DispatchTokoProfState({type: "FETCH_SUCCESS", payload: res.data.data})
+                        }).catch(error => {
+                            console.log("error")
+                            console.log(error)
+                        })
+                    }).catch(error => {
+                        DispatchUserState({type: "SET_USER_STATE_FAILED"})
+                    })
+                }
+            }else{
+                if(localStorage.getItem('SavedToken') !== null){
+                    
+                    Axios.get(`${url}Data/TokoProfile`,{
+                        params: {
+                            user_id: UserState.data.id
+                        }
+                    }).then(res => {
+                        console.log(res.data)
+                        DispatchTokoProfState({type: "FETCH_SUCCESS", payload: res.data.data})
+                    }).catch(error => {
+                        console.log("error")
+                        console.log(error)
+                    })
+                }
+    
+            }
+        }
+    },[])
+
     const history = useHistory()
     const { register, handleSubmit, errors  } = useForm();
     const { register:register2, handleSubmit:handleSubmit2, errors:errors2 } = useForm();
@@ -65,9 +114,9 @@ function ProfileBody() {
     const UpdateToko = data => {
         setTokoLoad(true)
         const fd = new FormData();
-        fd.append('id', TokoState.data.toko.id)
+        fd.append('id', TokoProfState.data.id)
         fd.append('user_id', UserState.data.id)
-        fd.append('nama_prev', TokoState.data.toko.nama_toko)
+        fd.append('nama_prev', TokoProfState.data.nama_toko)
         fd.append('nama', data.nama)
         fd.append('alamat', data.alamat)
         fd.append('deskripsi', data.deskripsi)
@@ -80,7 +129,7 @@ function ProfileBody() {
               }
         }).then(res => {
             console.log("toko update",res.data)
-            DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
+            DispatchTokoProfState({type: "FETCH_SUCCESS", payload: res.data.data})
             setEditToko(true)
             setTokoLoad(false)
             setUpdateToko(true)
@@ -122,9 +171,9 @@ function ProfileBody() {
     if(localStorage.getItem('SavedToken') !== null){
         return (
 
-            <div style={ TokoState.loading ? { height : "100%"} : {height: ""} }>
+            <div style={ TokoProfState.loading ? { height : "100%"} : {height: ""} }>
                     {
-                        TokoState.loading ? <Loading color="loading-white"/>:
+                        TokoProfState.loading ? <Loading color="loading-white"/>:
                                 <div className="content">
                                     <Container>
                                         <div className="content-header">
@@ -296,7 +345,7 @@ function ProfileBody() {
                                             updateToko && <Alert variant="success"  onClose={() => setUpdateToko(false)} dismissible>Profile Toko berhasil di update</Alert>
                                         }
                                         {
-                                            TokoState.data == null ? <p>Anda belum memiliki toko</p> :
+                                            TokoProfState.data == null ? <p>Anda belum memiliki toko</p> :
                                             <div className="Toko-data">
                                                  <Row>
                                                     <Col style={{textAlign: "center"}} xs={6} md={4}>
@@ -305,7 +354,7 @@ function ProfileBody() {
                                                                 {
                                                                     pictureEdit !== null ?
                                                                     <Image  src={imgDataEdit} fluid rounded />:
-                                                                    <Image  src={`${url}${TokoState.data.toko.gambar_toko}`} fluid rounded />       
+                                                                    <Image  src={`${url}${TokoProfState.data.gambar_toko}`} fluid rounded />       
                                                                     
                                                                 }
                                                                 
@@ -337,15 +386,15 @@ function ProfileBody() {
                                                             <div>
                                                                 <Row>
                                                                     <Col xs={3} md={2}><b>Nama Toko</b></Col>
-                                                                    <Col xs={12} md={10}><p>:  {TokoState.data.toko.nama_toko}</p></Col>
+                                                                    <Col xs={12} md={10}><p>:  {TokoProfState.data.nama_toko}</p></Col>
                                                                 </Row>
                                                                 <Row>
                                                                     <Col xs={3} md={2}><b>Alamat Toko</b></Col>
-                                                                    <Col xs={12} md={10}><p>:  {TokoState.data.toko.alamat_toko}</p></Col>
+                                                                    <Col xs={12} md={10}><p>:  {TokoProfState.data.alamat_toko}</p></Col>
                                                                 </Row>
                                                                 <Row>
                                                                     <Col xs={3} md={2}><b>Deskripsi Toko</b></Col>
-                                                                    <Col xs={12} md={10}><p>:  {TokoState.data.toko.deskripsi}</p></Col>
+                                                                    <Col xs={12} md={10}><p>:  {TokoProfState.data.deskripsi}</p></Col>
                                                                 </Row>
                                                                 
                                                             </div> :
@@ -357,7 +406,7 @@ function ProfileBody() {
                                                                         <FormControl
                                                                         placeholder="Masukkan Nama Toko"
                                                                         name="nama"
-                                                                        defaultValue={TokoState.data.toko.nama_toko}
+                                                                        defaultValue={TokoProfState.data.nama_toko}
                                                                         ref={register2()}
                                                                         required
                                                                         />
@@ -370,7 +419,7 @@ function ProfileBody() {
                                                                     <InputGroup className="mb-3">:
                                                                         <FormControl
                                                                         placeholder="Masukkan Alamat"
-                                                                        defaultValue={TokoState.data.toko.alamat_toko}
+                                                                        defaultValue={TokoProfState.data.alamat_toko}
                                                                         name="alamat"
                                                                         ref={register2()}
                                                                         required
@@ -386,7 +435,7 @@ function ProfileBody() {
                                                                         as="textarea"
                                                                         placeholder="Deskripsi Toko"
                                                                         name="deskripsi"
-                                                                        defaultValue={TokoState.data.toko.deskripsi}
+                                                                        defaultValue={TokoProfState.data.deskripsi}
                                                                         ref={register2()}
                                                                         required
                                                                         />

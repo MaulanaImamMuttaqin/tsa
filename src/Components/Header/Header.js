@@ -55,16 +55,16 @@ function Header(props) {
               <Container>
               {/* style={{border:"1px solid"}} */}
                   <Row className="header-container"  >
-                      <Col xs={3}>
-                          <img className="logo-tittle center-container" src={Logo} alt="" onClick={ChangeComponent}/>
+                      <Col xs={3} className="header-left">
+                          <img className="logo-tittle" src={Logo} alt="" onClick={ChangeComponent}/>
                       </Col>
 
                       <Col className="header-center">
                           <form onSubmit={submitHandler} className="form-search">
-                          <InputGroup size="md"  >
+                          <InputGroup size="md" className="subform" >
                             <FormControl
                               className="search" 
-                              placeholder="Cari apa yang anda inginkan"
+                              placeholder="Telusuri"
                               aria-label="Recipient's username"
                               aria-describedby="basic-addon2"
                               value={search}
@@ -135,7 +135,22 @@ function Header(props) {
                 clickBars &&
                <div className="menu-button-dropdown">
                  <div className="menu-content">
-                  <form onSubmit={submitHandler} className="form">
+                 <form onSubmit={submitHandler} className="form-search">
+                          <InputGroup size="md"  >
+                            <FormControl
+                              className="search" 
+                              placeholder="Telusuri"
+                              aria-label="Recipient's username"
+                              aria-describedby="basic-addon2"
+                              value={search}
+                              onChange={e => setSearch(e.target.value)}
+                            />
+                            <InputGroup.Append>
+                              <Button className="sub" type="submit" variant="outline-primary"><FontAwesomeIcon icon="search" /></Button>
+                            </InputGroup.Append>
+                          </InputGroup>
+                        </form>
+                  {/* <form onSubmit={submitHandler} className="form">
                           <input 
                             type="text" 
                             className="search" 
@@ -145,7 +160,7 @@ function Header(props) {
                             />
                             
                           <button className="sub" type="submit"><FontAwesomeIcon icon="search" /></button>
-                    </form>
+                    </form> */}
                        {localStorage.getItem('SavedToken') !== null ? 
                          <div>
                            <Link style={{ textDecoration: 'none' }} to="/Profile" onClick={()=> setClickBars(false)}>

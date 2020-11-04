@@ -30,11 +30,7 @@ const reducer = (state, action) => {
                 ...state,
                 loading:true
             }
-        case 'LOGOUT' :
-            return {
-                ...user_state,
-                data:{}
-            }
+        
         case 'FETCH_SUCCESS':
             return {
                 loading: false,
@@ -47,9 +43,12 @@ const reducer = (state, action) => {
                 data: {},
                 error:true
             }
-        case 'UPDATE_SEARCH_ONCLICK':
-            return action.value
-            
+        default:
+            break;
+    }
+}
+const user_reducer = (state, action) => {
+    switch (action.type) {
         case 'SET_USER_STATE':
             return {
                 loading:false,
@@ -58,13 +57,18 @@ const reducer = (state, action) => {
             }
         case 'SET_USER_STATE_FAILED':
             return {
-                ...user_state
+                ...state
             }
         
         case 'SET_LOADING_USER':
             return {
-                ...user_state,
+                ...state,
                 loading:true
+            }
+        case 'LOGOUT' :
+            return {
+                ...state,
+                data:{}
             }
         default:
             break;
@@ -73,39 +77,30 @@ const reducer = (state, action) => {
 
 
 function ParentComponent() {
-      
+     
 
     const [ProState, dispatchProState] = useReducer(reducer, state)
     const [searchProState, dispatchSearchProState] = useReducer(reducer, state)
     const [detailProState, dispatchDetailProState] = useReducer(reducer, state)
-    const [userState, dispatchUserState] = useReducer(reducer, user_state)
+    const [userState, dispatchUserState] = useReducer(user_reducer, user_state)
     const [tokoState, dispatchTokoState] = useReducer(reducer, state)
-    
+    const [tokoProfile, dispatchTokoProfile] = useReducer(reducer, state)
 
     useEffect(()=> {
+        console.log("parent")
         if(localStorage.getItem('SavedToken') !== null){
 
-            Axios.post(`${link}Auth/Authorization`,{}, {
+            Axios.post(`${link}Auth/Authorization2`,{}, {
                 headers: {
                     'Authorization': localStorage.getItem('SavedToken')
                   }
             }).then(res => {
-                dispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
                 dispatchUserState({type: "SET_USER_STATE", payload: res.data.user})
             }).catch(error => {
                 dispatchUserState({type: "SET_USER_STATE_FAILED"})
             })
         }
-        Axios.get(`${link}Data/`)
-        .then(response => {
-            
-            dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
-        })
-        .catch(error =>{
-            dispatchProState({type: 'FETCH_ERROR'})
-        })
     },[])
-
     return (
         <ProductContext.Provider
             value={
@@ -129,6 +124,10 @@ function ParentComponent() {
                     Toko: {
                         TokoState: tokoState,
                         DispatchTokoState: dispatchTokoState
+                    },
+                    TokoProfile : {
+                        TokoProfState: tokoProfile,
+                        DispatchTokoProfState: dispatchTokoProfile
                     },
                     url: link
                 }

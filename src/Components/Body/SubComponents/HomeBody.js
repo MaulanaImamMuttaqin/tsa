@@ -2,6 +2,7 @@ import React,{useContext, useEffect, useState} from 'react'
 import '../../../assets/style/HomeBody.css'
 import Logo from "../../../assets/image/logo5.png"
 import { Carousel, Alert, Container } from 'react-bootstrap';
+import Axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import Food from './Food';
 import {ProductContext} from '../../ParentComponent'
@@ -12,7 +13,8 @@ import { Link} from 'react-router-dom'
 function HomeBody() {
     const {
         Product:{
-            ProductState
+            ProductState,
+            dispatchProductState
         },
         User:{
             UserState
@@ -27,9 +29,18 @@ function HomeBody() {
             setAlertLogin(true)
         }else{
             setAlertLogin(false)
-        }
-        
+        }  
     },[UserState])
+    
+    useEffect(()=> {
+        Axios.post(`${url}Data/all_product`,{})
+        .then(response => {
+            dispatchProductState({type: 'FETCH_SUCCESS', payload:response.data.data})
+        })
+        .catch(error =>{
+            dispatchProductState({type: 'FETCH_ERROR'})
+        })
+    },[dispatchProductState ,url])
     
     if(ProductState.error){
         return(
@@ -63,7 +74,7 @@ function HomeBody() {
                                         Selamat Datang, <b>{UserState.data.username}</b>
                                     </Alert>:
                                      <Alert variant="warning" style={{marginTop:"10px"}}>
-                                        Anda belum terlogin, silahkan <Link to='/Login'><b>Login</b></Link> terlebih dahulu
+                                        Anda belum login, silahkan <Link to='/Login'><b>Login</b></Link> terlebih dahulu
                                     </Alert>
                                 }
                                     <div className="content-header">
