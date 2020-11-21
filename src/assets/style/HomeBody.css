@@ -2,7 +2,6 @@
     position: relative;
     height: auto;
     padding-top: 65px;
-    padding-bottom:50px;
   }
   .clear{
     clear:both;
@@ -35,7 +34,27 @@
     margin-top:20px;
     color:#40619c;
   }
-  
+  .load-more {
+    padding:20px 0;
+    text-align: center;
+
+  }
+  .load-more span{
+    font-weight: bolder;
+    color: rgba(87, 151, 255,1);
+    border:3px solid rgba(87, 151, 255, 1);
+    border-radius: 10px;
+    display: inline-block;
+    line-height: 40px;
+    height:40px;
+    width:35%;
+  }
+  .load-more span:hover{
+    cursor: pointer;
+    color: rgba(87, 151, 255,0.7);
+    border:3px solid rgba(87, 151, 255, 0.7);
+
+  }
   @media all and (max-width: 670px) {
 
     /*carousel gambar*/
@@ -44,6 +63,9 @@
       height: 100%;
     }
     .carousel-item img{
+      width:100%;
+    }
+    .load-more span{
       width:100%;
     }
   }

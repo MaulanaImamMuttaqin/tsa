@@ -19,6 +19,7 @@ const link = "http://keudepeunajohapi.jsmiot.com/"
 const user_state = {
     loading:false,
     login: false,
+    error:false,
     data:{}
 }
 
@@ -43,6 +44,16 @@ const reducer = (state, action) => {
                 data: {},
                 error:true
             }
+        case 'FETCH_APPEND':
+            let old_data = state.data.product
+            let new_data = old_data.concat(action.payload)
+            return {
+                ...state,
+                data :{
+                    ...state.data,
+                    product: new_data
+                }
+            }
         default:
             break;
     }
@@ -57,7 +68,8 @@ const user_reducer = (state, action) => {
             }
         case 'SET_USER_STATE_FAILED':
             return {
-                ...state
+                ...state,
+                error:true
             }
         
         case 'SET_LOADING_USER':
@@ -100,6 +112,14 @@ function ParentComponent() {
                 dispatchUserState({type: "SET_USER_STATE_FAILED"})
             })
         }
+        Axios.post(`${link}Data/all_product`,{})
+        .then(response => {
+            dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
+        })
+        .catch(error =>{
+            console.log(error)
+            dispatchProState({type: 'FETCH_ERROR'})
+        })
     },[])
     return (
         <ProductContext.Provider

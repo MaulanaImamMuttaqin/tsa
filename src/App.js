@@ -7,7 +7,7 @@ import { faStore,faUserCircle , faUpload , faImage,faSearch, faSignOutAlt, faBar
 library.add(faStore,faUserCircle , faUpload, faImage,faSearch, faSignOutAlt, faBars)
 function App() {
   return (
-    <div className="App" style={{height: "100%"}}>
+    <div className="App">
       <Router>
       <ParentComponent/>
       </Router>

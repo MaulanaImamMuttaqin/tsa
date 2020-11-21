@@ -8,7 +8,8 @@ import Food from './Food';
 import {ProductContext} from '../../ParentComponent'
 import Loading from '../../general/Loading';
 import Error from '../../general/Error';
-import { Link} from 'react-router-dom'
+import { Link} from 'react-router-dom';
+import MiniLoad from '../../../assets/gifs/mini-loading.gif'
 
 function HomeBody() {
     const {
@@ -22,7 +23,8 @@ function HomeBody() {
         url
     } = useContext(ProductContext)
     const [alertLogin, setAlertLogin] = useState(false)
-
+    const [fetchdata, setFetchData] = useState(false)
+    const [emptyResult, setEmptyResult] = useState(false)
     useEffect(()=> {
         document.title = `KeudePeunajoh`
         if(localStorage.getItem('SavedToken') !== null){
@@ -32,43 +34,57 @@ function HomeBody() {
         }  
     },[UserState])
     
-    useEffect(()=> {
-        Axios.post(`${url}Data/all_product`,{})
+    // useEffect(()=> {
+    //     Axios.post(`${url}Data/all_product`,{})
+    //     .then(response => {
+    //         dispatchProductState({type: 'FETCH_SUCCESS', payload:response.data.data})
+    //     })
+    //     .catch(error =>{
+    //         console.log(error)
+    //         dispatchProductState({type: 'FETCH_ERROR'})
+    //     })
+    // },[dispatchProductState ,url])
+    
+    const fetchNextData = () => {
+        let index = ProductState.data.product.length - 1;
+        let last_id = ProductState.data.product[index].id;
+        console.log(last_id)
+        setFetchData(true)
+        Axios.get(`${url}Data/NextProduct?prod_id=${last_id}`)
         .then(response => {
-            dispatchProductState({type: 'FETCH_SUCCESS', payload:response.data.data})
+            console.log(response.data.data.length)
+            if(response.data.data.length !== 0) {
+                dispatchProductState({type: 'FETCH_APPEND', payload:response.data.data})
+            }else{
+                setEmptyResult(true)
+            }
+            
+            setFetchData(false)
         })
         .catch(error =>{
+            console.log(error)
             dispatchProductState({type: 'FETCH_ERROR'})
+            setFetchData(false)
         })
-    },[dispatchProductState ,url])
+        
+       
+    }
     
     if(ProductState.error){
         return(
-            <div style={{ height : "100%"}}>
                <Error/>
-            </div>
         )
     }else{
 
         return (    
-            <div style={
-                ProductState.loading ? { height : "100%"}:
-                {height: ""}
-            }>
-    
+            <div>
+
                 {
                     ProductState.loading ? <Loading color="loading-white"/>:
-                        <div className="content"
-                            style={
-                                ProductState.loading ? { height : "100%"}:
-                                {height: "auto"}
-                            }
-                        >
+                        <div className="content" id="content">
                             
-                            <Container style={{height: "100%"}}>
-                               
+                            <Container>
                                 
-                                <div>
                                 {alertLogin ?
                                     <Alert variant="info" style={{marginTop:"10px"}}>
                                         Selamat Datang, <b>{UserState.data.username}</b>
@@ -117,10 +133,27 @@ function HomeBody() {
                                             )
                                         }
                                     </div>
+
+                            <div className="clear"></div>
+
+                            
+                                <div className="load-more">
+                                    {fetchdata ? 
+                                    <img src={MiniLoad} alt="loading" width="80" height="70"/>:
+                                    <div>
+                                    {
+                                        emptyResult ? <p>Yaah, Udah Habis :(</p>:
+                                        <span className="more-button" onClick={fetchNextData}>Tampilkan Lebih Banyak</span>
+                                    }
+                                    
                                 </div>
+                                    }
+                                </div>
+                                
+                           
                             </Container>
                             
-                            <div className="clear"></div>
+                            
                         </div>
                 }
             </div>

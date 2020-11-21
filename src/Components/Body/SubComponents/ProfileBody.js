@@ -8,7 +8,8 @@ import { Alert, InputGroup , FormControl,Button, Row, Col, Image, Badge, Contain
 import 'bootstrap/dist/css/bootstrap.min.css';
 import MiniLoad from '../../../assets/gifs/mini-loading.gif';
 import Loading from '../../general/Loading';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import Error from '../../general/Error';
 function ProfileBody() {
     document.title = 'KeudePeunajoh Profile'
     const {
@@ -46,9 +47,10 @@ function ProfileBody() {
                         }).catch(error => {
                             console.log("error")
                             console.log(error)
+                            DispatchTokoProfState({type: "FETCH_ERROR"})
                         })
                     }).catch(error => {
-                        DispatchUserState({type: "SET_USER_STATE_FAILED"})
+                        DispatchTokoProfState({type: "FETCH_ERROR"})
                     })
                 }
             }else{
@@ -169,309 +171,316 @@ function ProfileBody() {
         console.log(pictureEdit)
     };
     if(localStorage.getItem('SavedToken') !== null){
-        return (
+        if(TokoProfState.error){
+            return(
+                   <Error/>
+            )
+        }else{
+    
+            return (
 
-            <div style={ TokoProfState.loading ? { height : "100%"} : {height: ""} }>
-                    {
-                        TokoProfState.loading ? <Loading color="loading-white"/>:
-                                <div className="content">
-                                    <Container>
-                                        <div className="content-header">
-                                            <h4>Profile User</h4>
-                                        </div>
-                                        {
-                                            updateProfile && <Alert variant="success" onClose={() => setUpdateProfile(false)} dismissible>Profile berhasil di update</Alert>
-                                        }
-                                        <div className="profile-data">
-                                            
-                                            <Row>
-                                                <Col style={{textAlign: "center"}} xs={6} md={4}>
-                                                    
-                                                        <div className="previewProfilePic">
-                                                            {
-                                                                picture !== null ?
-                                                                <Image  src={imgData} fluid rounded />:
-                                                                <div>
-                                                                    {UserState.data.profile === "" ? <FontAwesomeIcon icon="usercircle" size="6x"/> :
-                                                                        <Image src={`${url}${UserState.data.profile}`}  fluid rounded />
-                                                                    }
-                                                                </div>
-                                                                        
-                                                                
-                                                            }
-                                                                
-                                                        </div>
-
-                                                    {
-                                                        !editProf &&
-                                                        <div>
-                                                            <label className="file-label" htmlFor="file" >
-                                                                <h3>
-                                                                    <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
-                                                                </h3>
-                                                            </label>
-                                                            <input id="file" className="file" type="file" name="gambarProfile" onChange={onChangePicture}  ref={register({
-                                                            validate: (value) => {
-                                                                if(value.length ===  0){
-                                                                    return true
-                                                                }
-                                                                return value[0].size < 2048000
-                                                            }
-                                                            })} />
-                                                            {errors.gambarProfile && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
-                                                        </div>
-                                                    }
-                                                        
-                                                </Col>
-                                                <Col xs={12} md={8}>
-                                                   <form onSubmit={handleSubmit(UpdateProfile)}>
-                                                       {
-                                                           editProf ?
-                                                           <div>
-                                                                <Row>
-                                                                    <Col xs={3} md={1}><b>Nama</b></Col>
-                                                                    <Col xs={12} md={11}><p>:  {UserState.data.username}</p></Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={1}><b>Alamat</b></Col>
-                                                                    <Col  xs={12} md={11}><p>:  {UserState.data.alamat}</p></Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={1}><b>Email</b></Col>
-                                                                    <Col  xs={12} md={11}><p>:  {UserState.data.email}</p></Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={1}><b>No HP</b></Col>
-                                                                    <Col  xs={12} md={11}><p>:  {UserState.data.no_hp}</p></Col>
-                                                                </Row>
-                                                               
-                                                           </div>
-                                                           :
-                                                           <div>
-                                                               <Row>
-                                                                    <Col xs={3} md={1}><b>Nama</b></Col>
-                                                                    <Col  xs={12} md={11}>
-                                                                    <InputGroup className="mb-3">:
-                                                                        <FormControl
-                                                                        placeholder="Masukkan Nama Anda"
-                                                                        aria-label="Username"
-                                                                        aria-describedby="basic-addon1"
-                                                                        name="username"
-                                                                        defaultValue={UserState.data.username}
-                                                                        ref={register()}
-                                                                        required
-                                                                        />
-                                                                    </InputGroup>
-                                                                    </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={1}><b>Alamat</b></Col>
-                                                                    <Col  xs={12} md={11}>
-                                                                    <InputGroup className="mb-3">:
-                                                                        <FormControl
-                                                                        placeholder="Masukkan Alamat"
-                                                                        aria-label="Username"
-                                                                        aria-describedby="basic-addon1"
-                                                                        defaultValue={UserState.data.alamat}
-                                                                        name="alamat"
-                                                                        ref={register()}
-                                                                        required
-                                                                        />
-                                                                    </InputGroup>
-                                                                    </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={1}><b>Email</b></Col>
-                                                                    <Col  xs={12} md={11}>
-                                                                    <InputGroup className="mb-3">:
-                                                                        <FormControl
-                                                                        placeholder="Masukkan Email"
-                                                                        aria-label="Username"
-                                                                        aria-describedby="basic-addon1"
-                                                                        name="email"
-                                                                        defaultValue={UserState.data.email}
-                                                                        ref={register()}
-                                                                        required
-                                                                        />
-                                                                    </InputGroup>
-                                                                    </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={1}><b>No HP</b></Col>
-                                                                    <Col  xs={12} md={11}>
-                                                                    <InputGroup className="mb-3">:
-                                                                    <FormControl
-                                                                        placeholder="Masukkan No HP"
-                                                                        aria-label="Username"
-                                                                        aria-describedby="basic-addon1"
-                                                                        name="nohp"
-                                                                        defaultValue={UserState.data.no_hp}
-                                                                        ref={register()}
-                                                                        required
-                                                                        />
-                                                                    </InputGroup>
-                                                                    </Col>
-                                                                </Row>
-                                                                
-                                                           </div>
-                                                       }
-                                                       
-
-                                                        {
-                                                            editProf ? <Button onClick={() => setEditProf(false)} size="lg" variant="outline-primary" type="submit">Edit</Button>:
-                                                            <div  className="profile-update-confirm">
-                                                                <Button  onClick={() => {setEditProf(true);setPicture(null);setImgData(null)}} size="lg" variant="outline-primary" type="submit">Cancel</Button>
-                                                                <Button  type="submit" size="lg" variant="outline-primary" >Simpan</Button>{profLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
-                                                                
-                                                            </div>
-                                                        }
-                                                    </form>
-                                                   
-                                                    
-                                                    
-                                                </Col>
-                                            </Row>
-
-                                            
-                                        </div>
-
-
-
-                                        <div className="content-header">
-                                            <h4>Profile Toko</h4>
-                                        </div>
-                                       
-                                        {
-                                            updateToko && <Alert variant="success"  onClose={() => setUpdateToko(false)} dismissible>Profile Toko berhasil di update</Alert>
-                                        }
-                                        {
-                                            TokoProfState.data == null ? <p>Anda belum memiliki toko</p> :
-                                            <div className="Toko-data">
-                                                 <Row>
+                <div>
+                        {
+                            TokoProfState.loading ? <Loading color="loading-white"/>:
+                                    <div className="content">
+                                        <Container>
+                                            <div className="content-header">
+                                                <h4>Profile User</h4>
+                                            </div>
+                                            {
+                                                updateProfile && <Alert variant="success" onClose={() => setUpdateProfile(false)} dismissible>Profile berhasil di update</Alert>
+                                            }
+                                            <div className="profile-data">
+                                                
+                                                <Row>
                                                     <Col style={{textAlign: "center"}} xs={6} md={4}>
                                                         
                                                             <div className="previewProfilePic">
                                                                 {
-                                                                    pictureEdit !== null ?
-                                                                    <Image  src={imgDataEdit} fluid rounded />:
-                                                                    <Image  src={`${url}${TokoProfState.data.gambar_toko}`} fluid rounded />       
+                                                                    picture !== null ?
+                                                                    <Image  src={imgData} fluid rounded />:
+                                                                    <div>
+                                                                        {UserState.data.profile === "" ? <FontAwesomeIcon icon="usercircle" size="6x"/> :
+                                                                            <Image src={`${url}${UserState.data.profile}`}  fluid rounded />
+                                                                        }
+                                                                    </div>
+                                                                            
                                                                     
                                                                 }
-                                                                
+                                                                    
                                                             </div>
-                                                            {
-                                                        !editToko &&
-                                                        <div>
-                                                            <label className="file-label" htmlFor="file" >
-                                                                <h3>
-                                                                    <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
-                                                                </h3>
-                                                            </label>
-                                                            <input id="file" className="file" type="file" name="gambarToko" onChange={onChangePictureEdit} ref={register2({
-                                                            validate: (value) => {
-                                                                if(value.length === 0){
-                                                                    return true
-                                                                }
-                                                                return value[0].size < 2048000
-                                                            }
-                                                            })}/>
-                                                            {errors2.gambarToko && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
-                                                        </div>
-                                                    }
-                                                        
-                                                    </Col>
-                                                    <Col xs={12} md={8}>
-                                                        <form onSubmit={handleSubmit2(UpdateToko)}>
-                                                            {editToko ? 
-                                                            <div>
-                                                                <Row>
-                                                                    <Col xs={3} md={2}><b>Nama Toko</b></Col>
-                                                                    <Col xs={12} md={10}><p>:  {TokoProfState.data.nama_toko}</p></Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={2}><b>Alamat Toko</b></Col>
-                                                                    <Col xs={12} md={10}><p>:  {TokoProfState.data.alamat_toko}</p></Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={2}><b>Deskripsi Toko</b></Col>
-                                                                    <Col xs={12} md={10}><p>:  {TokoProfState.data.deskripsi}</p></Col>
-                                                                </Row>
-                                                                
-                                                            </div> :
-                                                            <div>
-                                                                <Row>
-                                                                    <Col xs={3} md={2}><b>Nama Toko</b></Col>
-                                                                    <Col xs={12} md={10}>
-                                                                    <InputGroup className="mb-3">:
-                                                                        <FormControl
-                                                                        placeholder="Masukkan Nama Toko"
-                                                                        name="nama"
-                                                                        defaultValue={TokoProfState.data.nama_toko}
-                                                                        ref={register2()}
-                                                                        required
-                                                                        />
-                                                                    </InputGroup>
-                                                                    </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={2}><b>Alamat Toko</b></Col>
-                                                                    <Col xs={12} md={10}>
-                                                                    <InputGroup className="mb-3">:
-                                                                        <FormControl
-                                                                        placeholder="Masukkan Alamat"
-                                                                        defaultValue={TokoProfState.data.alamat_toko}
-                                                                        name="alamat"
-                                                                        ref={register2()}
-                                                                        required
-                                                                        />
-                                                                    </InputGroup>
-                                                                    </Col>
-                                                                </Row>
-                                                                <Row>
-                                                                    <Col xs={3} md={2}><b>Deskripsi Toko</b></Col>
-                                                                    <Col xs={12} md={10}>
-                                                                    <InputGroup className="mb-3">:
-                                                                        <FormControl
-                                                                        as="textarea"
-                                                                        placeholder="Deskripsi Toko"
-                                                                        name="deskripsi"
-                                                                        defaultValue={TokoProfState.data.deskripsi}
-                                                                        ref={register2()}
-                                                                        required
-                                                                        />
-                                                                    </InputGroup>
-                                                                    </Col>
-                                                                </Row>
-                                                                
-                                                            </div>
-                                                            }
 
-                                                            {
-                                                            editToko ? <Button onClick={() => setEditToko(false)} size="lg" variant="outline-primary">Edit</Button>:
-                                                            <div  className="profile-update-confirm">
-                                                                <Button  onClick={() => {setEditToko(true);setPictureEdit(null);setImgDataEdit(null)}} size="lg" variant="outline-primary" >Cancel</Button>
-                                                                <Button  type="submit" size="lg" variant="outline-primary">Simpan</Button>{tokoLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
-                                                                
+                                                        {
+                                                            !editProf &&
+                                                            <div>
+                                                                <label className="file-label" htmlFor="file" >
+                                                                    <h3>
+                                                                        <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
+                                                                    </h3>
+                                                                </label>
+                                                                <input id="file" className="file" type="file" name="gambarProfile" onChange={onChangePicture}  ref={register({
+                                                                validate: (value) => {
+                                                                    if(value.length ===  0){
+                                                                        return true
+                                                                    }
+                                                                    return value[0].size < 2048000
+                                                                }
+                                                                })} />
+                                                                {errors.gambarProfile && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
                                                             </div>
                                                         }
-                                                        </form>
+                                                            
+                                                    </Col>
+                                                    <Col xs={12} md={8}>
+                                                    <form onSubmit={handleSubmit(UpdateProfile)}>
+                                                        {
+                                                            editProf ?
+                                                            <div>
+                                                                    <Row>
+                                                                        <Col xs={3} md={1}><b>Nama</b></Col>
+                                                                        <Col xs={12} md={11}><p>:  {UserState.data.username}</p></Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={1}><b>Alamat</b></Col>
+                                                                        <Col  xs={12} md={11}><p>:  {UserState.data.alamat}</p></Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={1}><b>Email</b></Col>
+                                                                        <Col  xs={12} md={11}><p>:  {UserState.data.email}</p></Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={1}><b>No HP</b></Col>
+                                                                        <Col  xs={12} md={11}><p>:  {UserState.data.no_hp}</p></Col>
+                                                                    </Row>
                                                                 
+                                                            </div>
+                                                            :
+                                                            <div>
+                                                                <Row>
+                                                                        <Col xs={3} md={1}><b>Nama</b></Col>
+                                                                        <Col  xs={12} md={11}>
+                                                                        <InputGroup className="mb-3">:
+                                                                            <FormControl
+                                                                            placeholder="Masukkan Nama Anda"
+                                                                            aria-label="Username"
+                                                                            aria-describedby="basic-addon1"
+                                                                            name="username"
+                                                                            defaultValue={UserState.data.username}
+                                                                            ref={register()}
+                                                                            required
+                                                                            />
+                                                                        </InputGroup>
+                                                                        </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={1}><b>Alamat</b></Col>
+                                                                        <Col  xs={12} md={11}>
+                                                                        <InputGroup className="mb-3">:
+                                                                            <FormControl
+                                                                            placeholder="Masukkan Alamat"
+                                                                            aria-label="Username"
+                                                                            aria-describedby="basic-addon1"
+                                                                            defaultValue={UserState.data.alamat}
+                                                                            name="alamat"
+                                                                            ref={register()}
+                                                                            required
+                                                                            />
+                                                                        </InputGroup>
+                                                                        </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={1}><b>Email</b></Col>
+                                                                        <Col  xs={12} md={11}>
+                                                                        <InputGroup className="mb-3">:
+                                                                            <FormControl
+                                                                            placeholder="Masukkan Email"
+                                                                            aria-label="Username"
+                                                                            aria-describedby="basic-addon1"
+                                                                            name="email"
+                                                                            defaultValue={UserState.data.email}
+                                                                            ref={register()}
+                                                                            required
+                                                                            />
+                                                                        </InputGroup>
+                                                                        </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={1}><b>No HP</b></Col>
+                                                                        <Col  xs={12} md={11}>
+                                                                        <InputGroup className="mb-3">:
+                                                                        <FormControl
+                                                                            placeholder="Masukkan No HP"
+                                                                            aria-label="Username"
+                                                                            aria-describedby="basic-addon1"
+                                                                            name="nohp"
+                                                                            defaultValue={UserState.data.no_hp}
+                                                                            ref={register()}
+                                                                            required
+                                                                            />
+                                                                        </InputGroup>
+                                                                        </Col>
+                                                                    </Row>
+                                                                    
+                                                            </div>
+                                                        }
+                                                        
+
+                                                            {
+                                                                editProf ? <Button onClick={() => setEditProf(false)} size="lg" variant="outline-primary" type="submit">Edit</Button>:
+                                                                <div  className="profile-update-confirm">
+                                                                    <Button  onClick={() => {setEditProf(true);setPicture(null);setImgData(null)}} size="lg" variant="outline-primary" type="submit">Cancel</Button>
+                                                                    <Button  type="submit" size="lg" variant="outline-primary" >Simpan</Button>{profLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
+                                                                    
+                                                                </div>
+                                                            }
+                                                        </form>
+                                                    
+                                                        
+                                                        
                                                     </Col>
                                                 </Row>
 
-                                            
-                                            
-                                        </div>
-                                        }
-                                        
-                                    </Container>
-                                    <div className="clear"></div>
-                                </div>
-                                            
-                    } 
+                                                
+                                            </div>
 
-            </div>
-        )
+
+
+                                            <div className="content-header">
+                                                <h4>Profile Toko</h4>
+                                            </div>
+                                        
+                                            {
+                                                updateToko && <Alert variant="success"  onClose={() => setUpdateToko(false)} dismissible>Profile Toko berhasil di update</Alert>
+                                            }
+                                            {
+                                                TokoProfState.data == null ? <p>Anda belum memiliki toko</p> :
+                                                <div className="Toko-data">
+                                                    <Row>
+                                                        <Col style={{textAlign: "center"}} xs={6} md={4}>
+                                                            
+                                                                <div className="previewProfilePic">
+                                                                    {
+                                                                        pictureEdit !== null ?
+                                                                        <Image  src={imgDataEdit} fluid rounded />:
+                                                                        <Image  src={`${url}${TokoProfState.data.gambar_toko}`} fluid rounded />       
+                                                                        
+                                                                    }
+                                                                    
+                                                                </div>
+                                                                {
+                                                            !editToko &&
+                                                            <div>
+                                                                <label className="file-label" htmlFor="file" >
+                                                                    <h3>
+                                                                        <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
+                                                                    </h3>
+                                                                </label>
+                                                                <input id="file" className="file" type="file" name="gambarToko" onChange={onChangePictureEdit} ref={register2({
+                                                                validate: (value) => {
+                                                                    if(value.length === 0){
+                                                                        return true
+                                                                    }
+                                                                    return value[0].size < 2048000
+                                                                }
+                                                                })}/>
+                                                                {errors2.gambarToko && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
+                                                            </div>
+                                                        }
+                                                            
+                                                        </Col>
+                                                        <Col xs={12} md={8}>
+                                                            <form onSubmit={handleSubmit2(UpdateToko)}>
+                                                                {editToko ? 
+                                                                <div>
+                                                                    <Row>
+                                                                        <Col xs={3} md={2}><b>Nama Toko</b></Col>
+                                                                        <Col xs={12} md={10}><p>:  {TokoProfState.data.nama_toko}</p></Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={2}><b>Alamat Toko</b></Col>
+                                                                        <Col xs={12} md={10}><p>:  {TokoProfState.data.alamat_toko}</p></Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={2}><b>Deskripsi Toko</b></Col>
+                                                                        <Col xs={12} md={10}><p>:  {TokoProfState.data.deskripsi}</p></Col>
+                                                                    </Row>
+                                                                    
+                                                                </div> :
+                                                                <div>
+                                                                    <Row>
+                                                                        <Col xs={3} md={2}><b>Nama Toko</b></Col>
+                                                                        <Col xs={12} md={10}>
+                                                                        <InputGroup className="mb-3">:
+                                                                            <FormControl
+                                                                            placeholder="Masukkan Nama Toko"
+                                                                            name="nama"
+                                                                            defaultValue={TokoProfState.data.nama_toko}
+                                                                            ref={register2()}
+                                                                            required
+                                                                            />
+                                                                        </InputGroup>
+                                                                        </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={2}><b>Alamat Toko</b></Col>
+                                                                        <Col xs={12} md={10}>
+                                                                        <InputGroup className="mb-3">:
+                                                                            <FormControl
+                                                                            placeholder="Masukkan Alamat"
+                                                                            defaultValue={TokoProfState.data.alamat_toko}
+                                                                            name="alamat"
+                                                                            ref={register2()}
+                                                                            required
+                                                                            />
+                                                                        </InputGroup>
+                                                                        </Col>
+                                                                    </Row>
+                                                                    <Row>
+                                                                        <Col xs={3} md={2}><b>Deskripsi Toko</b></Col>
+                                                                        <Col xs={12} md={10}>
+                                                                        <InputGroup className="mb-3">:
+                                                                            <FormControl
+                                                                            as="textarea"
+                                                                            placeholder="Deskripsi Toko"
+                                                                            name="deskripsi"
+                                                                            defaultValue={TokoProfState.data.deskripsi}
+                                                                            ref={register2()}
+                                                                            required
+                                                                            />
+                                                                        </InputGroup>
+                                                                        </Col>
+                                                                    </Row>
+                                                                    
+                                                                </div>
+                                                                }
+
+                                                                {
+                                                                editToko ? <Button onClick={() => setEditToko(false)} size="lg" variant="outline-primary">Edit</Button>:
+                                                                <div  className="profile-update-confirm">
+                                                                    <Button  onClick={() => {setEditToko(true);setPictureEdit(null);setImgDataEdit(null)}} size="lg" variant="outline-primary" >Cancel</Button>
+                                                                    <Button  type="submit" size="lg" variant="outline-primary">Simpan</Button>{tokoLoad && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
+                                                                    
+                                                                </div>
+                                                            }
+                                                            </form>
+                                                                    
+                                                        </Col>
+                                                    </Row>
+
+                                                
+                                                
+                                            </div>
+                                            }
+                                            
+                                        </Container>
+                                        <div className="clear"></div>
+                                    </div>
+                                                
+                        } 
+
+                </div>
+            )
+        }
     } else{
         history.push('/Login')
         return null

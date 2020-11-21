@@ -1,19 +1,16 @@
 
 .loading-container{
-    height:100%;
-    width:100%;
+    height:100vh;
+    position:relative;
+    z-index:2;
     background-color: rgba(0,0,0, 0.6);
-    position: absolute;
-    z-index: 2;
+    display:flex;
+    align-items: center;
+    justify-content: center;
 }
 .loading-white{
   background-color: rgba(255, 255, 255, 0.1);
 
-}
-.loading{
-    position:relative;
-    height:100%;
-    
 }
 @keyframes ldio-51xr4dzzvmp {
     0% { transform: rotate(0) }
@@ -29,7 +26,7 @@
     border-radius: 50%;
     border: 16px solid #000;
     border-color: #0682bf transparent #0682bf transparent;
-    animation: ldio-51xr4dzzvmp 1s linear infinite;
+    animation: ldio-51xr4dzzvmp 1.5s linear infinite;
   }
   
   .ldio-51xr4dzzvmp > div:nth-child(2), .ldio-51xr4dzzvmp > div:nth-child(4) {
@@ -37,7 +34,7 @@
     height: 108px;
     top: 46px;
     left: 46px;
-    animation: ldio-51xr4dzzvmp 1s linear infinite reverse;
+    animation: ldio-51xr4dzzvmp 1.5s linear infinite reverse;
   }
   .ldio-51xr4dzzvmp > div:nth-child(2) {
     border-color: transparent #16edd7 transparent #16edd7
@@ -100,9 +97,6 @@
 
   }
   .ldio-51xr4dzzvmp {
-    width: 100%;
-    height: 100%;
-    position: relative;
     transform: translateZ(0) scale(1);
     backface-visibility: hidden;
     transform-origin: 0 0; /* see note above */

@@ -8,7 +8,7 @@ function Error() {
                 <div className="error">
                     <div className="error-content center-container">
                         <FontAwesomeIcon style={{color : "rgba(87, 151, 255, 0.7)"}} size="8x" icon={faFrown} />
-                        <h4 className="">Cek Koneksi Internet Anda</h4>
+                        <h4 className="">Ada yang salah, Coba ulang lagi </h4>
                     </div>
                 </div>
             </div>

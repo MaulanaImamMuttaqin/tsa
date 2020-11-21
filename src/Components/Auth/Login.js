@@ -48,7 +48,7 @@ function Login() {
 
 
     return (
-        <div style={{height: "100%"}}>
+        <div>
             <div className="auth-body">
                 <div className="login">
                     <h2>Masuk</h2>

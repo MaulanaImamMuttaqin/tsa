@@ -10,6 +10,7 @@ import '../../../assets/style/TokoBody.css'
 import {useHistory} from "react-router-dom"
 import { Alert, Button, Modal, Container, Row, Col,InputGroup , FormControl, Image, Badge} from 'react-bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
+import Error from '../../general/Error';
 
 function TokoUser() {
     document.title = `KeudePeunajoh Toko Anda`
@@ -29,10 +30,8 @@ function TokoUser() {
     const history = useHistory()
 
     useEffect(() => {
-        if(Object.keys(TokoState.data).length === 0){
             DispatchTokoState({type: "SET_LOADING"})
             if(UserState.login === false){
-                console.log("user")
                 if(localStorage.getItem('SavedToken') !== null){
                     Axios.post(`${url}Auth/Authorization2`,{}, {
                         headers: {
@@ -48,11 +47,10 @@ function TokoUser() {
                             
                             DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
                         }).catch(error => {
-                            console.log("error")
-                            console.log(error)
+                            DispatchTokoState({type: "FETCH_ERROR"})
                         })
                     }).catch(error => {
-                        DispatchUserState({type: "SET_USER_STATE_FAILED"})
+                        DispatchTokoState({type: "FETCH_ERROR"})
                     })
                 }
             }else{
@@ -63,16 +61,13 @@ function TokoUser() {
                             'Authorization': localStorage.getItem('SavedToken')
                           }
                     }).then(res => {
-                        console.log(res.data)
                         DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
                     }).catch(error => {
-                        console.log("error")
-                        console.log(error)
+                        DispatchTokoState({type: "FETCH_ERROR"})
                     })
                 }
     
             }
-        }
     },[])
 
     const [update, setUpdate] = useState(false)//buat manggil notifikasi kalo tambah produk berhasil
@@ -206,8 +201,6 @@ function TokoUser() {
         .then(res => {
             setEditProd(false)
             setEditSuc(true)
-            console.log(res.data.data)
-            console.log(res.data.new_prod)
             DispatchTokoState({type: "FETCH_SUCCESS", payload: res.data.data})
         }).catch(error => {
             setaddProd(false)
@@ -221,251 +214,257 @@ function TokoUser() {
         setPictureEdit(null)
     }
     if(localStorage.getItem('SavedToken') !== null){
-        return (
-                
-                <div style={ TokoState.loading ? { height : "100%"} : {height: ""} }>
-                    {
-                        TokoState.loading ? <Loading color="loading-white"/>:
-                            <div className="content" style={TokoState.loading ? { height : "100%"}:{height: "auto"}}>
-                                
-                                <Container style={{height: "100%"}}>
-                                    <div className="content-header">
-                                        <h4>Profil Toko</h4>
-                                    </div>
-                                    <div className="toko">
-                                        <div className="logo-toko">
-                                            <img src={`${url}${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
+        if(TokoState.error){
+            return(
+                   <Error/>
+            )
+        }else{
+            return (
+                    
+                    <div>
+                        {
+                            TokoState.loading ? <Loading color="loading-white"/>:
+                                <div className="content" style={TokoState.loading ? { height : "100%"}:{height: "auto"}}>
+                                    
+                                    <Container style={{height: "100%"}}>
+                                        <div className="content-header">
+                                            <h4>Profil Toko</h4>
                                         </div>
-                                        <h2>{TokoState.data.toko.nama_toko}</h2>
-                                        <p className="toko-ex">Alamat Toko: </p>
-                                        <p>{TokoState.data.toko.alamat_toko}</p>
-                                        <p className="toko-ex">Deskripsi: </p>
-                                        <p className="toko-desc">{TokoState.data.toko.deskripsi}</p>
-                                    </div>
-                                    <div className="content-header">
-                                        <h4>Tambah Produk</h4>
-                                    </div>
-                                    {
-                                        update && <Alert variant="success" onClose={() => setUpdate(false)} dismissible>Produk {wichProd} berhasil di promosikan</Alert>
-                                    }
-                                    
-                                    
-                                    <div className="toko-form2">
-                                        <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" action="" className="form2">
-                                            <Row>
-                                                <Col style={{textAlign: "center"}} xs={6} md={4}>
-                                                    
-                                                        <div className="previewProfilePic">
-                                                            {
-                                                                picture !== null ?
-                                                                <Image  src={imgData} fluid rounded />:
-                                                                <FontAwesomeIcon icon="image" size="6x"/>         
-                                                                
-                                                            }
-                                                        </div>
-                                                    
-                                                        {picture !== null && 
-                                                            <p>{picture.name}</p>
-                                                        }
-                                                    <label className="file-label" htmlFor="file" >
-                                                        <h3>
-                                                            <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
-                                                        </h3>
-                                                    </label>
-                                                    <input id="file" className="file" type="file" name="gambar" onChange={onChangePicture} required ref={register({
-                                                    validate: (value) => {
-                                                        
-                                                        return value[0].size < 2048000
-                                                    }
-                                                    })} />
-                                                    {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
-                                                    
-                                                </Col>
-                                                <Col xs={12} md={8}>
-                                                        <InputGroup className="mb-3">
-                                                                <FormControl
-                                                                placeholder="Masukkan Nama Produk"
-                                                                aria-label="Username"
-                                                                aria-describedby="basic-addon1"
-                                                                name="nama"
-                                                                ref={register()}
-                                                                required
-                                                                />
-                                                            </InputGroup>
-                                                            <InputGroup className="mb-3">
-                                                                <FormControl
-                                                                type="number"
-                                                                placeholder="Masukkan Harga"
-                                                                aria-label="Username"
-                                                                aria-describedby="basic-addon1"
-                                                                name="harga"
-                                                                ref={register()}
-                                                                required
-                                                                />
-                                                            </InputGroup>
-                                                            <InputGroup className="mb-3">
-                                                                <FormControl
-                                                                as="textarea"
-                                                                placeholder="Deskripsi Produk"
-                                                                aria-label="Username"
-                                                                aria-describedby="basic-addon1"
-                                                                name="deskripsi"
-                                                                ref={register()}
-                                                                required
-                                                                />
-                                                            </InputGroup>
-                                                            <Button size="lg" variant="outline-primary" type="submit">Buat</Button>{addProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
-                                                        
-                                                </Col>
-                                            </Row>
-                                        </form>
-                                    </div>
-                                    
-
-                                    <div className="content-header">
-                                        <h4>Product Yang di Promosikan</h4>
-                                    </div>
-                                    {
-                                        delsuc && <Alert variant="success" onClose={() => setDelsuc(false)} dismissible>Produk {wichProd} berhasil di hapus</Alert>
-                                    }
-                                    
-                                    {
-                                        TokoState.data.product.j_prod === 0 ?
-                                        <p>Belum ada Produk yang di promosikan</p>:
-                                        TokoState.data.product.map(data => 
-                                            <Food key={data.id} Data={data} edit={fooddata => editForm(fooddata)} delete={deleteData => delModal(deleteData)} />
-                                        )
-                                    }
-                                    <div className="clear"></div>
-                            </Container>
-                                <Modal
-                                    show={show}
-                                    size="lg"
-                                    onHide={() => {setShow(false);setPictureEdit(null);setImgDataEdit(null)}}
-                                    dialogClassName="modal-90w"
-                                    aria-labelledby="example-custom-modal-styling-title"
-                                    centered
-                                >
-                                    <Modal.Header closeButton>
-                                        <Modal.Title id="example-custom-modal-styling-title">
-                                            Ubah Data Produk
-                                        </Modal.Title>
-                                    </Modal.Header>
-                                    <form onSubmit={handleSubmit2(onEdit)} encType="multipart/form-data">
-                                        <Modal.Body>
-                                            <Container>
+                                        <div className="toko">
+                                            <div className="logo-toko">
+                                                <img src={`${url}${TokoState.data.toko.gambar_toko}`} alt="gambar-toko"/>
+                                            </div>
+                                            <h2>{TokoState.data.toko.nama_toko}</h2>
+                                            <p className="toko-ex">Alamat Toko: </p>
+                                            <p>{TokoState.data.toko.alamat_toko}</p>
+                                            <p className="toko-ex">Deskripsi: </p>
+                                            <p className="toko-desc">{TokoState.data.toko.deskripsi}</p>
+                                        </div>
+                                        <div className="content-header">
+                                            <h4>Tambah Produk</h4>
+                                        </div>
+                                        {
+                                            update && <Alert variant="success" onClose={() => setUpdate(false)} dismissible>Produk {wichProd} berhasil di promosikan</Alert>
+                                        }
+                                        
+                                        
+                                        <div className="toko-form2">
+                                            <form onSubmit={handleSubmit(onSubmit)} encType="multipart/form-data" action="" className="form2">
                                                 <Row>
-                                                <Col style={{textAlign: "center"}} xs={6} md={4}>
-                                                    
-                                                        <div className="previewProfilePic">
-                                                            {
-                                                                pictureEdit !== null ?
-                                                                <Image  src={imgDataEdit} fluid rounded />:
-                                                                <Image  src={`${url}/${editData.gambar_product}`} fluid rounded />       
-                                                                
-                                                            }
-                                                        </div>
-                                                    
-                                                        {pictureEdit !== null && 
-                                                            <p>{pictureEdit.name}</p>
-                                                        }
-                                                    <label className="file-label" htmlFor="editfile" >
-                                                        <h3>
-                                                            <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
-                                                        </h3>
-                                                    </label>
-                                                    <input id="editfile" className="file" type="file" name="editGambar" onChange={onChangePictureEdit} ref={register2({
-                                                    validate: (value) => {
-                                                        if(value.length === 0){
-                                                            return true
-                                                        }
-                                                        return value[0].size < 2048000
+                                                    <Col style={{textAlign: "center"}} xs={6} md={4}>
                                                         
-                                                    }
-                                                    })}/>
-                                                    {errors2.editGambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
-                                                    
-                                                </Col>
-                                                    <Col xs={12} md={8}>
-                                                            <label htmlFor="nama">Nama Produk:</label>
-                                                            <InputGroup className="mb-3">
-                                                                <FormControl
-                                                                placeholder="Nama Produk"
-                                                                aria-label="Username"
-                                                                aria-describedby="basic-addon1"
-                                                                defaultValue={editData.nama_product}
-                                                                name="editNama"
-                                                                ref={register2()}
-                                                                />
-                                                            </InputGroup>
-                                                            <label htmlFor="harga">Harga Produk:</label>
-                                                            <InputGroup className="mb-3">
-                                                                <FormControl
-                                                                type="number"
-                                                                placeholder="Harga Produk"
-                                                                aria-label="Username"
-                                                                aria-describedby="basic-addon1"
-                                                                defaultValue={editData.harga}
-                                                                name="editHarga"
-                                                                ref={register2()}
-                                                                />
-                                                            </InputGroup>
-                                                            <label htmlFor="desc">Deskripsi:</label>
-                                                            <InputGroup className="mb-3">
-                                                                <FormControl
-                                                                as="textarea"
-                                                                placeholder="Deskripsi Produk"
-                                                                aria-label="Username"
-                                                                aria-describedby="basic-addon1"
-                                                                defaultValue={editData.deskripsi}
-                                                                name="editDesc"
-                                                                ref={register2()}
-                                                                />
-                                                            </InputGroup>
-                                                            {editProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
-                                                            {
-                                                                editSuc && <Alert variant="success" onClose={() => setEditSuc(false)} dismissible>Produk berhasil di perbaharui</Alert>
+                                                            <div className="previewProfilePic">
+                                                                {
+                                                                    picture !== null ?
+                                                                    <Image  src={imgData} fluid rounded />:
+                                                                    <FontAwesomeIcon icon="image" size="6x"/>         
+                                                                    
+                                                                }
+                                                            </div>
+                                                        
+                                                            {picture !== null && 
+                                                                <p>{picture.name}</p>
                                                             }
+                                                        <label className="file-label" htmlFor="file" >
+                                                            <h3>
+                                                                <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
+                                                            </h3>
+                                                        </label>
+                                                        <input id="file" className="file" type="file" name="gambar" onChange={onChangePicture} required ref={register({
+                                                        validate: (value) => {
+                                                            
+                                                            return value[0].size < 2048000
+                                                        }
+                                                        })} />
+                                                        {errors.gambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
+                                                        
                                                     </Col>
-                                                    
+                                                    <Col xs={12} md={8}>
+                                                            <InputGroup className="mb-3">
+                                                                    <FormControl
+                                                                    placeholder="Masukkan Nama Produk"
+                                                                    aria-label="Username"
+                                                                    aria-describedby="basic-addon1"
+                                                                    name="nama"
+                                                                    ref={register()}
+                                                                    required
+                                                                    />
+                                                                </InputGroup>
+                                                                <InputGroup className="mb-3">
+                                                                    <FormControl
+                                                                    type="number"
+                                                                    placeholder="Masukkan Harga"
+                                                                    aria-label="Username"
+                                                                    aria-describedby="basic-addon1"
+                                                                    name="harga"
+                                                                    ref={register()}
+                                                                    required
+                                                                    />
+                                                                </InputGroup>
+                                                                <InputGroup className="mb-3">
+                                                                    <FormControl
+                                                                    as="textarea"
+                                                                    placeholder="Deskripsi Produk"
+                                                                    aria-label="Username"
+                                                                    aria-describedby="basic-addon1"
+                                                                    name="deskripsi"
+                                                                    ref={register()}
+                                                                    required
+                                                                    />
+                                                                </InputGroup>
+                                                                <Button size="lg" variant="outline-primary" type="submit">Buat</Button>{addProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
+                                                            
+                                                    </Col>
                                                 </Row>
-                                            </Container>
-                                            
+                                            </form>
+                                        </div>
+                                        
+
+                                        <div className="content-header">
+                                            <h4>Product Yang di Promosikan</h4>
+                                        </div>
+                                        {
+                                            delsuc && <Alert variant="success" onClose={() => setDelsuc(false)} dismissible>Produk {wichProd} berhasil di hapus</Alert>
+                                        }
+                                        
+                                        {
+                                            TokoState.data.product.j_prod === 0 ?
+                                            <p>Belum ada Produk yang di promosikan</p>:
+                                            TokoState.data.product.map(data => 
+                                                <Food key={data.id} Data={data} edit={fooddata => editForm(fooddata)} delete={deleteData => delModal(deleteData)} />
+                                            )
+                                        }
+                                        <div className="clear"></div>
+                                </Container>
+                                    <Modal
+                                        show={show}
+                                        size="lg"
+                                        onHide={() => {setShow(false);setPictureEdit(null);setImgDataEdit(null)}}
+                                        dialogClassName="modal-90w"
+                                        aria-labelledby="example-custom-modal-styling-title"
+                                        centered
+                                    >
+                                        <Modal.Header closeButton>
+                                            <Modal.Title id="example-custom-modal-styling-title">
+                                                Ubah Data Produk
+                                            </Modal.Title>
+                                        </Modal.Header>
+                                        <form onSubmit={handleSubmit2(onEdit)} encType="multipart/form-data">
+                                            <Modal.Body>
+                                                <Container>
+                                                    <Row>
+                                                    <Col style={{textAlign: "center"}} xs={6} md={4}>
+                                                        
+                                                            <div className="previewProfilePic">
+                                                                {
+                                                                    pictureEdit !== null ?
+                                                                    <Image  src={imgDataEdit} fluid rounded />:
+                                                                    <Image  src={`${url}/${editData.gambar_product}`} fluid rounded />       
+                                                                    
+                                                                }
+                                                            </div>
+                                                        
+                                                            {pictureEdit !== null && 
+                                                                <p>{pictureEdit.name}</p>
+                                                            }
+                                                        <label className="file-label" htmlFor="editfile" >
+                                                            <h3>
+                                                                <Badge variant="secondary">Masukkan Gambar <FontAwesomeIcon icon="upload" /></Badge>
+                                                            </h3>
+                                                        </label>
+                                                        <input id="editfile" className="file" type="file" name="editGambar" onChange={onChangePictureEdit} ref={register2({
+                                                        validate: (value) => {
+                                                            if(value.length === 0){
+                                                                return true
+                                                            }
+                                                            return value[0].size < 2048000
+                                                            
+                                                        }
+                                                        })}/>
+                                                        {errors2.editGambar && <p><small style={{color: "red"}}>ukuran gambar tidak boleh lebih dari 2MB </small></p>}
+                                                        
+                                                    </Col>
+                                                        <Col xs={12} md={8}>
+                                                                <label htmlFor="nama">Nama Produk:</label>
+                                                                <InputGroup className="mb-3">
+                                                                    <FormControl
+                                                                    placeholder="Nama Produk"
+                                                                    aria-label="Username"
+                                                                    aria-describedby="basic-addon1"
+                                                                    defaultValue={editData.nama_product}
+                                                                    name="editNama"
+                                                                    ref={register2()}
+                                                                    />
+                                                                </InputGroup>
+                                                                <label htmlFor="harga">Harga Produk:</label>
+                                                                <InputGroup className="mb-3">
+                                                                    <FormControl
+                                                                    type="number"
+                                                                    placeholder="Harga Produk"
+                                                                    aria-label="Username"
+                                                                    aria-describedby="basic-addon1"
+                                                                    defaultValue={editData.harga}
+                                                                    name="editHarga"
+                                                                    ref={register2()}
+                                                                    />
+                                                                </InputGroup>
+                                                                <label htmlFor="desc">Deskripsi:</label>
+                                                                <InputGroup className="mb-3">
+                                                                    <FormControl
+                                                                    as="textarea"
+                                                                    placeholder="Deskripsi Produk"
+                                                                    aria-label="Username"
+                                                                    aria-describedby="basic-addon1"
+                                                                    defaultValue={editData.deskripsi}
+                                                                    name="editDesc"
+                                                                    ref={register2()}
+                                                                    />
+                                                                </InputGroup>
+                                                                {editProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
+                                                                {
+                                                                    editSuc && <Alert variant="success" onClose={() => setEditSuc(false)} dismissible>Produk berhasil di perbaharui</Alert>
+                                                                }
+                                                        </Col>
+                                                        
+                                                    </Row>
+                                                </Container>
+                                                
+                                            </Modal.Body>
+                                            <Modal.Footer>
+                                                <Button onClick={cancel}>Batal</Button>
+                                                <Button type="submit">Simpan</Button>
+                                            </Modal.Footer>
+                                        </form>
+                                    </Modal>
+
+
+                                    <Modal show={del} onHide={()=> setDelete(false)} centered>
+                                        <Modal.Header closeButton>
+                                            <Modal.Title>Hapus Produk</Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                            Hapus produk "{delData.nama_product}"?
+                                            {delProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
                                         </Modal.Body>
                                         <Modal.Footer>
-                                            <Button onClick={cancel}>Batal</Button>
-                                            <Button type="submit">Simpan</Button>
+                                        <Button variant="secondary" onClick={()=> setDelete(false)}>
+                                            Close
+                                        </Button>
+                                        <Button variant="primary" onClick={()=>deleteProduct(delData)}>
+                                            Hapus
+                                        </Button>
                                         </Modal.Footer>
-                                    </form>
-                                </Modal>
+                                    </Modal>
 
-
-                                <Modal show={del} onHide={()=> setDelete(false)} centered>
-                                    <Modal.Header closeButton>
-                                        <Modal.Title>Hapus Produk</Modal.Title>
-                                    </Modal.Header>
-                                    <Modal.Body>
-                                        Hapus produk "{delData.nama_product}"?
-                                        {delProd && <img src={MiniLoad} alt="loading" width="80" height="70"/>}
-                                    </Modal.Body>
-                                    <Modal.Footer>
-                                    <Button variant="secondary" onClick={()=> setDelete(false)}>
-                                        Close
-                                    </Button>
-                                    <Button variant="primary" onClick={()=>deleteProduct(delData)}>
-                                        Hapus
-                                    </Button>
-                                    </Modal.Footer>
-                                </Modal>
-
+                                
+                            </div>
                             
-                        </div>
+                        } 
                         
-                    } 
-                    
-                    
-                </div>
-        )
+                        
+                    </div>
+            )
+        }
     }
     else{
         history.push('/Login')
