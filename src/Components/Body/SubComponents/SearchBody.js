@@ -10,9 +10,6 @@ function SearchBody() {
     const {SearchProduct: {
             SearchProductState, 
             DispatchSearchProductState
-        }, 
-            Product:{
-                ProductState
         },
         url
     } = useContext(ProductContext)

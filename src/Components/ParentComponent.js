@@ -15,7 +15,7 @@ const state = {
     error:false,
     data: {}
 }
-const link = "http://keudepeunajohapi.jsmiot.com/"
+const link = "https://mucilaginous-bundle.000webhostapp.com/"
 const user_state = {
     loading:false,
     login: false,
@@ -99,7 +99,6 @@ function ParentComponent() {
     const [tokoProfile, dispatchTokoProfile] = useReducer(reducer, state)
 
     useEffect(()=> {
-        console.log("parent")
         if(localStorage.getItem('SavedToken') !== null){
 
             Axios.post(`${link}Auth/Authorization2`,{}, {
@@ -112,7 +111,7 @@ function ParentComponent() {
                 dispatchUserState({type: "SET_USER_STATE_FAILED"})
             })
         }
-        Axios.post(`${link}Data/all_product`,{})
+        Axios.post(`${link}Data/all_product`)
         .then(response => {
             dispatchProState({type: 'FETCH_SUCCESS', payload:response.data.data})
         })
@@ -120,7 +119,11 @@ function ParentComponent() {
             console.log(error)
             dispatchProState({type: 'FETCH_ERROR'})
         })
-    },[])
+        // Axios.post(`${link}Data/test`)
+        // .then(res =>{
+        //     console.log(res.data)
+        // })
+    },[])   
     return (
         <ProductContext.Provider
             value={

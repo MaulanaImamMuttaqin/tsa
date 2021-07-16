@@ -13,10 +13,10 @@ function Regist() {
         url
     } = useContext(ProductContext)
     const { register, handleSubmit, watch, errors } = useForm();
-    const [regist, setRegist] = useState(false)
+    const [registOnLoad, setRegistOnLoad] = useState(false)
     const history = useHistory()
     const onSubmit = data => {
-        setRegist(true)
+        setRegistOnLoad(true)
         Axios.post(`${url}Auth/regist`, {
             username:data.username,
             password:data.pass1,
@@ -24,7 +24,7 @@ function Regist() {
             email:data.email,
             nohp:data.nohp
         }).then(res => {
-            setRegist(false)
+            setRegistOnLoad(false)
             if(res.data.regist === false){
                 alert('something is wrong')
             }else{
@@ -32,7 +32,7 @@ function Regist() {
                 history.push('/Login')
             }
         }).catch(error => {
-            setRegist(false)
+            setRegistOnLoad(false)
             console.log('error')
         })
     };
@@ -66,7 +66,7 @@ function Regist() {
                 </div>
             </div>
             {
-                regist && <Loading color=""/>
+                registOnLoad && <Loading color=""/>
             }
         </div>
     )
