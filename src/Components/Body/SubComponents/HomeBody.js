@@ -105,7 +105,7 @@ function HomeBody() {
                                                     alt="First slide"
                                                     width="800" height="300"
                                                 /> */}
-                                                <div style={{border:"1px solid", height:"300px", width:"800px", display:"flex", justifyContent:"center", alignItems:"center" }}>
+                                                <div style={{height:"300px", width:"800px", display:"flex", justifyContent:"center", alignItems:"center" }}>
                                                     <h1 style={{color: "blue", letterSpacing: "5px", fontSize:"50px",fontWeight:"bolder"}}>
                                                         TSA
                                                     </h1>
