@@ -55,8 +55,11 @@ function Header(props) {
               <Container>
               {/* style={{border:"1px solid"}} */}
                   <Row className="header-container"  >
-                      <Col xs={3} className="header-left">
-                          <img className="logo-tittle" src={Logo} alt="" onClick={ChangeComponent}/>
+                      <Col xs={3} className="header-left" style={{textAlign:"center"}}>
+                        <h1 style={{color: "blue", letterSpacing: "5px", fontSize:"50px", fontWeight:"bolder"}} onClick={ChangeComponent}>
+                          TSA
+                        </h1>
+                          {/* <img className="logo-tittle" src={Logo} alt="" onClick={ChangeComponent}/> */}
                       </Col>
 
                       <Col className="header-center">
